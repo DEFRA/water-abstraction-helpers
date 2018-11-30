@@ -1,0 +1,19 @@
+{
+  "name": "water-abstraction-helpers",
+  "version": "1.0.0",
+  "description": "Contains functions for processing water abstraction data which are shared across multiple projects",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DEFRA/water-abstraction-helpers.git"
+  },
+  "author": "James Carmichael <james.carmichael@defra.gov.uk>",
+  "license": "OGL-UK-3.0",
+  "bugs": {
+    "url": "https://github.com/DEFRA/water-abstraction-helpers/issues"
+  },
+  "homepage": "https://github.com/DEFRA/water-abstraction-helpers#readme"
+}
