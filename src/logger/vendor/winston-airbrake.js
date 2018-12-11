@@ -10,16 +10,13 @@ var winston = require('winston');
 var AirbrakeClient = require('airbrake-js');
 const { isError } = require('lodash');
 
-var Airbrake = exports.Airbrake = winston.transports.Airbrake = function (options) {
-  this.name = 'airbrake';
-  this.level = options.level || 'info';
-  this.silent = options.silent || false;
-  this.handleExceptions = options.handleExceptions || false;
 
-  if (!options.apiKey) {
-    throw new Error('You must specify an airbrake API Key to use winston-airbrake');
-  }
-
+/**
+ * Creates configuration object for Airbrake client
+ * @param  {Object} options - options object used in creating the transport
+ * @return {Object}         - options object expected by Airbrake
+ */
+const createClientOptions = (options) => {
   const clientOptions = {
     projectId: options.projectId,
     projectKey: options.apiKey,
@@ -30,7 +27,21 @@ var Airbrake = exports.Airbrake = winston.transports.Airbrake = function (option
     clientOptions.request = request.defaults({ proxy: options.proxy });
   }
 
-  this.airbrakeClient = new AirbrakeClient(clientOptions);
+  return clientOptions;
+}
+
+
+const Airbrake = exports.Airbrake = winston.transports.Airbrake = function (options) {
+  this.name = 'airbrake';
+  this.level = options.level || 'info';
+  this.silent = options.silent || false;
+  this.handleExceptions = options.handleExceptions || false;
+
+  if (!options.apiKey) {
+    throw new Error('You must specify an airbrake API Key to use winston-airbrake');
+  }
+
+  this.airbrakeClient = new AirbrakeClient(createClientOptions(options));
 };
 
 util.inherits(Airbrake, winston.Transport);
@@ -78,3 +89,4 @@ Airbrake.prototype.log = function (level, msg, meta = {}, callback) {
 
 
 exports.createNotice = createNotice;
+exports.createClientOptions = createClientOptions;

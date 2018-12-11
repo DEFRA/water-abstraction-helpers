@@ -3,7 +3,7 @@ const Lab = require('lab');
 const lab = Lab.script();
 const { expect } = require('code');
 
-const { createNotice } = require('../../../src/logger/vendor/winston-airbrake.js');
+const { createNotice, createClientOptions } = require('../../../src/logger/vendor/winston-airbrake.js');
 
 
 lab.experiment('Test createNotice for Airbrake client using error object', () => {
@@ -60,6 +60,43 @@ lab.experiment('Test createNotice for Airbrake client using a plain object', () 
 
   lab.test('Context on an error is attached to the notice', async () => {
     expect(notice.context).to.equal(err.context);
+  });
+
+});
+
+
+lab.experiment('Test createClientOptions', () => {
+
+  const options = {
+    projectId: 'x',
+    apiKey: 'y',
+    host: 'http://localhost'
+  };
+
+  const clientOptions = createClientOptions(options);
+
+  lab.test('projectId should be set in client options', async () => {
+    expect(clientOptions.projectId).to.equal(options.projectId);
+  });
+
+  lab.test('projectKey should be set in client options', async () => {
+    expect(clientOptions.projectKey).to.equal(options.apiKey);
+  });
+
+  lab.test('host should be set in client options', async () => {
+    expect(clientOptions.host).to.equal(options.host);
+  });
+
+  lab.test('request should not be set if no proxy', async () => {
+    expect(clientOptions.request).to.equal(undefined);
+  });
+
+  lab.test('request should be set if proxy', async () => {
+    const optionsWithProxy = {
+      ...options,
+      proxy: 'http://proxy'
+    };
+    expect(createClientOptions(optionsWithProxy).request).to.be.a.function();
   });
 
 });
