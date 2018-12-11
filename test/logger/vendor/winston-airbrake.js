@@ -3,7 +3,7 @@ const Lab = require('lab');
 const lab = Lab.script();
 const { expect } = require('code');
 
-const { createNotice, createClientOptions } = require('../../../src/logger/vendor/winston-airbrake.js');
+const { createNotice, createClientOptions, Airbrake } = require('../../../src/logger/vendor/winston-airbrake.js');
 
 
 lab.experiment('Test createNotice for Airbrake client using error object', () => {
@@ -65,13 +65,18 @@ lab.experiment('Test createNotice for Airbrake client using a plain object', () 
 });
 
 
-lab.experiment('Test createClientOptions', () => {
 
-  const options = {
-    projectId: 'x',
-    apiKey: 'y',
-    host: 'http://localhost'
-  };
+const options = {
+  projectId: 'x',
+  apiKey: 'y',
+  host: 'http://localhost',
+  level : 'warning',
+  silent: false,
+  handleExceptions : true,
+  apiKey : 'xyz'
+};
+
+lab.experiment('Test createClientOptions', () => {
 
   const clientOptions = createClientOptions(options);
 
@@ -99,6 +104,37 @@ lab.experiment('Test createClientOptions', () => {
     expect(createClientOptions(optionsWithProxy).request).to.be.a.function();
   });
 
+});
+
+
+
+lab.experiment('Test setting Airbrake options', () => {
+
+  const airbrake = new Airbrake(options);
+
+  lab.test('name should be `airbrake`', async () => {
+    expect(airbrake.name).to.equal('airbrake');
+  });
+
+  lab.test('level should match that in the options', async () => {
+    expect(airbrake.level).to.equal(options.level);
+  });
+
+  lab.test('silent should match that in the options', async () => {
+    expect(airbrake.silent).to.equal(options.silent);
+  });
+
+  lab.test('handleExceptions should match that in the options', async () => {
+    expect(airbrake.handleExceptions).to.equal(options.handleExceptions);
+  });
+
+  lab.test('should throw an error if no API key supplied', async () => {
+    const { apiKey, ...rest } = options;
+    const func = () => {
+      return new Airbrake(rest)
+    }
+    expect(func).to.throw();
+  });
 });
 
 
