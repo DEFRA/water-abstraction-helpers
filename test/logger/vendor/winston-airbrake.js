@@ -64,6 +64,20 @@ lab.experiment('Test createNotice for Airbrake client using a plain object', () 
 
 });
 
+lab.experiment('Test createNotice for Airbrake client using message only', () => {
+
+  const notice = createNotice('error', 'Oh no');
+
+  lab.test('Notice should have correct error level', async () => {
+    expect(notice.error.type).to.equal('error');
+  });
+
+  lab.test('Notice should contain correct message', async () => {
+    expect(notice.error.message).to.equal('Oh no');
+  });
+
+
+});
 
 
 const options = {
@@ -120,12 +134,30 @@ lab.experiment('Test setting Airbrake options', () => {
     expect(airbrake.level).to.equal(options.level);
   });
 
+  lab.test('default minimum logging level is info', async () => {
+    const { level, ...rest } = options;
+    const ab = new Airbrake(rest);
+    expect(ab.level).to.equal('info');
+  });
+
   lab.test('silent should match that in the options', async () => {
     expect(airbrake.silent).to.equal(options.silent);
   });
 
+  lab.test('silent mode should be disabled by default', async () => {
+    const { silent, ...rest } = options;
+    const ab = new Airbrake(rest);
+    expect(ab.silent).to.equal(false);
+  });
+
   lab.test('handleExceptions should match that in the options', async () => {
     expect(airbrake.handleExceptions).to.equal(options.handleExceptions);
+  });
+
+  lab.test('handleExceptions should be disabled by default', async () => {
+    const { handleExceptions, ...rest } = options;
+    const ab = new Airbrake(rest);
+    expect(ab.handleExceptions).to.equal(false);
   });
 
   lab.test('should throw an error if no API key supplied', async () => {
