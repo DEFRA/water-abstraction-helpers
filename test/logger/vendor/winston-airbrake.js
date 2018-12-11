@@ -20,7 +20,7 @@ lab.experiment('Test createNotice for Airbrake client using error object', () =>
   });
 
   lab.test('Notice should contain correct message', async () => {
-    expect(notice.error.message).to.equal('Test error');
+    expect(notice.error.message).to.equal(err.message);
   });
 
   lab.test('For error objects, supplied message is sent as a param', async () => {
