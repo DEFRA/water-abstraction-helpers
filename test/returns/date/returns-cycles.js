@@ -63,6 +63,17 @@ lab.experiment('createReturnCycles', () => {
     ]);
   });
 
+  lab.test('It should create return cycles over a non-exact return date range in the year following the start date', async () => {
+    const result = createReturnCycles('2016-12-01', '2018-03-31');
+    expect(result).to.equal([
+      {
+        'startDate': '2017-04-01',
+        'endDate': '2018-03-31',
+        'isSummer': false
+      }
+    ]);
+  });
+
   lab.test('It should create a single return cycle over an exact winter return date range', async () => {
     const result = createReturnCycles('2016-04-01', '2017-03-31');
     expect(result).to.equal([{
