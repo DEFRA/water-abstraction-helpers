@@ -5,7 +5,7 @@ const dateFormat = 'YYYY-MM-DD';
 const cycleFactory = (startDate, isSummer = false) => {
   return {
     startDate: moment(startDate).format(dateFormat),
-    endDate: moment(startDate).add(1, 'year').subtract(1).format(dateFormat),
+    endDate: moment(startDate).add(1, 'year').subtract(1, 'day').format(dateFormat),
     isSummer
   };
 };
