@@ -35,7 +35,9 @@ const getNextCycle = (date) => {
  * return cycle captured by the service - 1 Nov 2017
  */
 const createReturnCycles = (startDate = '2017-11-01', endDate) => {
-  if (moment(endDate).isBefore(startDate, 'day')) {
+  const end = moment(endDate);
+
+  if (end.isBefore(startDate, 'day')) {
     throw new Error(`createReturnCycles - invalid date range ${startDate}-${endDate}`);
   }
 
@@ -43,9 +45,9 @@ const createReturnCycles = (startDate = '2017-11-01', endDate) => {
 
   const cycles = [];
 
-  while (moment(cycle.endDate).isSameOrBefore(endDate)) {
+  while (moment(cycle.endDate).isSameOrBefore(end, 'day')) {
     cycles.push(cloneDeep(cycle));
-    cycle = getNextCycle(moment(cycle.endDate).add(1, 'day'));
+    cycle = getNextCycle(moment(cycle.startDate).add(1, 'day'));
   }
   return cycles;
 };
