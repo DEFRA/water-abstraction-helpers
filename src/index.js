@@ -1,4 +1,5 @@
 module.exports = {
   logger: require('./logger'),
-  returns: require('./returns')
+  returns: require('./returns'),
+  regions: require('./regions')
 };
