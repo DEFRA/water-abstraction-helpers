@@ -1,31 +1,30 @@
-const Lab = require('lab');
+const {
+  beforeEach,
+  experiment,
+  test
+} = exports.lab = require('lab').script();
 
-const lab = Lab.script();
 const { expect } = require('code');
 const sinon = require('sinon');
 const logger = require('../../src/logger');
 
-const winston = require('winston');
-const AirbrakeClient = require('airbrake-js');
-
 // Initialise logger
-const result = logger.init({
+logger.init({
   level: 'info',
   airbrakeKey: 'test',
   airbrakeHost: 'test',
   airbrakeLevel: 'test'
 });
 
-lab.experiment('Test logger', () => {
-
+experiment('Test logger', () => {
   let spy;
 
-  lab.beforeEach(async() => {
+  beforeEach(async () => {
     spy = sinon.spy();
     logger.on('logged', spy);
   });
 
-  lab.test('It should log an error to the console', async () => {
+  test('It should log an error to the console', async () => {
     logger.log('error', 'A test');
     const [level, message, data] = spy.firstCall.args;
     expect(level).to.equal('error');
@@ -33,7 +32,7 @@ lab.experiment('Test logger', () => {
     expect(data).to.equal({});
   });
 
-  lab.test('It should log an info level message to the console', async () => {
+  test('It should log an info level message to the console', async () => {
     logger.log('info', 'A test');
     const [level, message, data] = spy.firstCall.args;
     expect(level).to.equal('info');
@@ -41,7 +40,7 @@ lab.experiment('Test logger', () => {
     expect(data).to.equal({});
   });
 
-  lab.test('It should log a warning level message to the console', async () => {
+  test('It should log a warning level message to the console', async () => {
     logger.log('warn', 'A test');
     const [level, message, data] = spy.firstCall.args;
     expect(level).to.equal('warn');
@@ -49,12 +48,47 @@ lab.experiment('Test logger', () => {
     expect(data).to.equal({});
   });
 
-  lab.test('It should not log debug message - below the minimum logging level', async () => {
+  test('It should not log debug message - below the minimum logging level', async () => {
     logger.log('debug', 'A test');
     expect(spy.firstCall).to.equal(null);
   });
 });
 
+experiment('decorateError', () => {
+  test('returns undefined if the error is undefined', async () => {
+    expect(logger.decorateError()).to.be.undefined();
+  });
 
+  test('decorating the error leaves the original error properties', async () => {
+    const err = new Error('oh no');
+    const decorated = logger.decorateError(err, 'file-name');
+    expect(decorated.message).to.equal('oh no');
+  });
 
-exports.lab = lab;
+  test('adds the file name to the context', async () => {
+    const err = new Error('oh no');
+    const decorated = logger.decorateError(err, 'file-name');
+    expect(decorated.context.component).to.equal('file-name');
+  });
+
+  test('adds the file name and params to the error', async () => {
+    const err = new Error('oh no');
+    const decorated = logger.decorateError(err, 'file-name', { test: true });
+    expect(decorated.context.component).to.equal('file-name');
+    expect(decorated.params.test).to.be.true();
+  });
+
+  test('adds the action to the error', async () => {
+    const err = new Error('oh no');
+    const decorated = logger.decorateError(err, 'file-name', {}, 'action!!');
+    expect(decorated.context.action).to.equal('action!!');
+  });
+
+  test('adds all values to the error', async () => {
+    const err = new Error('oh no');
+    const decorated = logger.decorateError(err, 'file-name', { more: 'info' }, 'action-name');
+    expect(decorated.context.component).to.equal('file-name');
+    expect(decorated.context.action).to.equal('action-name');
+    expect(decorated.params).to.equal({ more: 'info' });
+  });
+});

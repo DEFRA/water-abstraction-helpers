@@ -20,6 +20,35 @@ const defaults = {
   humanReadableUnhandledException: true
 };
 
+const createErrorContext = (fileName, action) => {
+  if (fileName || action) {
+    return {
+      component: fileName,
+      action
+    };
+  }
+};
+
+/**
+ * Adds Errbit specific data to the error that will be shown in the Errbit UI.
+ *
+ * @param {Object} error The error that is being logged
+ * @param {string} fileName The file that is logging the error
+ * @param {Object} params Any additional information that will help diagnose issues
+ * @param {string} action The name of the function where the error has occured
+ * @returns {Object} The decorated error object
+ */
+const decorateError = (error, fileName, params, action) => {
+  if (error) {
+    error.context = createErrorContext(fileName, action);
+
+    if (params) {
+      error.params = params;
+    }
+  }
+  return error;
+};
+
 const init = (config = {}) => {
   // Validate the provided config object
   const schema = {
@@ -54,3 +83,4 @@ const init = (config = {}) => {
 
 module.exports = logger;
 module.exports.init = init;
+module.exports.decorateError = decorateError;
