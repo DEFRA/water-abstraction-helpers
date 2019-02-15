@@ -10,7 +10,6 @@ var winston = require('winston');
 var AirbrakeClient = require('airbrake-js');
 const { isError } = require('lodash');
 
-
 /**
  * Creates configuration object for Airbrake client
  * @param  {Object} options - options object used in creating the transport
@@ -28,8 +27,7 @@ const createClientOptions = (options) => {
   }
 
   return clientOptions;
-}
-
+};
 
 const Airbrake = exports.Airbrake = winston.transports.Airbrake = function (options) {
   this.name = 'airbrake';
@@ -45,7 +43,6 @@ const Airbrake = exports.Airbrake = winston.transports.Airbrake = function (opti
 };
 
 util.inherits(Airbrake, winston.Transport);
-
 
 /**
  * Creates notice in a format expected by Airbrake client
@@ -64,29 +61,27 @@ const createNotice = (level, message, meta) => {
     notice.params = meta.params || {};
     notice.context = meta.context;
   }
-  if(isError(meta)) {
+
+  if (isError(meta)) {
     notice.params.message = message;
   }
   return notice;
-
-}
+};
 
 Airbrake.prototype.log = function (level, msg, meta = {}, callback) {
-
-  if (self.silent) {
+  if (this.silent) {
     return callback(null, true);
   }
 
   const notice = createNotice(level, msg, meta);
 
-  self.airbrakeClient.notify(notice, function (err, url) {
+  this.airbrakeClient.notify(notice, function (err, url) {
     if (err) {
       return callback(err, false);
     }
     return callback(null, { 'url': url });
   });
 };
-
 
 exports.createNotice = createNotice;
 exports.createClientOptions = createClientOptions;
