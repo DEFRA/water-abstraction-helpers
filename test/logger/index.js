@@ -3,7 +3,6 @@ const {
   experiment,
   test
 } = exports.lab = require('lab').script();
-
 const { expect } = require('code');
 const sinon = require('sinon');
 const logger = require('../../src/logger');
@@ -61,34 +60,20 @@ experiment('decorateError', () => {
 
   test('decorating the error leaves the original error properties', async () => {
     const err = new Error('oh no');
-    const decorated = logger.decorateError(err, 'file-name');
+    const decorated = logger.decorateError(err, { params: 'testing' });
     expect(decorated.message).to.equal('oh no');
   });
 
   test('adds the file name to the context', async () => {
     const err = new Error('oh no');
-    const decorated = logger.decorateError(err, 'file-name');
-    expect(decorated.context.component).to.equal('file-name');
+    const decorated = logger.decorateError(err);
+    expect(decorated.context.component).to.include(__filename);
   });
 
   test('adds the file name and params to the error', async () => {
     const err = new Error('oh no');
-    const decorated = logger.decorateError(err, 'file-name', { test: true });
-    expect(decorated.context.component).to.equal('file-name');
+    const decorated = logger.decorateError(err, { test: true });
+    expect(decorated.context.component).to.include(__filename);
     expect(decorated.params.test).to.be.true();
-  });
-
-  test('adds the action to the error', async () => {
-    const err = new Error('oh no');
-    const decorated = logger.decorateError(err, 'file-name', {}, 'action!!');
-    expect(decorated.context.action).to.equal('action!!');
-  });
-
-  test('adds all values to the error', async () => {
-    const err = new Error('oh no');
-    const decorated = logger.decorateError(err, 'file-name', { more: 'info' }, 'action-name');
-    expect(decorated.context.component).to.equal('file-name');
-    expect(decorated.context.action).to.equal('action-name');
-    expect(decorated.params).to.equal({ more: 'info' });
   });
 });
