@@ -1,5 +1,2 @@
-const date = require('./date');
-
-module.exports = {
-  date
-};
+exports.date = require('./date');
+exports.lines = require('./lines');
