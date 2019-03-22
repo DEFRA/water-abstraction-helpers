@@ -38,6 +38,7 @@
     "cross-fetch": "^3.0.0",
     "moment": "^2.23.0",
     "request": "^2.88.0",
+    "request-promise-native": "^1.0.7",
     "winston": "^2.4.4"
   },
   "publishConfig": {
