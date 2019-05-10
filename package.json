@@ -7,7 +7,7 @@
     "test": "lab",
     "test:travis": "lab -t 55 -m 0 --coverage-path ./src/ -r lcov -o coverage/lcov.info -r console -o stdout",
     "codecov": "codecov",
-    "lint": "eslint ./src/**/*.js",
+    "lint": "eslint .",
     "version": "auto-changelog -p --commit-limit false && git add CHANGELOG.md"
   },
   "repository": {
@@ -24,11 +24,11 @@
     "auto-changelog": "^1.11.0",
     "code": "^5.2.4",
     "codecov": "^3.1.0",
-    "eslint": "^5.14.1",
+    "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-node": "^8.0.0",
-    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-node": "^9.0.1",
+    "eslint-plugin-promise": "^4.1.1",
     "eslint-plugin-standard": "^4.0.0",
     "lab": "^18.0.0",
     "sinon": "^7.2.4"
