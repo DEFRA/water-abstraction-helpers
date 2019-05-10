@@ -56,6 +56,7 @@ const getWeeks = (startDate, endDate) => {
  * @return {Array} list of required return lines
  */
 const getMonths = (startDate, endDate, isPartialPeriod = false) => {
+  const method = isPartialPeriod ? 'isBefore' : 'isSameOrBefore';
   const datePtr = moment(startDate);
   const lines = [];
   do {
@@ -66,7 +67,7 @@ const getMonths = (startDate, endDate, isPartialPeriod = false) => {
     });
     datePtr.add(1, 'month');
   }
-  while (isPartialPeriod ? datePtr.isBefore(endDate, 'month') : datePtr.isSameOrBefore(endDate, 'month'));
+  while (datePtr[method](endDate, 'month'));
   return lines;
 };
 

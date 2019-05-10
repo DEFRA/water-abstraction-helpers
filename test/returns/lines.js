@@ -108,8 +108,8 @@ experiment('getMonths', () => {
   test('generates correct months for partial period', async () => {
     const months = getMonths('2018-01-01', '2018-12-18', true);
     // last month should not be included for a partial period
-    expectedMonths.pop();
-    expect(months).to.equal(expectedMonths);
+    const expected = expectedMonths.slice(0, -1);
+    expect(months).to.equal(expected);
   });
 
   test('generates a month if the start date is anywhere within the month', async () => {
