@@ -75,6 +75,20 @@ experiment('getDays', () => {
 });
 
 experiment('getMonths', () => {
+  const expectedMonths = [
+    { startDate: '2018-01-01', endDate: '2018-01-31', timePeriod: 'month' },
+    { startDate: '2018-02-01', endDate: '2018-02-28', timePeriod: 'month' },
+    { startDate: '2018-03-01', endDate: '2018-03-31', timePeriod: 'month' },
+    { startDate: '2018-04-01', endDate: '2018-04-30', timePeriod: 'month' },
+    { startDate: '2018-05-01', endDate: '2018-05-31', timePeriod: 'month' },
+    { startDate: '2018-06-01', endDate: '2018-06-30', timePeriod: 'month' },
+    { startDate: '2018-07-01', endDate: '2018-07-31', timePeriod: 'month' },
+    { startDate: '2018-08-01', endDate: '2018-08-31', timePeriod: 'month' },
+    { startDate: '2018-09-01', endDate: '2018-09-30', timePeriod: 'month' },
+    { startDate: '2018-10-01', endDate: '2018-10-31', timePeriod: 'month' },
+    { startDate: '2018-11-01', endDate: '2018-11-30', timePeriod: 'month' },
+    { startDate: '2018-12-01', endDate: '2018-12-31', timePeriod: 'month' }
+  ];
   test('generates a line for each month', async () => {
     const months = getMonths('2018-01-01', '2018-12-31');
     expect(months.length).to.equal(12);
@@ -88,20 +102,14 @@ experiment('getMonths', () => {
 
   test('generates correct months', async () => {
     const months = getMonths('2018-01-01', '2018-12-31');
-    expect(months).to.equal([
-      { startDate: '2018-01-01', endDate: '2018-01-31', timePeriod: 'month' },
-      { startDate: '2018-02-01', endDate: '2018-02-28', timePeriod: 'month' },
-      { startDate: '2018-03-01', endDate: '2018-03-31', timePeriod: 'month' },
-      { startDate: '2018-04-01', endDate: '2018-04-30', timePeriod: 'month' },
-      { startDate: '2018-05-01', endDate: '2018-05-31', timePeriod: 'month' },
-      { startDate: '2018-06-01', endDate: '2018-06-30', timePeriod: 'month' },
-      { startDate: '2018-07-01', endDate: '2018-07-31', timePeriod: 'month' },
-      { startDate: '2018-08-01', endDate: '2018-08-31', timePeriod: 'month' },
-      { startDate: '2018-09-01', endDate: '2018-09-30', timePeriod: 'month' },
-      { startDate: '2018-10-01', endDate: '2018-10-31', timePeriod: 'month' },
-      { startDate: '2018-11-01', endDate: '2018-11-30', timePeriod: 'month' },
-      { startDate: '2018-12-01', endDate: '2018-12-31', timePeriod: 'month' }
-    ]);
+    expect(months).to.equal(expectedMonths);
+  });
+
+  test('generates correct months for partial period', async () => {
+    const months = getMonths('2018-01-01', '2018-12-18', true);
+    // last month should not be included for a partial period
+    expectedMonths.pop();
+    expect(months).to.equal(expectedMonths);
   });
 
   test('generates a month if the start date is anywhere within the month', async () => {

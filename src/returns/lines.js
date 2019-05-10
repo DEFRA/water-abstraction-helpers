@@ -52,9 +52,10 @@ const getWeeks = (startDate, endDate) => {
  * Get required monthly return lines
  * @param {String} startDate - YYYY-MM-DD start date of return cycle
  * @param {String} endDate - YYYY-MM-DD end date of return cycle
+ * @param {Boolean} isPartialPeriod if return is for a partial period (if it is a split log)
  * @return {Array} list of required return lines
  */
-const getMonths = (startDate, endDate) => {
+const getMonths = (startDate, endDate, isPartialPeriod = false) => {
   const datePtr = moment(startDate);
   const lines = [];
   do {
@@ -65,7 +66,7 @@ const getMonths = (startDate, endDate) => {
     });
     datePtr.add(1, 'month');
   }
-  while (datePtr.isSameOrBefore(endDate, 'month'));
+  while (isPartialPeriod ? datePtr.isBefore(endDate, 'month') : datePtr.isSameOrBefore(endDate, 'month'));
   return lines;
 };
 
@@ -88,9 +89,10 @@ const getYears = (startDate, endDate) => {
  * @param {String} startDate - YYYY-MM-DD
  * @param {String} endDate - YYYY-MM-DD
  * @param {String} frequency
+ * @param {Boolean} isPartialPeriod - split logs
  * @return {Array} array of required lines
  */
-const getRequiredLines = (startDate, endDate, frequency) => {
+const getRequiredLines = (startDate, endDate, frequency, isPartialPeriod) => {
   const map = {
     day: getDays,
     week: getWeeks,
@@ -99,7 +101,7 @@ const getRequiredLines = (startDate, endDate, frequency) => {
   };
 
   if (map[frequency]) {
-    return map[frequency](startDate, endDate);
+    return map[frequency](startDate, endDate, isPartialPeriod);
   }
 
   throw new Error(`Unknown frequency ${frequency}`);
