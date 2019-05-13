@@ -1,6 +1,6 @@
 {
   "name": "@envage/water-abstraction-helpers",
-  "version": "2.5.0",
+  "version": "2.6.0",
   "description": "Contains functions for processing water abstraction data which are shared across multiple projects",
   "main": "./src/index.js",
   "scripts": {

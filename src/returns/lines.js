@@ -4,6 +4,12 @@ const naldDates = require('../nald/dates');
 const formatMoment = date => date.format('YYYY-MM-DD');
 
 /**
+ * [getDays description]
+ * @type {[type]}
+ */
+const isPartialPeriod = endDate => !moment(endDate).isSame(moment(endDate).endOf('month'), 'day');
+
+/**
  * Get required daily return lines
  * @param {String} startDate - YYYY-MM-DD start date of return cycle
  * @param {String} endDate - YYYY-MM-DD end date of return cycle
@@ -52,11 +58,11 @@ const getWeeks = (startDate, endDate) => {
  * Get required monthly return lines
  * @param {String} startDate - YYYY-MM-DD start date of return cycle
  * @param {String} endDate - YYYY-MM-DD end date of return cycle
- * @param {Boolean} isPartialPeriod if return is for a partial period (if it is a split log)
+ * @param {Boolean} isFinalReturn if return is for a partial period (if it is a split log)
  * @return {Array} list of required return lines
  */
-const getMonths = (startDate, endDate, isPartialPeriod = false) => {
-  const method = isPartialPeriod ? 'isBefore' : 'isSameOrBefore';
+const getMonths = (startDate, endDate, isFinalReturn) => {
+  const method = isFinalReturn && isPartialPeriod(endDate) ? 'isBefore' : 'isSameOrBefore';
   const datePtr = moment(startDate);
   const lines = [];
   do {
@@ -90,10 +96,10 @@ const getYears = (startDate, endDate) => {
  * @param {String} startDate - YYYY-MM-DD
  * @param {String} endDate - YYYY-MM-DD
  * @param {String} frequency
- * @param {Boolean} isPartialPeriod - split logs
+ * @param {Boolean} isFinalReturn - split logs
  * @return {Array} array of required lines
  */
-const getRequiredLines = (startDate, endDate, frequency, isPartialPeriod) => {
+const getRequiredLines = (startDate, endDate, frequency, isFinalReturn) => {
   const map = {
     day: getDays,
     week: getWeeks,
@@ -102,7 +108,7 @@ const getRequiredLines = (startDate, endDate, frequency, isPartialPeriod) => {
   };
 
   if (map[frequency]) {
-    return map[frequency](startDate, endDate, isPartialPeriod);
+    return map[frequency](startDate, endDate, isFinalReturn);
   }
 
   throw new Error(`Unknown frequency ${frequency}`);
