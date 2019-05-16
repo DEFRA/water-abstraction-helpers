@@ -5,10 +5,10 @@ const {
 } = exports.lab = require('lab').script();
 const { expect } = require('code');
 const sinon = require('sinon');
-const logger = require('../../src/logger');
+const { createLogger, decorateError } = require('../../src/logger');
 
 // Initialise logger
-logger.init({
+const logger = createLogger({
   level: 'info',
   airbrakeKey: 'test',
   airbrakeHost: 'test',
@@ -55,24 +55,24 @@ experiment('Test logger', () => {
 
 experiment('decorateError', () => {
   test('returns undefined if the error is undefined', async () => {
-    expect(logger.decorateError()).to.be.undefined();
+    expect(decorateError()).to.be.undefined();
   });
 
   test('decorating the error leaves the original error properties', async () => {
     const err = new Error('oh no');
-    const decorated = logger.decorateError(err, { params: 'testing' });
+    const decorated = decorateError(err, { params: 'testing' });
     expect(decorated.message).to.equal('oh no');
   });
 
   test('adds the file name to the context', async () => {
     const err = new Error('oh no');
-    const decorated = logger.decorateError(err);
+    const decorated = decorateError(err);
     expect(decorated.context.component).to.include(__filename);
   });
 
   test('adds the file name and params to the error', async () => {
     const err = new Error('oh no');
-    const decorated = logger.decorateError(err, { test: true });
+    const decorated = decorateError(err, { test: true });
     expect(decorated.context.component).to.include(__filename);
     expect(decorated.params.test).to.be.true();
   });

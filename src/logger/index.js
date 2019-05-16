@@ -8,8 +8,6 @@ const Joi = require('joi');
 const Airbrake = require('./vendor/winston-airbrake').Airbrake;
 const { get, negate } = require('lodash');
 
-const logger = new (winston.Logger)();
-
 const inParensRegex = /\((.*)\)/;
 let startFileNameAfter = 'src';
 
@@ -100,7 +98,7 @@ const getFilename = () => {
  * Creates a proxy onto logger.error that adds additional behaviour to
  * augment the error object with Errbit specific properties.
  */
-const proxyLoggerError = () => {
+const proxyLoggerError = logger => {
   const errorProxy = logger.error;
   logger.error = (msg, error, params) => {
     const err = decorateError(error, params);
@@ -108,7 +106,7 @@ const proxyLoggerError = () => {
   };
 };
 
-const initAirbrakeLogger = options => {
+const initAirbrakeLogger = (logger, options) => {
   if (options.airbrakeKey && options.airbrakeHost) {
     const airbrakeOptions = {
       apiKey: options.airbrakeKey,
@@ -120,12 +118,14 @@ const initAirbrakeLogger = options => {
     };
     logger.add(Airbrake, airbrakeOptions);
 
-    proxyLoggerError();
+    proxyLoggerError(logger);
   }
 };
 
-const init = (config = {}) => {
+const createLogger = (config = {}) => {
   // Validate the provided config object
+  const logger = new winston.Logger();
+
   const schema = {
     level: Joi.string().allow('debug', 'verbose', 'info', 'warn', 'error').default('info'),
     airbrakeKey: Joi.string().allow(''),
@@ -145,9 +145,10 @@ const init = (config = {}) => {
   // Default console transport
   logger.add(winston.transports.Console, { ...defaults, level: options.level });
 
-  initAirbrakeLogger(options);
+  initAirbrakeLogger(logger, options);
+
+  return logger;
 };
 
-module.exports = logger;
-module.exports.init = init;
+module.exports.createLogger = createLogger;
 module.exports.decorateError = decorateError;
