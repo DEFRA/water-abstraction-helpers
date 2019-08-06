@@ -21,22 +21,23 @@
   },
   "homepage": "https://github.com/DEFRA/water-abstraction-helpers#readme",
   "devDependencies": {
-    "auto-changelog": "^1.11.0",
+    "auto-changelog": "^1.14.1",
     "code": "^5.2.4",
-    "codecov": "^3.1.0",
+    "codecov": "^3.5.0",
     "eslint": "^5.16.0",
     "eslint-config-standard": "^12.0.0",
-    "eslint-plugin-import": "^2.17.2",
-    "eslint-plugin-node": "^9.0.1",
-    "eslint-plugin-promise": "^4.1.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0",
-    "lab": "^18.0.0",
-    "sinon": "^7.2.4"
+    "lab": "^18.0.2",
+    "sinon": "^7.4.1"
   },
   "dependencies": {
     "airbrake-js": "^1.6.4",
-    "cross-fetch": "^3.0.0",
-    "moment": "^2.23.0",
+    "cross-fetch": "^3.0.4",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
     "winston": "^2.4.4"

@@ -59,4 +59,9 @@ experiment('serviceRequest', () => {
     serviceRequest.delete(data.url, data.options);
     expect(http.request.lastCall.args[0]).to.equal(getExpectedOptions('DELETE', data));
   });
+
+  test('put', async () => {
+    serviceRequest.put(data.url, data.options);
+    expect(http.request.lastCall.args[0]).to.equal(getExpectedOptions('PUT', data));
+  });
 });
