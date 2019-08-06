@@ -24,3 +24,4 @@ exports.get = partial(makeRequest, 'GET');
 exports.post = partial(makeRequest, 'POST');
 exports.patch = partial(makeRequest, 'PATCH');
 exports.delete = partial(makeRequest, 'DELETE');
+exports.put = partial(makeRequest, 'PUT');
