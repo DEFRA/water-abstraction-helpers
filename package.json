@@ -1,10 +1,14 @@
 {
   "name": "@envage/water-abstraction-helpers",
 <<<<<<< HEAD
+<<<<<<< HEAD
   "version": "3.1.0",
 =======
   "version": "2.6.0",
 >>>>>>> Add logic to check if return is for partial period
+=======
+  "version": "2.6.0",
+>>>>>>> f1db8384d156a976ab956008c1d2624eb0e8d3d1
   "description": "Contains functions for processing water abstraction data which are shared across multiple projects",
   "main": "./src/index.js",
   "scripts": {
