@@ -3,11 +3,7 @@ const naldDates = require('../nald/dates');
 
 const formatMoment = date => date.format('YYYY-MM-DD');
 
-/**
- * [getDays description]
- * @type {[type]}
- */
-const isPartialPeriod = endDate => !moment(endDate).isSame(moment(endDate).endOf('month'), 'day');
+const isLastDayOfMonth = endDate => moment(endDate).isSame(moment(endDate).endOf('month'), 'day');
 
 /**
  * Get required daily return lines
@@ -58,11 +54,11 @@ const getWeeks = (startDate, endDate) => {
  * Get required monthly return lines
  * @param {String} startDate - YYYY-MM-DD start date of return cycle
  * @param {String} endDate - YYYY-MM-DD end date of return cycle
- * @param {Boolean} isFinalReturn if return is for a partial period (if it is a split log)
+ * @param {Boolean} isFinalReturn if return is for a partial period (split log)
  * @return {Array} list of required return lines
  */
 const getMonths = (startDate, endDate, isFinalReturn) => {
-  const method = isFinalReturn && isPartialPeriod(endDate) ? 'isBefore' : 'isSameOrBefore';
+  const method = isFinalReturn && !isLastDayOfMonth(endDate) ? 'isBefore' : 'isSameOrBefore';
   const datePtr = moment(startDate);
   const lines = [];
   do {
