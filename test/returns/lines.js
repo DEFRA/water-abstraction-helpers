@@ -89,6 +89,8 @@ experiment('getMonths', () => {
     { startDate: '2018-11-01', endDate: '2018-11-30', timePeriod: 'month' },
     { startDate: '2018-12-01', endDate: '2018-12-31', timePeriod: 'month' }
   ];
+  const excludingLastMonth = expectedMonths.slice(0, -1);
+
   test('generates a line for each month', async () => {
     const months = getMonths('2018-01-01', '2018-12-31');
     expect(months.length).to.equal(12);
@@ -103,13 +105,6 @@ experiment('getMonths', () => {
   test('generates correct months', async () => {
     const months = getMonths('2018-01-01', '2018-12-31');
     expect(months).to.equal(expectedMonths);
-  });
-
-  test('generates correct months for partial period', async () => {
-    const months = getMonths('2018-01-01', '2018-12-18', true);
-    // last month should not be included for a partial period
-    const expected = expectedMonths.slice(0, -1);
-    expect(months).to.equal(expected);
   });
 
   test('generates a month if the start date is anywhere within the month', async () => {
@@ -129,6 +124,30 @@ experiment('getMonths', () => {
       { startDate: '2018-03-01', endDate: '2018-03-31', timePeriod: 'month' },
       { startDate: '2018-04-01', endDate: '2018-04-30', timePeriod: 'month' }
     ]);
+  });
+
+  experiment('isFinalReturn is falsey', async () => {
+    test('last month should be included when endDate is not the last day of the month', async () => {
+      const months = getMonths('2018-01-01', '2018-12-18');
+      expect(months).to.equal(expectedMonths);
+    });
+
+    test('last month should be included when endDate is the last day of the month', async () => {
+      const months = getMonths('2018-01-01', '2018-12-31');
+      expect(months).to.equal(expectedMonths);
+    });
+  });
+
+  experiment('isFinalReturn is true', async () => {
+    test('last month should be included when endDate is the last day of the month', async () => {
+      const months = getMonths('2018-01-01', '2018-12-31', true);
+      expect(months).to.equal(expectedMonths);
+    });
+
+    test('last month should be excluded when endDate is not the last day of the month', async () => {
+      const months = getMonths('2018-01-01', '2018-12-18', true);
+      expect(months).to.equal(excludingLastMonth);
+    });
   });
 });
 
