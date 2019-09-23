@@ -1,4 +1,5 @@
 const { first, last, uniq } = require('lodash');
+const moment = require('moment');
 const { expect } = require('code');
 const {
   experiment,
@@ -45,6 +46,23 @@ experiment('getWeeks', () => {
     const periods = uniq(days.map(day => day.timePeriod));
     expect(periods.length).to.equal(1);
     expect(periods).to.equal(['week']);
+  });
+
+  test('split logs for return period don\'t overlap', async () => {
+    const dateRange = [
+      '2018-06-01',
+      '2018-06-02',
+      '2018-06-03',
+      '2018-06-04',
+      '2018-06-05',
+      '2018-06-06',
+      '2018-06-07'];
+    dateRange.forEach(dateString => {
+      const date = moment(dateString);
+      const firstSplitLog = getWeeks('2019-01-01', date);
+      const secondSplitLog = getWeeks(date.add(1, 'day'), '2019-12-31');
+      expect(last(firstSplitLog)).not.to.equal(secondSplitLog[0]);
+    });
   });
 });
 
