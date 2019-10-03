@@ -27,6 +27,30 @@ const absPeriods = {
   }
 };
 
+experiment('charging.getFinancialYear', () => {
+  test('for dates before 1 April, returns same year', async () => {
+    expect(charging.getFinancialYear('2018-01-01')).to.equal(2018);
+    expect(charging.getFinancialYear('2018-03-31')).to.equal(2018);
+  });
+
+  test('for dates on or after 1 April, returns following year', async () => {
+    expect(charging.getFinancialYear('2018-04-01')).to.equal(2019);
+    expect(charging.getFinancialYear('2018-12-31')).to.equal(2019);
+  });
+});
+
+experiment('charging.getFinancialYearDate', () => {
+  test('for dates before 1 April, returns date with same year', async () => {
+    expect(charging.getFinancialYearDate(1, 1, 2019)).to.equal('2019-01-01');
+    expect(charging.getFinancialYearDate(31, 3, 2019)).to.equal('2019-03-31');
+  });
+
+  test('for dates on or after 1 April, returns dates with preceding year', async () => {
+    expect(charging.getFinancialYearDate(1, 4, 2019)).to.equal('2018-04-01');
+    expect(charging.getFinancialYearDate(31, 12, 2019)).to.equal('2018-12-31');
+  });
+});
+
 experiment('charging.getTotalDays', () => {
   test('a full financial not containing a leap year gives 365 chargeable days', async () => {
     const result = charging.getTotalDays('2018-04-01', '2019-03-31');

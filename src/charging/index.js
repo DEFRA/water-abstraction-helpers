@@ -23,7 +23,7 @@ const DATE_SCHEMA = Joi.string().regex(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/);
  */
 const getFinancialYear = date => {
   const m = moment(date);
-  return m.month() < 4 ? m.year() : m.year() + 1;
+  return m.month() < 3 ? m.year() : m.year() + 1;
 };
 
 /**
@@ -36,7 +36,7 @@ const getFinancialYear = date => {
  */
 const getFinancialYearDate = (day, month, financialYear) => {
   const year = month < 4 ? financialYear : financialYear - 1;
-  return moment(`${day}-${month}-${year}`, 'D-M-YYYY');
+  return moment(`${day}-${month}-${year}`, 'D-M-YYYY').format('YYYY-MM-DD');
 };
 
 /**
@@ -86,5 +86,7 @@ const getBillableDays = (absPeriod, startDate, endDate) => {
   }, 0);
 };
 
+exports.getFinancialYear = getFinancialYear;
+exports.getFinancialYearDate = getFinancialYearDate;
 exports.getTotalDays = getTotalDays;
 exports.getBillableDays = getBillableDays;
