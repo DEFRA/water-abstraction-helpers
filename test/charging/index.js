@@ -70,6 +70,11 @@ experiment('charging.getBillableDays', () => {
       const result = charging.getBillableDays(absPeriods.singleRange, '2018-05-01', '2019-03-31');
       expect(result).to.equal(184);
     });
+
+    test('when there are no billable days, zero is returned', async () => {
+      const result = charging.getBillableDays(absPeriods.singleRange, '2018-11-01', '2019-03-31');
+      expect(result).to.equal(0);
+    });
   });
 
   experiment('when the abs period is two ranges within a calendar year', async () => {
@@ -86,6 +91,11 @@ experiment('charging.getBillableDays', () => {
     test('when the start date is after the start of the abs period, the billable days are reduced', async () => {
       const result = charging.getBillableDays(absPeriods.doubleRange, '2018-05-01', '2019-03-31');
       expect(result).to.equal(121);
+    });
+
+    test('when there are no billable days, zero is returned', async () => {
+      const result = charging.getBillableDays(absPeriods.doubleRange, '2018-05-01', '2018-11-30');
+      expect(result).to.equal(0);
     });
   });
 });
