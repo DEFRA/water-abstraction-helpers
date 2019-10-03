@@ -1,5 +1,7 @@
 const Joi = require('joi');
-const moment = require('moment');
+
+const MomentRange = require('moment-range');
+const moment = MomentRange.extendMoment(require('moment'));
 
 const MONTH_SCHEMA = Joi.number().integer().min(1).max(12).required();
 const DAY_SCHEMA = Joi.number().integer().min(1).max(31).required();
@@ -21,35 +23,21 @@ const DATE_SCHEMA = Joi.string().regex(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/);
  */
 const getFinancialYear = date => {
   const m = moment(date);
-  return m.month() < 3 ? m.year() : m.year() + 1;
+  return m.month() < 4 ? m.year() : m.year() + 1;
 };
 
 /**
- * Given an abstraction period day and month, and a financial year,
+ * Given a day and month, and a financial year,
  * returns the actual date as a moment
  * @param {Number} day
- * @param {Number} month
+ * @param {Number} month (1-12)
  * @param {Number} financialYear
  * @return {Object} moment object
  */
-const getAbsPeriodDate = (day, month, financialYear) => {
-  const year = month < 3 ? financialYear : financialYear - 1;
+const getFinancialYearDate = (day, month, financialYear) => {
+  const year = month < 4 ? financialYear : financialYear - 1;
   return moment(`${day}-${month}-${year}`, 'D-M-YYYY');
 };
-
-/**
- * Limits a number to a minimum possible value of 0
- * @param {Number} num
- * @return {Number}
- */
-const positive = num => num < 0 ? 0 : num;
-
-/**
- * Gets the difference in billable days between the two dates in the provided array
- * @param {Array} arr
- * @return {Number}
- */
-const diffDays = arr => positive(1 + moment(arr[1]).diff(arr[0], 'days'));
 
 /**
  * Gets the total days in the financial year
@@ -61,42 +49,7 @@ const getTotalDays = (startDate, endDate) => {
   // Validate inputs
   Joi.assert(startDate, DATE_SCHEMA);
   Joi.assert(endDate, DATE_SCHEMA);
-
-  return positive(1 + moment(endDate).diff(startDate, 'days'));
-};
-
-/**
- * Limits date so it is not before the min date and
- * not after the max date
- * @param {String} date - YYYY-MM-DD
- * @param {String} minDate - YYYY-MM-DD
- * @param {String} maxDate - YYYY-MM-DD
- * @return {String} YYYY-MM-DD
- */
-const limitDate = (date, minDate, maxDate) => {
-  if (moment(date).isBefore(minDate, 'day')) {
-    return minDate;
-  }
-  if (moment(date).isAfter(maxDate, 'day')) {
-    return maxDate;
-  }
-  return date;
-};
-
-const mapRange = (range, startDate, endDate) =>
-  range.map(value => limitDate(value, startDate, endDate));
-
-const isValidRange = ([startDate, endDate]) =>
-  moment(startDate).isSameOrBefore(endDate, 'day');
-
-const createDateRanges = (startDate, endDate, absStart, absEnd) => {
-  const dateRanges = moment(absEnd).isBefore(absStart, 'day')
-    ? [ [startDate, absEnd], [absStart, endDate] ]
-    : [ [ absStart, absEnd ] ];
-
-  return dateRanges.filter(isValidRange).map(range =>
-    mapRange(range, startDate, endDate)
-  );
+  return moment(endDate).diff(startDate, 'days') + 1;
 };
 
 /**
@@ -113,16 +66,24 @@ const getBillableDays = (absPeriod, startDate, endDate) => {
   Joi.assert(endDate, DATE_SCHEMA);
 
   // Calculate important dates
-  const financialYear = getFinancialYear(startDate);
+  const financialYear = getFinancialYear(endDate);
 
-  const absStart = getAbsPeriodDate(absPeriod.startDay, absPeriod.startMonth, financialYear);
-  const absEnd = getAbsPeriodDate(absPeriod.endDay, absPeriod.endMonth, financialYear);
+  const absStart = getFinancialYearDate(absPeriod.startDay, absPeriod.startMonth, financialYear);
+  const absEnd = getFinancialYearDate(absPeriod.endDay, absPeriod.endMonth, financialYear);
 
-  // Create date ranges
-  const dateRanges = createDateRanges(startDate, endDate, absStart, absEnd);
+  // Create time ranges for the abs period
+  const ranges = moment(absEnd).isBefore(absStart, 'day')
+    ? [moment.range(startDate, absEnd), moment.range(absStart, endDate)]
+    : [moment.range(absStart, absEnd)];
 
-  // Return billable days
-  return dateRanges.reduce((acc, range) => acc + diffDays(range), 0);
+  // Create time range for billing period
+  const billRange = moment.range(startDate, endDate);
+
+  // Calculate intersections between abs time range(s) and billing period range
+  return ranges.reduce((acc, range) => {
+    const intersection = billRange.intersect(range);
+    return acc + (intersection ? intersection.diff('days') + 1 : 0);
+  }, 0);
 };
 
 exports.getTotalDays = getTotalDays;
