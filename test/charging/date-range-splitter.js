@@ -3,7 +3,7 @@ const { experiment, test, beforeEach } = exports.lab = require('lab').script();
 const moment = require('moment');
 moment.locale('en-gb');
 
-const { dateRangeSplitter } = require('../../src/charging/date-range-splitter');
+const { dateRangeSplitter } = require('../../src/charging');
 
 experiment('charging date range splitter', async () => {
   const chargeVersion = {
