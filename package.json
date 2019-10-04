@@ -1,6 +1,6 @@
 {
   "name": "@envage/water-abstraction-helpers",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "description": "Contains functions for processing water abstraction data which are shared across multiple projects",
   "main": "./src/index.js",
   "scripts": {
@@ -38,6 +38,7 @@
     "cross-fetch": "^3.0.4",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
+    "moment-range": "^4.0.2",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
     "winston": "^2.4.4"

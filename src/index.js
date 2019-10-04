@@ -1,3 +1,4 @@
+exports.charging = require('./charging');
 exports.logger = require('./logger');
 exports.nald = require('./nald');
 exports.regions = require('./regions');
