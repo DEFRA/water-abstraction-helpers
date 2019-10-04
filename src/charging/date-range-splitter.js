@@ -22,22 +22,21 @@ const getPreviousDay = date =>
  * @param {Array} listB
  * @return {Array<String>} list of dates in YYYY-MM-DD format
  */
-const getStartDates = (objA, listB) => {
+const getSplitDates = (objA, listB) => {
   const range = moment.range(getStartDate(objA), getEndDate(objA));
+  const predicate = date => date && range.contains(moment(date));
   const startDates = listB.reduce((acc, objB) => {
-    const startDate = getStartDate(objB);
-    if (range.contains(moment(startDate))) {
-      acc.push(startDate);
-    }
-
     const endDate = getEndDate(objB);
-    if (endDate) {
-      const nextStart = getNextDay(endDate);
-      if (range.contains(moment(nextStart))) {
-        acc.push(nextStart);
-      }
-    }
-    return uniq(acc);
+
+    const splitDates = [
+      getStartDate(objB),
+      endDate ? getNextDay(endDate) : null
+    ];
+
+    return uniq([
+      ...acc,
+      ...splitDates.filter(predicate)
+    ]);
   }, [getStartDate(objA)]);
 
   return startDates.sort();
@@ -71,7 +70,7 @@ const findOverlapping = (arrWithRanges, startDate, endDate) => {
  */
 const dateRangeSplitter = (objA, arr = [], propertyName) => {
   const endDate = getEndDate(objA);
-  const startDates = getStartDates(objA, arr);
+  const startDates = getSplitDates(objA, arr);
   const arrWithRanges = createRangeList(arr);
 
   return startDates.map((startDate, i) => {
