@@ -50,13 +50,13 @@ experiment('getWeeks', () => {
 
   test('split logs for return period don\'t overlap', async () => {
     const dateRange = [
-      '2018-06-01',
-      '2018-06-02',
-      '2018-06-03',
-      '2018-06-04',
-      '2018-06-05',
-      '2018-06-06',
-      '2018-06-07'];
+      '2019-06-01',
+      '2019-06-02',
+      '2019-06-03',
+      '2019-06-04',
+      '2019-06-05',
+      '2019-06-06',
+      '2019-06-07'];
     dateRange.forEach(dateString => {
       const date = moment(dateString);
       const firstSplitLog = getWeeks('2019-01-01', date);
