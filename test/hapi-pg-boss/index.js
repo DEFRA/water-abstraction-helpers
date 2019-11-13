@@ -1,7 +1,6 @@
 const { expect } = require('code');
 const { experiment, test, before } = exports.lab = require('lab').script();
 const Hapi = require('@hapi/hapi');
-const PgBoss = require('pg-boss');
 
 const { hapiPgBoss } = require('../../src/');
 const sandbox = require('sinon').createSandbox();
