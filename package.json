@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/DEFRA/water-abstraction-helpers#readme",
   "devDependencies": {
+    "@hapi/hapi": "^18.4.0",
     "auto-changelog": "^1.14.1",
     "code": "^5.2.4",
     "codecov": "^3.5.0",
@@ -31,6 +32,7 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0",
     "lab": "^18.0.2",
+    "pg-boss": "^3.1.7",
     "sinon": "^7.4.1"
   },
   "dependencies": {
@@ -45,5 +47,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "peerDependencies": {
+    "pg-boss": "3.x"
   }
 }
