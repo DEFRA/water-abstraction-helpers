@@ -31,9 +31,8 @@ experiment('db/index.js', () => {
       pool = db.createPool(config, logger);
     });
 
-    test('pool.query can perform a query', async () => {
-      const { rows } = await pool.query(`select 1 as value`);
-      expect(rows[0].value).to.equal(1);
+    test('pool is an instance of pg.Pool', async () => {
+      expect(pool.constructor.name).to.equal('Pool');
     });
 
     experiment('when a client is acquired', () => {
