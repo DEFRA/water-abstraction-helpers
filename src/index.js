@@ -1,4 +1,5 @@
 exports.charging = require('./charging');
+exports.db = require('./db');
 exports.logger = require('./logger');
 exports.nald = require('./nald');
 exports.regions = require('./regions');
