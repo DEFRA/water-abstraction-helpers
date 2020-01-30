@@ -4,7 +4,7 @@
  * Based on {@link https://github.com/DEFRA/data-returns-pi-frontend/blob/develop/src/lib/logging.js}
  */
 const winston = require('winston');
-const Joi = require('joi');
+const Joi = require('@hapi/joi');
 const Airbrake = require('./vendor/winston-airbrake').Airbrake;
 const { get, negate } = require('lodash');
 

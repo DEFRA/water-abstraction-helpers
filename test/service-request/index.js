@@ -1,5 +1,7 @@
-const { expect } = require('code');
-const { experiment, test, beforeEach, afterEach } = exports.lab = require('lab').script();
+'use strict';
+
+const { expect } = require('@hapi/code');
+const { experiment, test, beforeEach, afterEach } = exports.lab = require('@hapi/lab').script();
 
 const sinon = require('sinon');
 const sandbox = sinon.createSandbox();

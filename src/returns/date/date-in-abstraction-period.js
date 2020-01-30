@@ -1,5 +1,7 @@
+'use strict';
+
 const moment = require('moment');
-const Joi = require('joi');
+const Joi = require('@hapi/joi');
 
 const VALID_DAY = Joi.number().integer().min(1).max(31).required();
 const VALID_MONTH = Joi.number().integer().min(1).max(12).required();

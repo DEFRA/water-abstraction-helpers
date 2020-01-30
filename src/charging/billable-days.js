@@ -1,4 +1,6 @@
-const Joi = require('joi');
+'use strict';
+
+const Joi = require('@hapi/joi');
 
 const MomentRange = require('moment-range');
 const moment = MomentRange.extendMoment(require('moment'));
