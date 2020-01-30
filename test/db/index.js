@@ -1,8 +1,16 @@
+'use strict';
+
 require('dotenv').config();
-const { beforeEach, experiment, test, afterEach } =
-  exports.lab = require('lab').script();
-const { expect } = require('code');
+
+const {
+  beforeEach,
+  experiment,
+  test,
+  afterEach
+} = exports.lab = require('@hapi/lab').script();
+const { expect } = require('@hapi/code');
 const sandbox = require('sinon').createSandbox();
+
 const db = require('../../src/db');
 
 const config = {

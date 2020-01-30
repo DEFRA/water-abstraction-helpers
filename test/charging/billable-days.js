@@ -1,8 +1,7 @@
-const {
-  experiment,
-  test
-} = exports.lab = require('lab').script();
-const { expect } = require('code');
+'use strict';
+
+const { experiment, test } = exports.lab = require('@hapi/lab').script();
+const { expect } = require('@hapi/code');
 
 const charging = require('../../src/charging');
 

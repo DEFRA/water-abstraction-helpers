@@ -79,7 +79,7 @@ Airbrake.prototype.log = function (level, msg, meta = {}, callback) {
     if (err) {
       return callback(err, false);
     }
-    return callback(null, { 'url': url });
+    return callback(null, { url });
   });
 };
 
