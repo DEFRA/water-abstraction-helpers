@@ -1,11 +1,11 @@
-const Lab = require('lab');
+'use strict';
 
-const lab = Lab.script();
-const { expect } = require('code');
+const { experiment, test } = exports.lab = require('@hapi/lab').script();
+const { expect } = require('@hapi/code');
 
 const { createNotice, createClientOptions, Airbrake } = require('../../../src/logger/vendor/winston-airbrake.js');
 
-lab.experiment('Test createNotice for Airbrake client using error object', () => {
+experiment('Test createNotice for Airbrake client using error object', () => {
   const err = new Error('Test error');
   err.params = {
     foo: 'bar'
@@ -13,28 +13,28 @@ lab.experiment('Test createNotice for Airbrake client using error object', () =>
   err.context = 'context info';
   const notice = createNotice('info', 'Oh no', err);
 
-  lab.test('Notice should have correct error level', async () => {
+  test('Notice should have correct error level', async () => {
     expect(notice.error.type).to.equal('info');
   });
 
-  lab.test('Notice should contain correct message', async () => {
+  test('Notice should contain correct message', async () => {
     expect(notice.error.message).to.equal(err.message);
   });
 
-  lab.test('For error objects, supplied message is sent as a param', async () => {
+  test('For error objects, supplied message is sent as a param', async () => {
     expect(notice.params.message).to.equal('Oh no');
   });
 
-  lab.test('Params on an error are attached to the notice', async () => {
+  test('Params on an error are attached to the notice', async () => {
     expect(notice.params.foo).to.equal(err.params.foo);
   });
 
-  lab.test('Context on an error is attached to the notice', async () => {
+  test('Context on an error is attached to the notice', async () => {
     expect(notice.context).to.equal(err.context);
   });
 });
 
-lab.experiment('Test createNotice for Airbrake client using a plain object', () => {
+experiment('Test createNotice for Airbrake client using a plain object', () => {
   const err = {};
   err.params = {
     foo: 'bar'
@@ -42,31 +42,31 @@ lab.experiment('Test createNotice for Airbrake client using a plain object', () 
   err.context = 'context info';
   const notice = createNotice('debug', 'Oh no', err);
 
-  lab.test('Notice should have correct error level', async () => {
+  test('Notice should have correct error level', async () => {
     expect(notice.error.type).to.equal('debug');
   });
 
-  lab.test('Notice should contain correct message', async () => {
+  test('Notice should contain correct message', async () => {
     expect(notice.error.message).to.equal('Oh no');
   });
 
-  lab.test('Params on an error are attached to the notice', async () => {
+  test('Params on an error are attached to the notice', async () => {
     expect(notice.params.foo).to.equal(err.params.foo);
   });
 
-  lab.test('Context on an error is attached to the notice', async () => {
+  test('Context on an error is attached to the notice', async () => {
     expect(notice.context).to.equal(err.context);
   });
 });
 
-lab.experiment('Test createNotice for Airbrake client using message only', () => {
+experiment('Test createNotice for Airbrake client using message only', () => {
   const notice = createNotice('error', 'Oh no');
 
-  lab.test('Notice should have correct error level', async () => {
+  test('Notice should have correct error level', async () => {
     expect(notice.error.type).to.equal('error');
   });
 
-  lab.test('Notice should contain correct message', async () => {
+  test('Notice should contain correct message', async () => {
     expect(notice.error.message).to.equal('Oh no');
   });
 });
@@ -80,26 +80,26 @@ const options = {
   apiKey: 'xyz'
 };
 
-lab.experiment('Test createClientOptions', () => {
+experiment('Test createClientOptions', () => {
   const clientOptions = createClientOptions(options);
 
-  lab.test('projectId should be set in client options', async () => {
+  test('projectId should be set in client options', async () => {
     expect(clientOptions.projectId).to.equal(options.projectId);
   });
 
-  lab.test('projectKey should be set in client options', async () => {
+  test('projectKey should be set in client options', async () => {
     expect(clientOptions.projectKey).to.equal(options.apiKey);
   });
 
-  lab.test('host should be set in client options', async () => {
+  test('host should be set in client options', async () => {
     expect(clientOptions.host).to.equal(options.host);
   });
 
-  lab.test('request should not be set if no proxy', async () => {
+  test('request should not be set if no proxy', async () => {
     expect(clientOptions.request).to.equal(undefined);
   });
 
-  lab.test('request should be set if proxy', async () => {
+  test('request should be set if proxy', async () => {
     const optionsWithProxy = {
       ...options,
       proxy: 'http://proxy'
@@ -108,44 +108,44 @@ lab.experiment('Test createClientOptions', () => {
   });
 });
 
-lab.experiment('Test setting Airbrake options', () => {
+experiment('Test setting Airbrake options', () => {
   const airbrake = new Airbrake(options);
 
-  lab.test('name should be `airbrake`', async () => {
+  test('name should be `airbrake`', async () => {
     expect(airbrake.name).to.equal('airbrake');
   });
 
-  lab.test('level should match that in the options', async () => {
+  test('level should match that in the options', async () => {
     expect(airbrake.level).to.equal(options.level);
   });
 
-  lab.test('default minimum logging level is info', async () => {
+  test('default minimum logging level is info', async () => {
     const { level, ...rest } = options;
     const ab = new Airbrake(rest);
     expect(ab.level).to.equal('info');
   });
 
-  lab.test('silent should match that in the options', async () => {
+  test('silent should match that in the options', async () => {
     expect(airbrake.silent).to.equal(options.silent);
   });
 
-  lab.test('silent mode should be disabled by default', async () => {
+  test('silent mode should be disabled by default', async () => {
     const { silent, ...rest } = options;
     const ab = new Airbrake(rest);
     expect(ab.silent).to.equal(false);
   });
 
-  lab.test('handleExceptions should match that in the options', async () => {
+  test('handleExceptions should match that in the options', async () => {
     expect(airbrake.handleExceptions).to.equal(options.handleExceptions);
   });
 
-  lab.test('handleExceptions should be disabled by default', async () => {
+  test('handleExceptions should be disabled by default', async () => {
     const { handleExceptions, ...rest } = options;
     const ab = new Airbrake(rest);
     expect(ab.handleExceptions).to.equal(false);
   });
 
-  lab.test('should throw an error if no API key supplied', async () => {
+  test('should throw an error if no API key supplied', async () => {
     const { apiKey, ...rest } = options;
     const func = () => {
       return new Airbrake(rest);
@@ -153,5 +153,3 @@ lab.experiment('Test setting Airbrake options', () => {
     expect(func).to.throw();
   });
 });
-
-exports.lab = lab;
