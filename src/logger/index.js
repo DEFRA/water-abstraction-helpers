@@ -50,7 +50,12 @@ const decorateError = (error, params) => {
  * @param {string} line A line from the stack trace
  * @returns {string} Only the content in the parentheses
  */
-const getContentInParentheses = line => get(inParensRegex.exec(line), '[1]');
+const getContentInParentheses = line => {
+  if (line.indexOf('(') > -1) {
+    return get(inParensRegex.exec(line), '[1]');
+  }
+  return line;
+};
 
 /**
  * getContentAfter('/a/b/c/d.js', 'c') ==> '/d.js')
@@ -59,7 +64,7 @@ const getContentInParentheses = line => get(inParensRegex.exec(line), '[1]');
  * @param {string} after The token after which the rest of the stack trace line should be returned
  * @returns {string} The end of the stack trace line
  */
-const getContentAfter = (errorLine, after) => {
+const getContentAfter = (errorLine = '', after) => {
   const index = errorLine.indexOf(after);
 
   return index === -1

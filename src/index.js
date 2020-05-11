@@ -7,3 +7,4 @@ exports.returns = require('./returns');
 exports.http = require('./http');
 exports.serviceRequest = require('./service-request');
 exports.hapiPgBoss = require('./hapi-pg-boss');
+exports.process = require('./process');

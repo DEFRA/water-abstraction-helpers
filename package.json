@@ -5,6 +5,7 @@
   "main": "./src/index.js",
   "scripts": {
     "test": "lab",
+    "test:bail": "lab --bail",
     "test:travis": "lab -t 55 -m 0 --coverage-path ./src/ -r lcov -o coverage/lcov.info -r console -o stdout",
     "codecov": "codecov",
     "lint": "eslint .",
@@ -41,6 +42,8 @@
     "@hapi/joi": "^15.1.1",
     "airbrake-js": "^1.6.8",
     "cross-fetch": "^3.0.4",
+    "deep-map": "^2.0.0",
+    "es6-weak-map": "^2.0.3",
     "https-proxy-agent": "^2.2.4",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
