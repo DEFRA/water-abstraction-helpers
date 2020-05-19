@@ -1,7 +1,5 @@
 'use strict';
 
-const deepMap = require('deep-map');
-
 /**
  * Formats a NGR reference to string format
  * @param {String} sheet - the sheet string, 2 chars
@@ -84,11 +82,8 @@ const crmNameFormatter = (party) => {
   };
 };
 
-
 exports.addressFormatter = addressFormatter;
-exports.nameFormatter = nameFormatter;
 exports.crmNameFormatter = crmNameFormatter;
-
-
 exports.formatAbstractionPoint = formatAbstractionPoint;
 exports.formatNGRPointStr = formatNGRPointStr;
+exports.nameFormatter = nameFormatter;
