@@ -15,7 +15,8 @@ const logger = createLogger({
   level: 'info',
   airbrakeKey: 'test',
   airbrakeHost: 'test',
-  airbrakeLevel: 'test'
+  airbrakeLevel: 'test',
+  startFileNameAfter: 'test'
 });
 
 experiment('Test logger', () => {
@@ -70,13 +71,13 @@ experiment('decorateError', () => {
   test('adds the file name to the context', async () => {
     const err = new Error('oh no');
     const decorated = decorateError(err);
-    expect(decorated.context.component).to.include(__filename);
+    expect(decorated.context.component).to.include('logger/index.js');
   });
 
   test('adds the file name and params to the error', async () => {
     const err = new Error('oh no');
     const decorated = decorateError(err, { test: true });
-    expect(decorated.context.component).to.include(__filename);
+    expect(decorated.context.component).to.include('logger/index.js');
     expect(decorated.params.test).to.be.true();
   });
 });
