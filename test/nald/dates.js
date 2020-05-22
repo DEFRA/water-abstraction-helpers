@@ -219,43 +219,43 @@ experiment('nald/dates', () => {
     });
   });
 
-  experiment('.dateToIsoString', () => {
+  experiment('.calendarToIso', () => {
     test('returns null for invalid date', async () => {
-      expect(naldDates.dateToIsoString('nope')).to.be.null();
+      expect(naldDates.calendarToIso('nope')).to.be.null();
     });
 
     test('converts the date as expected', async () => {
-      expect(naldDates.dateToIsoString('28/02/2018')).to.equal('2018-02-28');
+      expect(naldDates.calendarToIso('28/02/2018')).to.equal('2018-02-28');
     });
   });
 
-  experiment('.dateToSortableString', () => {
+  experiment('.calendarToSortable', () => {
     test('returns null for invalid date', async () => {
-      expect(naldDates.dateToSortableString('nope')).to.be.null();
+      expect(naldDates.calendarToSortable('nope')).to.be.null();
     });
 
     test('converts the date as expected', async () => {
-      expect(naldDates.dateToSortableString('28/02/2018')).to.equal('20180228');
+      expect(naldDates.calendarToSortable('28/02/2018')).to.equal('20180228');
     });
   });
 
-  experiment('.returnsDateToIso', () => {
+  experiment('.returnsToIso', () => {
     test('returns null for invalid date', async () => {
-      expect(naldDates.returnsDateToIso('nope')).to.be.null();
+      expect(naldDates.returnsToIso('nope')).to.be.null();
     });
 
     test('converts the date as expected', async () => {
-      expect(naldDates.returnsDateToIso('20180122')).to.equal('2018-01-22');
+      expect(naldDates.returnsToIso('20180122')).to.equal('2018-01-22');
     });
   });
 
-  experiment('.readableDate', () => {
+  experiment('.isoToReadable', () => {
     test('returns null for invalid date', async () => {
-      expect(naldDates.readableDate('nope')).to.be.null();
+      expect(naldDates.isoToReadable('nope')).to.be.null();
     });
 
     test('converts the date as expected', async () => {
-      expect(naldDates.readableDate('2018-01-22')).to.equal('22 January 2018');
+      expect(naldDates.isoToReadable('2018-01-22')).to.equal('22 January 2018');
     });
   });
 });

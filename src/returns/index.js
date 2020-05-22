@@ -31,3 +31,4 @@ exports.parseReturnId = parseReturnId;
 
 exports.date = require('./date');
 exports.lines = require('./lines');
+exports.mappers = require('./mappers');

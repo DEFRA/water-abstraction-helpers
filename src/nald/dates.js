@@ -34,9 +34,7 @@ const dateFormatter = (str, inputFormat, outputFormat) => {
  * @param {String} str - NALD date string, can be 'null'
  * @return {String} date in sortable date format
  */
-const dateToSortableString = (str) => {
-  return dateFormatter(str, 'DD/MM/YYYY', 'YYYYMMDD');
-};
+const calendarToSortable = str => dateFormatter(str, 'DD/MM/YYYY', 'YYYYMMDD');
 
 /**
  * Formats a UK date from NALD data to a SQL style ISO date
@@ -44,30 +42,24 @@ const dateToSortableString = (str) => {
  * @param {String} str - NALD date string, can be 'null'
  * @return {String} date in SQL format
  */
-const dateToIsoString = (str) => {
-  return dateFormatter(str, 'DD/MM/YYYY', 'YYYY-MM-DD');
-};
+const calendarToIso = str => dateFormatter(str, 'DD/MM/YYYY', 'YYYY-MM-DD');
 
 /**
  * Formats returns date in form YYYYMMDDHHmmSS to ISO YYYY-MM-DD
  * @param {String} date from NALD returns line
  * @return {String} ISO date YYYY-MM-DD
  */
-const returnsDateToIso = (str) => {
-  return dateFormatter(str, 'YYYYMMDD', 'YYYY-MM-DD');
-};
+const returnsToIso = str => dateFormatter(str, 'YYYYMMDD', 'YYYY-MM-DD');
 
 /**
  * Converts date to GDS pattern of 1 November 2018
  * @param  {String} str  date in format YYYY-MM-DD
  * @return {String}     date in format 1 November 2018
  */
-const readableDate = (str) => {
-  return dateFormatter(str, 'YYYY-MM-DD', 'D MMMM YYYY');
-};
+const isoToReadable = str => dateFormatter(str, 'YYYY-MM-DD', 'D MMMM YYYY');
 
-exports.dateToIsoString = dateToIsoString;
-exports.dateToSortableString = dateToSortableString;
+exports.calendarToIso = calendarToIso;
+exports.calendarToSortable = calendarToSortable;
 exports.getWeek = getWeek;
-exports.readableDate = readableDate;
-exports.returnsDateToIso = returnsDateToIso;
+exports.isoToReadable = isoToReadable;
+exports.returnsToIso = returnsToIso;

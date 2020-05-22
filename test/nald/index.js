@@ -76,4 +76,50 @@ experiment('nald', () => {
       expect(transformed.nextLayer.stringNull).to.equal(null);
     });
   });
+
+  experiment('.stringNullToNull', async () => {
+    test('handles null', async () => {
+      expect(nald.stringNullToNull(null)).to.equal(null);
+    });
+
+    test('convert "null" to null', async () => {
+      expect(nald.stringNullToNull('null')).to.equal(null);
+    });
+
+    test('ignores numbers', async () => {
+      expect(nald.stringNullToNull(123)).to.equal(123);
+    });
+
+    test('leaves a string value as is', async () => {
+      expect('carrots').to.equal('carrots');
+    });
+  });
+
+  experiment('trimValues', () => {
+    test('removes whitespace from the start and end of nested values', async () => {
+      const messy = {
+        one: ' one',
+        two: ' two ',
+        three: ' three ',
+        inner: {
+          four: ' four',
+          five: ' five ',
+          six: ' six '
+        }
+      };
+
+      const tidy = nald.trimValues(messy);
+
+      expect(tidy).to.equal({
+        one: 'one',
+        two: 'two',
+        three: 'three',
+        inner: {
+          four: 'four',
+          five: 'five',
+          six: 'six'
+        }
+      });
+    });
+  });
 });

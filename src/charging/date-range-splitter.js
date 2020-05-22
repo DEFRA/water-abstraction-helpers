@@ -1,5 +1,6 @@
+const Moment = require('moment');
 const MomentRange = require('moment-range');
-const moment = MomentRange.extendMoment(require('moment'));
+const moment = MomentRange.extendMoment(Moment);
 const { cloneDeep, uniq } = require('lodash');
 
 const DATE_FORMAT = 'YYYY-MM-DD';

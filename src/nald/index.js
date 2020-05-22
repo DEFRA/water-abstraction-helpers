@@ -1,6 +1,7 @@
 'use strict';
 
 const deepMap = require('deep-map');
+const { isString, trim } = require('lodash');
 
 exports.dates = require('./dates');
 exports.formatting = require('./formatting');
@@ -19,14 +20,15 @@ const findCurrent = (versions = []) => versions.find(isCurrentVersion);
  * @param {Object} data
  * @return {Object}
  */
-const transformNull = (data) => {
-  return deepMap(data, (val) => {
-    // Convert string null to real null
-    return (val === 'null')
-      ? null
-      : val;
-  });
+const transformNull = data => deepMap(data, stringNullToNull);
+
+const stringNullToNull = val => val === 'null' ? null : val;
+
+const trimValues = data => {
+  return deepMap(data, val => isString(val) ? trim(val) : val);
 };
 
 exports.findCurrent = findCurrent;
+exports.stringNullToNull = stringNullToNull;
 exports.transformNull = transformNull;
+exports.trimValues = trimValues;
