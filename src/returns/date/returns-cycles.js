@@ -2,11 +2,22 @@ const { cloneDeep } = require('lodash');
 const moment = require('moment');
 const dateFormat = 'YYYY-MM-DD';
 
+
+/**
+ * Gets due date based on cycle end date
+ * @param {String} endDate
+ * @return {String} 
+ */
+const getDueDate = endDate =>
+  endDate === '2020-03-31' ? '2020-10-16' : moment(endDate).add(28, 'day').format(dateFormat);
+
 const cycleFactory = (startDate, isSummer = false) => {
+  const endDate = moment(startDate).add(1, 'year').subtract(1, 'day').format(dateFormat);
   return {
     startDate: moment(startDate).format(dateFormat),
-    endDate: moment(startDate).add(1, 'year').subtract(1, 'day').format(dateFormat),
-    isSummer
+    endDate,
+    isSummer,
+    dueDate: getDueDate(endDate)
   };
 };
 

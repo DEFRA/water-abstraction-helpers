@@ -12,7 +12,8 @@ experiment('createReturnCycles', () => {
     expect(result).to.equal([{
       startDate: '2017-11-01',
       endDate: '2018-10-31',
-      isSummer: true
+      isSummer: true,
+      dueDate: '2018-11-28'
     }]);
   });
 
@@ -21,7 +22,8 @@ experiment('createReturnCycles', () => {
     expect(result).to.equal([{
       startDate: '2016-04-01',
       endDate: '2017-03-31',
-      isSummer: false
+      isSummer: false,
+      dueDate: '2017-04-28'
     }]);
   });
 
@@ -32,17 +34,21 @@ experiment('createReturnCycles', () => {
       {
         startDate: '2016-11-01',
         endDate: '2017-10-31',
-        isSummer: true
+        isSummer: true,
+        dueDate: '2017-11-28'
       },
       {
         startDate: '2017-04-01',
         endDate: '2018-03-31',
-        isSummer: false
+        isSummer: false,
+        dueDate: '2018-04-28'
+
       },
       {
         startDate: '2017-11-01',
         endDate: '2018-10-31',
-        isSummer: true
+        isSummer: true,
+        dueDate: '2018-11-28'
       }
     ]);
   });
@@ -53,22 +59,26 @@ experiment('createReturnCycles', () => {
       {
         startDate: '2016-04-01',
         endDate: '2017-03-31',
-        isSummer: false
+        isSummer: false,
+        dueDate: '2017-04-28'
       },
       {
         startDate: '2016-11-01',
         endDate: '2017-10-31',
-        isSummer: true
+        isSummer: true,
+        dueDate: '2017-11-28'
       },
       {
         startDate: '2017-04-01',
         endDate: '2018-03-31',
-        isSummer: false
+        isSummer: false,
+        dueDate: '2018-04-28'
       },
       {
         startDate: '2017-11-01',
         endDate: '2018-10-31',
-        isSummer: true
+        isSummer: true,
+        dueDate: '2018-11-28'
       }
     ]);
   });
@@ -79,7 +89,8 @@ experiment('createReturnCycles', () => {
       {
         startDate: '2017-04-01',
         endDate: '2018-03-31',
-        isSummer: false
+        isSummer: false,
+        dueDate: '2018-04-28'
       }
     ]);
   });
@@ -89,7 +100,8 @@ experiment('createReturnCycles', () => {
     expect(result).to.equal([{
       startDate: '2016-04-01',
       endDate: '2017-03-31',
-      isSummer: false
+      isSummer: false,
+      dueDate: '2017-04-28'
     }]);
   });
 
@@ -116,11 +128,36 @@ experiment('createReturnCycles', () => {
     expect(result).to.equal([{
       startDate: '2017-11-01',
       endDate: '2018-10-31',
-      isSummer: true
+      isSummer: true,
+      dueDate: '2018-11-28'
     }, {
       startDate: '2018-04-01',
       endDate: '2019-03-31',
-      isSummer: false
+      isSummer: false,
+      dueDate: '2019-04-28'
     }]);
+  });
+
+  test('the due date should be 2020-10-16 for the winter/all year cycle ending 2020-03-31', async () => {
+    const result = createReturnCycles('2019-04-01', '2021-03-31');
+    expect(result).to.equal([
+      {
+        startDate: '2019-04-01',
+        endDate: '2020-03-31',
+        isSummer: false,
+        dueDate: '2020-10-16'
+      },
+      {
+        startDate: '2019-11-01',
+        endDate: '2020-10-31',
+        isSummer: true,
+        dueDate: '2020-11-28'
+      },
+      {
+        startDate: '2020-04-01',
+        endDate: '2021-03-31',
+        isSummer: false,
+        dueDate: '2021-04-28'
+      }]);
   });
 });
