@@ -1,12 +1,13 @@
+'use strict';
+
 const { cloneDeep } = require('lodash');
 const moment = require('moment');
 const dateFormat = 'YYYY-MM-DD';
 
-
 /**
  * Gets due date based on cycle end date
  * @param {String} endDate
- * @return {String} 
+ * @return {String}
  */
 const getDueDate = endDate =>
   endDate === '2020-03-31' ? '2020-10-16' : moment(endDate).add(28, 'day').format(dateFormat);
