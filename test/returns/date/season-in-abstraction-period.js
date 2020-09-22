@@ -2,7 +2,6 @@
 
 const { experiment, test } = exports.lab = require('@hapi/lab').script();
 const { expect } = require('@hapi/code');
-const { not } = require('@hapi/joi');
 const { returns: { date: { isWithinAbstractionPeriod, getAbstractionPeriodSeason } } } = require('../../../src');
 
 const CHARGE_SEASON = {
