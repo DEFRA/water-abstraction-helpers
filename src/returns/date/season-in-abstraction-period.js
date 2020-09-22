@@ -2,17 +2,17 @@
 
 const moment = require('moment');
 const summer = {
-  startDay: '01',
-  startMonth: '04',
-  endDay: '31',
-  endMonth: '10'
+  startDay: 1,
+  startMonth: 4,
+  endDay: 31,
+  endMonth: 10
 };
 
 const winter = {
-  startDay: '01',
-  startMonth: '11',
-  endDay: '31',
-  endMonth: '03'
+  startDay: 1,
+  startMonth: 11,
+  endDay: 31,
+  endMonth: 3
 };
 
 const CHARGE_SEASON = {
@@ -42,9 +42,9 @@ const createRange = (abstractionPeriod, startYear) => {
 };
 
 /**
-   * Checks if the passed AbstractionPeriod contains this instance. In order
-   * for this to return true, this instance must fit inside the passed
-   * AbstractionPeriod, including the boundaries.
+   * Checks if the passed period contains the passed abstractionPeriod. In order
+   * for this to return true, the abstraction perdiod must fit inside the passed
+   * period, including the boundaries.
    *
    * @param {Object} abstractionPeriod should contain a startDay, startMonth, endDay and endMonth
    * @param {Object} period should contain a startDay, startMonth, endDay and endMonth
@@ -70,7 +70,7 @@ const getAbstractionPeriodSeason = (abstractionPeriod) => {
 
   // For the season to be winter, this abstraction period must
   // sit within the winter period (01/11 - 31/03)
-  if (this.isWithinAbstractionPeriod(abstractionPeriod, winter)) {
+  if (isWithinAbstractionPeriod(abstractionPeriod, winter)) {
     return CHARGE_SEASON.winter;
   }
 

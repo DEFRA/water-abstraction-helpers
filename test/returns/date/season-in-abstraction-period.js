@@ -48,6 +48,21 @@ experiment('.getAbstractionPeriodSeason()', () => {
       expect(getAbstractionPeriodSeason(xmasHols)).to.equal(CHARGE_SEASON.winter);
     });
   });
+  experiment('when the period is streaches into summer and winter', () => {
+    test('the season is all year', async () => {
+      const aprToMar = getPeriod(1, 4, 31, 3);
+      expect(getAbstractionPeriodSeason(aprToMar)).to.equal(CHARGE_SEASON.allYear);
+      // winter boundary
+      const aprToNov = getPeriod(1, 4, 2, 11);
+      expect(getAbstractionPeriodSeason(aprToNov)).to.equal(CHARGE_SEASON.allYear);
+      // summer boundary
+      const octToMar = getPeriod(1, 10, 31, 3);
+      expect(getAbstractionPeriodSeason(octToMar)).to.equal(CHARGE_SEASON.allYear);
+      // winter and summer boundary
+      const octToNov = getPeriod(1, 10, 1, 11);
+      expect(getAbstractionPeriodSeason(octToNov)).to.equal(CHARGE_SEASON.allYear);
+    });
+  });
 });
 
 experiment('.isWithinAbstractionPeriod', () => {
