@@ -93,10 +93,10 @@ experiment('validators', () => {
 
       experiment('when addresssLine3 is null', async () => {
         test('cannot be null', async () => {
-          const address = {
+          const address = createAddress({
             addressLine2: null,
             addressLine3: null
-          };
+          });
 
           const { error } = Joi.validate(address, VALID_ADDRESS);
           expect(error).to.not.be.null();
@@ -135,12 +135,12 @@ experiment('validators', () => {
         expect(value.addressLine3).to.be.null();
       });
 
-      experiment('when addresssLine2 is null', async () => {
+      experiment('when addressLine2 is null', async () => {
         test('cannot be null', async () => {
-          const address = {
+          const address = createAddress({
             addressLine2: null,
             addressLine3: null
-          };
+          });
 
           const { error } = Joi.validate(address, VALID_ADDRESS);
           expect(error).to.not.be.null();
@@ -204,10 +204,10 @@ experiment('validators', () => {
 
       experiment('when addresssLine4 is null', async () => {
         test('cannot be null', async () => {
-          const address = {
+          const address = createAddress({
             addressLine4: null,
             town: null
-          };
+          });
 
           const { error } = Joi.validate(address, VALID_ADDRESS);
           expect(error).to.not.be.null();
@@ -261,53 +261,53 @@ experiment('validators', () => {
     });
 
     experiment('.postcode', () => {
-      ['U.K.', 'United Kingdom', 'England', 'Wales', 'Scotland', 'Northern Ireland'].forEach(country => {
-        experiment(`For ${country}`, () => {
-          test('cannot be omitted', async () => {
-            const address = omit(createAddress({ country }), 'postcode');
-            const { error } = Joi.validate(address, VALID_ADDRESS);
-            expect(error).to.not.be.null();
-          });
+      experiment('When the country is United Kingdom', () => {
+        const country = 'United Kingdom';
 
-          test('must be a valid postcode', async () => {
-            const address = createAddress({ country });
-            const { error } = Joi.validate(address, VALID_ADDRESS);
-            expect(error).to.be.null();
-          });
-
-          test('cannot be an invalid postcode', async () => {
-            const address = createAddress({ country, postcode: 'XXX XXX' });
-            const { error } = Joi.validate(address, VALID_ADDRESS);
-            expect(error).to.not.be.null();
-          });
-
-          test('cannot be null', async () => {
-            const address = createAddress({ country, postcode: null });
-            const { error } = Joi.validate(address, VALID_ADDRESS);
-            expect(error).to.not.be.null();
-          });
+        test('cannot be omitted', async () => {
+          const address = omit(createAddress({ country }), 'postcode');
+          const { error } = Joi.validate(address, VALID_ADDRESS);
+          expect(error).to.not.be.null();
         });
 
-        experiment('for non-UK countries', () => {
-          const country = 'Non-UK country';
+        test('must be a valid postcode', async () => {
+          const address = createAddress({ country });
+          const { error } = Joi.validate(address, VALID_ADDRESS);
+          expect(error).to.be.null();
+        });
 
-          test('cannot be omitted', async () => {
-            const address = omit(createAddress({ country }), 'postcode');
-            const { error } = Joi.validate(address, VALID_ADDRESS);
-            expect(error).to.not.be.null();
-          });
+        test('cannot be an invalid postcode', async () => {
+          const address = createAddress({ country, postcode: 'XXX XXX' });
+          const { error } = Joi.validate(address, VALID_ADDRESS);
+          expect(error).to.not.be.null();
+        });
 
-          test('can be null', async () => {
-            const address = createAddress({ country, postcode: null });
-            const { error } = Joi.validate(address, VALID_ADDRESS);
-            expect(error).to.be.null();
-          });
+        test('cannot be null', async () => {
+          const address = createAddress({ country, postcode: null });
+          const { error } = Joi.validate(address, VALID_ADDRESS);
+          expect(error).to.not.be.null();
+        });
+      });
 
-          test('can be any string', async () => {
-            const address = createAddress({ country, postcode: 'XXX XXX' });
-            const { error } = Joi.validate(address, VALID_ADDRESS);
-            expect(error).to.be.null();
-          });
+      experiment('for non-UK countries', () => {
+        const country = 'Non-UK country';
+
+        test('cannot be omitted', async () => {
+          const address = omit(createAddress({ country }), 'postcode');
+          const { error } = Joi.validate(address, VALID_ADDRESS);
+          expect(error).to.not.be.null();
+        });
+
+        test('can be null', async () => {
+          const address = createAddress({ country, postcode: null });
+          const { error } = Joi.validate(address, VALID_ADDRESS);
+          expect(error).to.be.null();
+        });
+
+        test('can be any string', async () => {
+          const address = createAddress({ country, postcode: 'XXX XXX' });
+          const { error } = Joi.validate(address, VALID_ADDRESS);
+          expect(error).to.be.null();
         });
       });
     });

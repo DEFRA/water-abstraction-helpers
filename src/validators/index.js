@@ -17,12 +17,7 @@ const DATA_SOURCE = Joi.string().valid('wrls', 'nald', 'ea-address-facade').opti
 const TEST_FLAG = Joi.boolean().optional().default(false);
 
 const mandatoryPostcodeCountries = [
-  'united kingdom',
-  'england',
-  'wales',
-  'scotland',
-  'northern ireland',
-  'uk'
+  'united kingdom'
 ];
 
 // https://en.wikipedia.org/wiki/Postcodes_in_the_United_Kingdom#Validation
@@ -52,7 +47,6 @@ const VALID_ADDRESS = Joi.object({
   .rename('address1', 'addressLine1', { ignoreUndefined: true })
   .rename('address2', 'addressLine2', { ignoreUndefined: true })
   .rename('address3', 'addressLine3', { ignoreUndefined: true })
-  .rename('address4', 'addressLine4', { ignoreUndefined: true })
-  .or('addressLine2', 'addressLine3');
+  .rename('address4', 'addressLine4', { ignoreUndefined: true });
 
 exports.VALID_ADDRESS = VALID_ADDRESS;
