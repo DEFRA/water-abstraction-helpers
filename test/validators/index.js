@@ -2,9 +2,8 @@
 
 const Joi = require('@hapi/joi');
 const { expect } = require('@hapi/code');
-const { over } = require('lodash');
 const { omit } = require('lodash');
-const { experiment, test, beforeEach, afterEach } = exports.lab = require('@hapi/lab').script();
+const { experiment, test } = exports.lab = require('@hapi/lab').script();
 
 const { VALID_ADDRESS } = require('../../src/validators');
 
@@ -23,21 +22,18 @@ const createAddress = (overrides = {}) => ({
 });
 
 experiment('validators', () => {
-
   experiment('VALID_ADDRESS', () => {
-
     test('can be a string', async () => {
       const { error } = Joi.validate(createAddress(), VALID_ADDRESS);
       expect(error).to.be.null();
     });
 
     experiment('.addressLine1', () => {
-
       test('can be named .address1', async () => {
         const address = {
           ...omit(createAddress(), 'addressLine1'),
           address1: 'Flat 123'
-        }
+        };
         const { error } = Joi.validate(address, VALID_ADDRESS);
         expect(error).to.be.null();
       });
@@ -64,14 +60,12 @@ experiment('validators', () => {
       });
     });
 
-
     experiment('.addressLine2', () => {
-
       test('can be named .address2', async () => {
         const address = {
           ...omit(createAddress(), 'addressLine2'),
           address2: 'Flat 123'
-        }
+        };
         const { error } = Joi.validate(address, VALID_ADDRESS);
         expect(error).to.be.null();
       });
@@ -99,27 +93,23 @@ experiment('validators', () => {
 
       experiment('when addresssLine3 is null', async () => {
         test('cannot be null', async () => {
-
           const address = {
             addressLine2: null,
             addressLine3: null
-          }
+          };
 
-          const { error, value } = Joi.validate(address, VALID_ADDRESS);
+          const { error } = Joi.validate(address, VALID_ADDRESS);
           expect(error).to.not.be.null();
         });
       });
     });
 
-
-
     experiment('.addressLine3', () => {
-
       test('can be named .address3', async () => {
         const address = {
           ...omit(createAddress(), 'addressLine3'),
           address3: 'Flat 123'
-        }
+        };
         const { error } = Joi.validate(address, VALID_ADDRESS);
         expect(error).to.be.null();
       });
@@ -147,26 +137,23 @@ experiment('validators', () => {
 
       experiment('when addresssLine2 is null', async () => {
         test('cannot be null', async () => {
-
           const address = {
             addressLine2: null,
             addressLine3: null
-          }
+          };
 
-          const { error, value } = Joi.validate(address, VALID_ADDRESS);
+          const { error } = Joi.validate(address, VALID_ADDRESS);
           expect(error).to.not.be.null();
         });
       });
     });
 
-
     experiment('.addressLine4', () => {
-
       test('can be named .address4', async () => {
         const address = {
           ...omit(createAddress(), 'addressLine4'),
           address4: 'Flat 123'
-        }
+        };
         const { error } = Joi.validate(address, VALID_ADDRESS);
         expect(error).to.be.null();
       });
@@ -193,9 +180,7 @@ experiment('validators', () => {
       });
     });
 
-
     experiment('.town', () => {
-
       test('cannot be omitted', async () => {
         const address = omit(createAddress(), 'town');
         const { error } = Joi.validate(address, VALID_ADDRESS);
@@ -219,20 +204,18 @@ experiment('validators', () => {
 
       experiment('when addresssLine4 is null', async () => {
         test('cannot be null', async () => {
-
           const address = {
             addressLine4: null,
             town: null
-          }
+          };
 
-          const { error, value } = Joi.validate(address, VALID_ADDRESS);
+          const { error } = Joi.validate(address, VALID_ADDRESS);
           expect(error).to.not.be.null();
         });
       });
     });
 
     experiment('.county', () => {
-
       test('cannot be omitted', async () => {
         const address = omit(createAddress(), 'county');
         const { error } = Joi.validate(address, VALID_ADDRESS);
@@ -253,11 +236,9 @@ experiment('validators', () => {
         expect(error).to.be.null();
         expect(value.county).to.be.null();
       });
-
     });
 
     experiment('.country', () => {
-
       test('cannot be omitted', async () => {
         const address = omit(createAddress(), 'country');
         const { error } = Joi.validate(address, VALID_ADDRESS);
@@ -272,21 +253,16 @@ experiment('validators', () => {
       });
 
       test('cannot be an empty string', async () => {
-        const { error, value } = Joi.validate(createAddress({
+        const { error } = Joi.validate(createAddress({
           country: ''
         }), VALID_ADDRESS);
         expect(error).to.not.be.null();
       });
-
     });
 
-
     experiment('.postcode', () => {
-
       ['U.K.', 'United Kingdom', 'England', 'Wales', 'Scotland', 'Northern Ireland'].forEach(country => {
-
         experiment(`For ${country}`, () => {
-
           test('cannot be omitted', async () => {
             const address = omit(createAddress({ country }), 'postcode');
             const { error } = Joi.validate(address, VALID_ADDRESS);
@@ -295,26 +271,24 @@ experiment('validators', () => {
 
           test('must be a valid postcode', async () => {
             const address = createAddress({ country });
-            const { error, value } = Joi.validate(address, VALID_ADDRESS);
+            const { error } = Joi.validate(address, VALID_ADDRESS);
             expect(error).to.be.null();
           });
 
           test('cannot be an invalid postcode', async () => {
             const address = createAddress({ country, postcode: 'XXX XXX' });
-            const { error, value } = Joi.validate(address, VALID_ADDRESS);
+            const { error } = Joi.validate(address, VALID_ADDRESS);
             expect(error).to.not.be.null();
           });
 
           test('cannot be null', async () => {
             const address = createAddress({ country, postcode: null });
-            const { error, value } = Joi.validate(address, VALID_ADDRESS);
+            const { error } = Joi.validate(address, VALID_ADDRESS);
             expect(error).to.not.be.null();
           });
-
         });
 
         experiment('for non-UK countries', () => {
-
           const country = 'Non-UK country';
 
           test('cannot be omitted', async () => {
@@ -325,23 +299,20 @@ experiment('validators', () => {
 
           test('can be null', async () => {
             const address = createAddress({ country, postcode: null });
-            const { error, value } = Joi.validate(address, VALID_ADDRESS);
+            const { error } = Joi.validate(address, VALID_ADDRESS);
             expect(error).to.be.null();
           });
 
           test('can be any string', async () => {
             const address = createAddress({ country, postcode: 'XXX XXX' });
-            const { error, value } = Joi.validate(address, VALID_ADDRESS);
+            const { error } = Joi.validate(address, VALID_ADDRESS);
             expect(error).to.be.null();
           });
-
         });
       });
     });
 
-
     experiment('.isTest', () => {
-
       test('can be omitted - defaults to false', async () => {
         const address = omit(createAddress(), 'isTest');
         const { error, value } = Joi.validate(address, VALID_ADDRESS);
@@ -357,17 +328,14 @@ experiment('validators', () => {
       });
 
       test('can be a boolean value', async () => {
-        const { error, value } = Joi.validate(createAddress({
+        const { value } = Joi.validate(createAddress({
           isTest: true
         }), VALID_ADDRESS);
         expect(value.isTest).to.be.true();
       });
-
     });
 
-
     experiment('.uprn', () => {
-
       test('can be omitted - defaults to null', async () => {
         const address = omit(createAddress(), 'uprn');
         const { error, value } = Joi.validate(address, VALID_ADDRESS);
@@ -383,23 +351,21 @@ experiment('validators', () => {
       });
 
       test('can be an integer', async () => {
-        const { error, value } = Joi.validate(createAddress({
+        const { value } = Joi.validate(createAddress({
           uprn: 123
         }), VALID_ADDRESS);
         expect(value.uprn).to.equal(123);
       });
 
       test('cannot be negative', async () => {
-        const { error, value } = Joi.validate(createAddress({
+        const { error } = Joi.validate(createAddress({
           uprn: -1
         }), VALID_ADDRESS);
         expect(error).to.not.be.null();
       });
-
     });
 
     experiment('.dataSource', () => {
-
       test('can be omitted - defaults to wrls', async () => {
         const address = omit(createAddress(), 'dataSource');
         const { value } = Joi.validate(address, VALID_ADDRESS);
@@ -420,7 +386,7 @@ experiment('validators', () => {
           }), VALID_ADDRESS);
           expect(error).to.be.null();
         });
-      })
+      });
 
       test('cannot be an unknown source', async () => {
         const { error } = Joi.validate(createAddress({
@@ -428,14 +394,6 @@ experiment('validators', () => {
         }), VALID_ADDRESS);
         expect(error).to.not.be.null();
       });
-
-
     });
-
-
   });
 });
-
-
-
-

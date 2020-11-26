@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * @module validators/index.js 
+ * @module validators/index.js
  * Provides some common validators used throughout the services
  */
 
