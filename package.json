@@ -6,7 +6,7 @@
   "scripts": {
     "test": "lab",
     "test:bail": "lab --bail",
-    "test:travis": "lab -t 55 -m 0 --coverage-path ./src/ -r lcov -o coverage/lcov.info -r console -o stdout",
+    "test:travis": "lab -t 55 -m 0 -r lcov -o coverage/lcov.info -r console -o stdout",
     "codecov": "codecov",
     "lint": "eslint .",
     "version": "auto-changelog -p --commit-limit false && git add CHANGELOG.md"
