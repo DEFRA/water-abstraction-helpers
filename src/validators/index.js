@@ -25,10 +25,10 @@ const postcodeRegex = /^(([A-Z]{1,2}[0-9][A-Z0-9]?|ASCN|STHL|TDCU|BBND|[BFS]IQQ|
 
 const VALID_ADDRESS = Joi.object({
   addressLine1: NULLABLE_STRING,
-  addressLine2: NULLABLE_STRING,
-  addressLine3: Joi.when('addressLine2', { is: null, then: REQUIRED_STRING, otherwise: NULLABLE_STRING }),
-  addressLine4: NULLABLE_STRING,
-  town: Joi.when('addressLine4', { is: null, then: REQUIRED_STRING, otherwise: NULLABLE_STRING }),
+  addressLine2: Joi.when('addressLine3', { is: null, then: REQUIRED_STRING, otherwise: NULLABLE_STRING }),
+  addressLine3: NULLABLE_STRING,
+  addressLine4: Joi.when('town', { is: null, then: REQUIRED_STRING, otherwise: NULLABLE_STRING }),
+  town: NULLABLE_STRING,
   county: NULLABLE_STRING,
   country: Joi.string().trim().replace(/\./g, '').required(),
   postcode: Joi.when('country', {
