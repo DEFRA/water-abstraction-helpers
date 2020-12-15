@@ -84,4 +84,26 @@ experiment('db/index.js', () => {
       });
     });
   });
+
+  experiment('.mapQueryToKnex', () => {
+    test('when there are no params', async () => {
+      const QUERY = 'select some_column from some_table';
+      const result = db.mapQueryToKnex(QUERY);
+      expect(result).to.equal([QUERY]);
+    });
+
+    test('when there are bound params', async () => {
+      const QUERY = 'select * from some_table where column_a=$1 and column_b=$2 order by column_a=$1';
+      const PARAMS = ['foo', 'bar'];
+      const result = db.mapQueryToKnex(QUERY, PARAMS);
+
+      expect(result[0]).to.equal('select * from some_table where column_a=:param_0 and column_b=:param_1 order by column_a=:param_0');
+      expect(result[1]).to.equal(
+        {
+          param_0: PARAMS[0],
+          param_1: PARAMS[1]
+        }
+      );
+    });
+  });
 });
