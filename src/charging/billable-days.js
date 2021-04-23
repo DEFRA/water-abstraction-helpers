@@ -15,6 +15,8 @@ const ABS_PERIOD_SCHEMA = Joi.object({
 
 const DATE_SCHEMA = Joi.string().regex(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/);
 
+const DATE_FORMAT = 'YYYY-MM-DD';
+
 /**
  * Given a date, calculates the financial year ending
  * E.g. for 2019/2020, returns 2020
@@ -65,6 +67,8 @@ const getIntersection = ranges => {
     : [startDate, endDate];
 };
 
+const formatDate = str => moment(str).format(DATE_FORMAT);
+
 /**
  * Gets the number of billable days between the start and end date,
  * when the abstraction period is taken into account
@@ -90,7 +94,10 @@ const getBillableDays = (absPeriod, startDate, endDate) => {
     : [[absStart, absEnd]];
 
   // Create time range for the billing period
-  const billingPeriod = [startDate, endDate];
+  const billingPeriod = [
+    formatDate(startDate),
+    formatDate(endDate)
+  ];
 
   return absPeriodRanges.reduce((acc, range) => {
     const intersection = getIntersection([range, billingPeriod]);
