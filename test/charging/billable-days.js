@@ -143,5 +143,10 @@ experiment('charging.getBillableDays', () => {
       const result = charging.getBillableDays(absPeriods.doubleRange2, '2021-04-01', '2021-10-30');
       expect(result).to.equal(1);
     });
+
+    test('when the end date is part-way through the abs period, calculates correct days', async () => {
+      const result = charging.getBillableDays(absPeriods.doubleRange2, '2021-04-01', '2021-11-30');
+      expect(result).to.equal(32);
+    });
   });
 });
