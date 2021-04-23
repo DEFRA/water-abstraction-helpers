@@ -1,9 +1,7 @@
 'use strict';
 
 const Joi = require('@hapi/joi');
-
-const MomentRange = require('moment-range');
-const moment = MomentRange.extendMoment(require('moment'));
+const moment = require('moment');
 
 const MONTH_SCHEMA = Joi.number().integer().min(1).max(12).required();
 const DAY_SCHEMA = Joi.number().integer().min(1).max(31).required();
@@ -16,6 +14,8 @@ const ABS_PERIOD_SCHEMA = Joi.object({
 });
 
 const DATE_SCHEMA = Joi.string().regex(/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/);
+
+const DATE_FORMAT = 'YYYY-MM-DD';
 
 /**
  * Given a date, calculates the financial year ending
@@ -55,6 +55,21 @@ const getTotalDays = (startDate, endDate) => {
 };
 
 /**
+ * Gets the intersecting date range between the supplied ranges
+ * @param {Array} ranges - e.g. [[startDate, endDate], []...]
+ * @returns {Array|null}
+ */
+const getIntersection = ranges => {
+  const startDate = ranges.map(range => range[0]).sort().pop();
+  const endDate = ranges.map(range => range[1]).sort()[0];
+  return moment(startDate).isAfter(endDate, 'day')
+    ? null
+    : [startDate, endDate];
+};
+
+const formatDate = str => moment(str).format(DATE_FORMAT);
+
+/**
  * Gets the number of billable days between the start and end date,
  * when the abstraction period is taken into account
  * @param {Object} absPeriod - the abstraction period start/end day/month
@@ -74,17 +89,22 @@ const getBillableDays = (absPeriod, startDate, endDate) => {
   const absEnd = getFinancialYearDate(absPeriod.endDay, absPeriod.endMonth, financialYear);
 
   // Create time ranges for the abs period
-  const ranges = moment(absEnd).isBefore(absStart, 'day')
-    ? [moment.range(startDate, absEnd), moment.range(absStart, endDate)]
-    : [moment.range(absStart, absEnd)];
+  const absPeriodRanges = moment(absEnd).isBefore(absStart, 'day')
+    ? [[startDate, absEnd], [absStart, endDate]]
+    : [[absStart, absEnd]];
 
-  // Create time range for billing period
-  const billRange = moment.range(startDate, endDate);
+  // Create time range for the billing period
+  const billingPeriod = [
+    formatDate(startDate),
+    formatDate(endDate)
+  ];
 
-  // Calculate intersections between abs time range(s) and billing period range
-  return ranges.reduce((acc, range) => {
-    const intersection = billRange.intersect(range);
-    return acc + (intersection ? intersection.diff('days') + 1 : 0);
+  return absPeriodRanges.reduce((acc, range) => {
+    const intersection = getIntersection([range, billingPeriod]);
+
+    return acc + (
+      intersection ? moment(intersection[1]).diff(intersection[0], 'day') + 1 : 0
+    );
   }, 0);
 };
 

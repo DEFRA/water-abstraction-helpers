@@ -23,6 +23,12 @@ const absPeriods = {
     startMonth: 12,
     endDay: 30,
     endMonth: 4
+  },
+  doubleRange2: {
+    startDay: 31,
+    startMonth: 10,
+    endDay: 1,
+    endMonth: 4
   }
 };
 
@@ -119,6 +125,28 @@ experiment('charging.getBillableDays', () => {
     test('when there are no billable days, zero is returned', async () => {
       const result = charging.getBillableDays(absPeriods.doubleRange, '2018-05-01', '2018-11-30');
       expect(result).to.equal(0);
+    });
+  });
+
+  experiment('when the abs period ends on the 1st April', async () => {
+    test('the first day of April is included for a full year', async () => {
+      const result = charging.getBillableDays(absPeriods.doubleRange2, '2021-04-01', '2022-03-31');
+      expect(result).to.equal(153);
+    });
+
+    test('the first day of April is not included when it is not in the charge period', async () => {
+      const result = charging.getBillableDays(absPeriods.doubleRange2, '2021-04-02', '2022-03-31');
+      expect(result).to.equal(152);
+    });
+
+    test('when the end date is before the start of the abs period, only 1 April is included', async () => {
+      const result = charging.getBillableDays(absPeriods.doubleRange2, '2021-04-01', '2021-10-30');
+      expect(result).to.equal(1);
+    });
+
+    test('when the end date is part-way through the abs period, calculates correct days', async () => {
+      const result = charging.getBillableDays(absPeriods.doubleRange2, '2021-04-01', '2021-11-30');
+      expect(result).to.equal(32);
     });
   });
 });
