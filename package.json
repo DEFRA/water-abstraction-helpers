@@ -44,7 +44,6 @@
     "cross-fetch": "^3.0.4",
     "deep-map": "^2.0.0",
     "es6-weak-map": "^2.0.3",
-    "https-proxy-agent": "^2.2.4",
     "lodash": "^4.17.15",
     "moment": "^2.26.0",
     "moment-range": "^4.0.2",
