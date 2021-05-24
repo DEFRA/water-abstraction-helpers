@@ -112,3 +112,4 @@ exports.getFinancialYear = getFinancialYear;
 exports.getFinancialYearDate = getFinancialYearDate;
 exports.getTotalDays = getTotalDays;
 exports.getBillableDays = getBillableDays;
+exports.getIntersection = getIntersection;

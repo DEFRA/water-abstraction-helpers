@@ -149,4 +149,27 @@ experiment('charging.getBillableDays', () => {
       expect(result).to.equal(32);
     });
   });
+
+  experiment('.getIntersection', () => {
+    test('returns null when two ranges do not overlap', () => {
+      expect(charging.getIntersection([
+        ['2000-01-01', '2002-01-01'],
+        ['2002-01-02', '2003-01-01']
+      ])).to.equal(null);
+    });
+
+    test('returns a range when two ranges start/end same day', () => {
+      expect(charging.getIntersection([
+        ['2000-01-01', '2002-01-01'],
+        ['2002-01-01', '2003-01-01']
+      ])).to.equal(['2002-01-01', '2002-01-01']);
+    });
+
+    test('returns a range when two ranges overlap', () => {
+      expect(charging.getIntersection([
+        ['2000-01-01', '2002-01-01'],
+        ['2001-01-01', '2003-01-01']
+      ])).to.equal(['2001-01-01', '2002-01-01']);
+    });
+  });
 });
