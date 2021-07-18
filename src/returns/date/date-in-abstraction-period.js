@@ -1,17 +1,17 @@
 'use strict';
 
 const moment = require('moment');
-const Joi = require('@hapi/joi');
+const Joi = require('joi');
 
 const VALID_DAY = Joi.number().integer().min(1).max(31).required();
 const VALID_MONTH = Joi.number().integer().min(1).max(12).required();
 
-const abstractionPeriodSchema = {
+const abstractionPeriodSchema = Joi.object({
   periodEndDay: VALID_DAY,
   periodEndMonth: VALID_MONTH,
   periodStartDay: VALID_DAY,
   periodStartMonth: VALID_MONTH
-};
+});
 
 /**
  * Checks whether a supplied day/month is the same or after a reference day/month
@@ -55,7 +55,7 @@ const isSameOrBefore = (day, month, refDay, refMonth) => {
  * @return {Object} abstractionPeriod - any strings are converted to integers
  */
 const validateAbstractionPeriod = abstractionPeriod => {
-  const { error, value } = Joi.validate(abstractionPeriod, abstractionPeriodSchema);
+  const { error, value } = abstractionPeriodSchema.validate(abstractionPeriod);
   if (error) {
     throw new Error('Invalid abstraction period - ', JSON.stringify(abstractionPeriod));
   }

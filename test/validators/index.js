@@ -1,6 +1,5 @@
 'use strict';
 
-const Joi = require('@hapi/joi');
 const { expect } = require('@hapi/code');
 const { omit } = require('lodash');
 const { experiment, test } = exports.lab = require('@hapi/lab').script();
@@ -24,8 +23,8 @@ const createAddress = (overrides = {}) => ({
 experiment('validators', () => {
   experiment('VALID_ADDRESS', () => {
     test('can be a string', async () => {
-      const { error } = Joi.validate(createAddress(), VALID_ADDRESS);
-      expect(error).to.be.null();
+      const { error } = VALID_ADDRESS.validate(createAddress());
+      expect(error).to.be.undefined();
     });
 
     experiment('.addressLine1', () => {
@@ -34,28 +33,28 @@ experiment('validators', () => {
           ...omit(createAddress(), 'addressLine1'),
           address1: 'Flat 123'
         };
-        const { error } = Joi.validate(address, VALID_ADDRESS);
-        expect(error).to.be.null();
+        const { error } = VALID_ADDRESS.validate(address);
+        expect(error).to.be.undefined();
       });
 
       test('cannot be omitted', async () => {
         const address = omit(createAddress(), 'addressLine1');
-        const { error } = Joi.validate(address, VALID_ADDRESS);
-        expect(error).to.not.be.null();
+        const { error } = VALID_ADDRESS.validate(address);
+        expect(error).to.not.be.undefined();
       });
 
       test('can be null', async () => {
-        const { error } = Joi.validate(createAddress({
+        const { error } = VALID_ADDRESS.validate(createAddress({
           addressLine1: null
-        }), VALID_ADDRESS);
-        expect(error).to.be.null();
+        }));
+        expect(error).to.be.undefined();
       });
 
       test('can be an empty string - converted to null', async () => {
-        const { error, value } = Joi.validate(createAddress({
+        const { error, value } = VALID_ADDRESS.validate(createAddress({
           addressLine1: ''
-        }), VALID_ADDRESS);
-        expect(error).to.be.null();
+        }));
+        expect(error).to.be.undefined();
         expect(value.addressLine1).to.be.null();
       });
     });
@@ -66,28 +65,28 @@ experiment('validators', () => {
           ...omit(createAddress(), 'addressLine2'),
           address2: 'Flat 123'
         };
-        const { error } = Joi.validate(address, VALID_ADDRESS);
-        expect(error).to.be.null();
+        const { error } = VALID_ADDRESS.validate(address);
+        expect(error).to.be.undefined();
       });
 
       test('cannot be omitted', async () => {
         const address = omit(createAddress(), 'addressLine2');
-        const { error } = Joi.validate(address, VALID_ADDRESS);
+        const { error } = VALID_ADDRESS.validate(address);
         expect(error).to.not.be.null();
       });
 
       test('can be null', async () => {
-        const { error } = Joi.validate(createAddress({
+        const { error } = VALID_ADDRESS.validate(createAddress({
           addressLine2: null
-        }), VALID_ADDRESS);
-        expect(error).to.be.null();
+        }));
+        expect(error).to.be.undefined();
       });
 
       test('can be an empty string - converted to null', async () => {
-        const { error, value } = Joi.validate(createAddress({
+        const { error, value } = VALID_ADDRESS.validate(createAddress({
           addressLine2: ''
-        }), VALID_ADDRESS);
-        expect(error).to.be.null();
+        }));
+        expect(error).to.be.undefined();
         expect(value.addressLine2).to.be.null();
       });
 
@@ -98,7 +97,7 @@ experiment('validators', () => {
             addressLine3: null
           });
 
-          const { error } = Joi.validate(address, VALID_ADDRESS);
+          const { error } = VALID_ADDRESS.validate(address);
           expect(error).to.not.be.null();
         });
       });
@@ -110,28 +109,28 @@ experiment('validators', () => {
           ...omit(createAddress(), 'addressLine3'),
           address3: 'Flat 123'
         };
-        const { error } = Joi.validate(address, VALID_ADDRESS);
-        expect(error).to.be.null();
+        const { error } = VALID_ADDRESS.validate(address);
+        expect(error).to.be.undefined();
       });
 
       test('cannot be omitted', async () => {
         const address = omit(createAddress(), 'addressLine3');
-        const { error } = Joi.validate(address, VALID_ADDRESS);
+        const { error } = VALID_ADDRESS.validate(address);
         expect(error).to.not.be.null();
       });
 
       test('can be null', async () => {
-        const { error } = Joi.validate(createAddress({
+        const { error } = VALID_ADDRESS.validate(createAddress({
           addressLine3: null
-        }), VALID_ADDRESS);
-        expect(error).to.be.null();
+        }));
+        expect(error).to.be.undefined();
       });
 
       test('can be an empty string - converted to null', async () => {
-        const { error, value } = Joi.validate(createAddress({
+        const { error, value } = VALID_ADDRESS.validate(createAddress({
           addressLine3: ''
-        }), VALID_ADDRESS);
-        expect(error).to.be.null();
+        }));
+        expect(error).to.be.undefined();
         expect(value.addressLine3).to.be.null();
       });
 
@@ -142,7 +141,7 @@ experiment('validators', () => {
             addressLine3: null
           });
 
-          const { error } = Joi.validate(address, VALID_ADDRESS);
+          const { error } = VALID_ADDRESS.validate(address);
           expect(error).to.not.be.null();
         });
       });
@@ -154,28 +153,28 @@ experiment('validators', () => {
           ...omit(createAddress(), 'addressLine4'),
           address4: 'Flat 123'
         };
-        const { error } = Joi.validate(address, VALID_ADDRESS);
-        expect(error).to.be.null();
+        const { error } = VALID_ADDRESS.validate(address);
+        expect(error).to.be.undefined();
       });
 
       test('cannot be omitted', async () => {
         const address = omit(createAddress(), 'addressLine4');
-        const { error } = Joi.validate(address, VALID_ADDRESS);
+        const { error } = VALID_ADDRESS.validate(address);
         expect(error).to.not.be.null();
       });
 
       test('can be null', async () => {
-        const { error } = Joi.validate(createAddress({
+        const { error } = VALID_ADDRESS.validate(createAddress({
           addressLine4: null
-        }), VALID_ADDRESS);
-        expect(error).to.be.null();
+        }));
+        expect(error).to.be.undefined();
       });
 
       test('can be an empty string - converted to null', async () => {
-        const { error, value } = Joi.validate(createAddress({
+        const { error, value } = VALID_ADDRESS.validate(createAddress({
           addressLine4: ''
-        }), VALID_ADDRESS);
-        expect(error).to.be.null();
+        }));
+        expect(error).to.be.undefined();
         expect(value.addressLine4).to.be.null();
       });
     });
@@ -183,22 +182,22 @@ experiment('validators', () => {
     experiment('.town', () => {
       test('cannot be omitted', async () => {
         const address = omit(createAddress(), 'town');
-        const { error } = Joi.validate(address, VALID_ADDRESS);
+        const { error } = VALID_ADDRESS.validate(address);
         expect(error).to.not.be.null();
       });
 
       test('can be null', async () => {
-        const { error } = Joi.validate(createAddress({
+        const { error } = VALID_ADDRESS.validate(createAddress({
           town: null
-        }), VALID_ADDRESS);
-        expect(error).to.be.null();
+        }));
+        expect(error).to.be.undefined();
       });
 
       test('can be an empty string - converted to null', async () => {
-        const { error, value } = Joi.validate(createAddress({
+        const { error, value } = VALID_ADDRESS.validate(createAddress({
           town: ''
-        }), VALID_ADDRESS);
-        expect(error).to.be.null();
+        }));
+        expect(error).to.be.undefined();
         expect(value.town).to.be.null();
       });
 
@@ -209,7 +208,7 @@ experiment('validators', () => {
             town: null
           });
 
-          const { error } = Joi.validate(address, VALID_ADDRESS);
+          const { error } = VALID_ADDRESS.validate(address);
           expect(error).to.not.be.null();
         });
       });
@@ -218,22 +217,22 @@ experiment('validators', () => {
     experiment('.county', () => {
       test('cannot be omitted', async () => {
         const address = omit(createAddress(), 'county');
-        const { error } = Joi.validate(address, VALID_ADDRESS);
+        const { error } = VALID_ADDRESS.validate(address);
         expect(error).to.not.be.null();
       });
 
       test('can be null', async () => {
-        const { error } = Joi.validate(createAddress({
+        const { error } = VALID_ADDRESS.validate(createAddress({
           county: null
-        }), VALID_ADDRESS);
-        expect(error).to.be.null();
+        }));
+        expect(error).to.be.undefined();
       });
 
       test('can be an empty string - converted to null', async () => {
-        const { error, value } = Joi.validate(createAddress({
+        const { error, value } = VALID_ADDRESS.validate(createAddress({
           county: ''
-        }), VALID_ADDRESS);
-        expect(error).to.be.null();
+        }));
+        expect(error).to.be.undefined();
         expect(value.county).to.be.null();
       });
     });
@@ -241,21 +240,21 @@ experiment('validators', () => {
     experiment('.country', () => {
       test('cannot be omitted', async () => {
         const address = omit(createAddress(), 'country');
-        const { error } = Joi.validate(address, VALID_ADDRESS);
+        const { error } = VALID_ADDRESS.validate(address);
         expect(error).to.not.be.null();
       });
 
       test('cannot be null', async () => {
-        const { error } = Joi.validate(createAddress({
+        const { error } = VALID_ADDRESS.validate(createAddress({
           country: null
-        }), VALID_ADDRESS);
+        }));
         expect(error).to.not.be.null();
       });
 
       test('cannot be an empty string', async () => {
-        const { error } = Joi.validate(createAddress({
+        const { error } = VALID_ADDRESS.validate(createAddress({
           country: ''
-        }), VALID_ADDRESS);
+        }));
         expect(error).to.not.be.null();
       });
     });
@@ -266,25 +265,25 @@ experiment('validators', () => {
 
         test('cannot be omitted', async () => {
           const address = omit(createAddress({ country }), 'postcode');
-          const { error } = Joi.validate(address, VALID_ADDRESS);
+          const { error } = VALID_ADDRESS.validate(address);
           expect(error).to.not.be.null();
         });
 
         test('must be a valid postcode', async () => {
           const address = createAddress({ country });
-          const { error } = Joi.validate(address, VALID_ADDRESS);
-          expect(error).to.be.null();
+          const { error } = VALID_ADDRESS.validate(address);
+          expect(error).to.be.undefined();
         });
 
         test('cannot be an invalid postcode', async () => {
           const address = createAddress({ country, postcode: 'XXX XXX' });
-          const { error } = Joi.validate(address, VALID_ADDRESS);
+          const { error } = VALID_ADDRESS.validate(address);
           expect(error).to.not.be.null();
         });
 
         test('cannot be null', async () => {
           const address = createAddress({ country, postcode: null });
-          const { error } = Joi.validate(address, VALID_ADDRESS);
+          const { error } = VALID_ADDRESS.validate(address);
           expect(error).to.not.be.null();
         });
       });
@@ -294,20 +293,20 @@ experiment('validators', () => {
 
         test('cannot be omitted', async () => {
           const address = omit(createAddress({ country }), 'postcode');
-          const { error } = Joi.validate(address, VALID_ADDRESS);
+          const { error } = VALID_ADDRESS.validate(address);
           expect(error).to.not.be.null();
         });
 
         test('can be null', async () => {
           const address = createAddress({ country, postcode: null });
-          const { error } = Joi.validate(address, VALID_ADDRESS);
-          expect(error).to.be.null();
+          const { error } = VALID_ADDRESS.validate(address);
+          expect(error).to.be.undefined();
         });
 
         test('can be any string', async () => {
           const address = createAddress({ country, postcode: 'XXX XXX' });
-          const { error } = Joi.validate(address, VALID_ADDRESS);
-          expect(error).to.be.null();
+          const { error } = VALID_ADDRESS.validate(address);
+          expect(error).to.be.undefined();
         });
       });
     });
@@ -315,22 +314,22 @@ experiment('validators', () => {
     experiment('.isTest', () => {
       test('can be omitted - defaults to false', async () => {
         const address = omit(createAddress(), 'isTest');
-        const { error, value } = Joi.validate(address, VALID_ADDRESS);
-        expect(error).to.be.null();
+        const { error, value } = VALID_ADDRESS.validate(address);
+        expect(error).to.be.undefined();
         expect(value.isTest).to.be.false();
       });
 
       test('cannot be null', async () => {
-        const { error } = Joi.validate(createAddress({
+        const { error } = VALID_ADDRESS.validate(createAddress({
           isTest: null
-        }), VALID_ADDRESS);
+        }));
         expect(error).to.not.be.null();
       });
 
       test('can be a boolean value', async () => {
-        const { value } = Joi.validate(createAddress({
+        const { value } = VALID_ADDRESS.validate(createAddress({
           isTest: true
-        }), VALID_ADDRESS);
+        }));
         expect(value.isTest).to.be.true();
       });
     });
@@ -338,29 +337,29 @@ experiment('validators', () => {
     experiment('.uprn', () => {
       test('can be omitted - defaults to null', async () => {
         const address = omit(createAddress(), 'uprn');
-        const { error, value } = Joi.validate(address, VALID_ADDRESS);
-        expect(error).to.be.null();
+        const { error, value } = VALID_ADDRESS.validate(address);
+        expect(error).to.be.undefined();
         expect(value.uprn).to.be.null();
       });
 
       test('can be null', async () => {
-        const { error } = Joi.validate(createAddress({
+        const { error } = VALID_ADDRESS.validate(createAddress({
           uprn: null
-        }), VALID_ADDRESS);
-        expect(error).to.be.null();
+        }));
+        expect(error).to.be.undefined();
       });
 
       test('can be an integer', async () => {
-        const { value } = Joi.validate(createAddress({
+        const { value } = VALID_ADDRESS.validate(createAddress({
           uprn: 123
-        }), VALID_ADDRESS);
+        }));
         expect(value.uprn).to.equal(123);
       });
 
       test('cannot be negative', async () => {
-        const { error } = Joi.validate(createAddress({
+        const { error } = VALID_ADDRESS.validate(createAddress({
           uprn: -1
-        }), VALID_ADDRESS);
+        }));
         expect(error).to.not.be.null();
       });
     });
@@ -368,30 +367,30 @@ experiment('validators', () => {
     experiment('.dataSource', () => {
       test('can be omitted - defaults to wrls', async () => {
         const address = omit(createAddress(), 'dataSource');
-        const { value } = Joi.validate(address, VALID_ADDRESS);
+        const { value } = VALID_ADDRESS.validate(address);
         expect(value.dataSource).to.equal('wrls');
       });
 
       test('cannot be null', async () => {
-        const { error } = Joi.validate(createAddress({
+        const { error } = VALID_ADDRESS.validate(createAddress({
           dataSource: null
-        }), VALID_ADDRESS);
+        }));
         expect(error).to.not.be.null();
       });
 
       ['wrls', 'nald', 'ea-address-facade'].forEach(source => {
         test(`can be ${source}`, async () => {
-          const { error } = Joi.validate(createAddress({
+          const { error } = VALID_ADDRESS.validate(createAddress({
             dataSource: source
-          }), VALID_ADDRESS);
-          expect(error).to.be.null();
+          }));
+          expect(error).to.be.undefined();
         });
       });
 
       test('cannot be an unknown source', async () => {
-        const { error } = Joi.validate(createAddress({
+        const { error } = VALID_ADDRESS.validate(createAddress({
           dataSource: 'invalid-source'
-        }), VALID_ADDRESS);
+        }));
         expect(error).to.not.be.null();
       });
     });
