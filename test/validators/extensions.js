@@ -3,7 +3,7 @@
 const { expect } = require('@hapi/code');
 const { experiment, test, beforeEach } = exports.lab = require('@hapi/lab').script();
 
-const Joi = require('@hapi/joi').extend(
+const Joi = require('joi').extend(
   require('../../src/validators/extensions')
 );
 
@@ -16,22 +16,22 @@ experiment('validators/extensions.js', () => {
     });
 
     test('converts an empty string to null', async () => {
-      const { value } = Joi.validate('', schema);
+      const { value } = schema.validate('');
       expect(value).to.be.null();
     });
 
     test('converts a padded empty string to null', async () => {
-      const { value } = Joi.validate('  ', schema);
+      const { value } = schema.validate('  ');
       expect(value).to.be.null();
     });
 
     test('leaves other strings unchanged', async () => {
-      const { value } = Joi.validate('Hello', schema);
+      const { value } = schema.validate('Hello');
       expect(value).to.equal('Hello');
     });
 
     test('accepts null', async () => {
-      const { value } = Joi.validate(null, schema);
+      const { value } = schema.validate(null);
       expect(value).to.be.null();
     });
   });

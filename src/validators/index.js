@@ -5,7 +5,7 @@
  * Provides some common validators used throughout the services
  */
 
-const Joi = require('@hapi/joi').extend(
+const Joi = require('joi').extend(
   require('./extensions')
 );
 
@@ -32,7 +32,7 @@ const VALID_ADDRESS = Joi.object({
   county: NULLABLE_STRING,
   country: Joi.string().trim().replace(/\./g, '').required(),
   postcode: Joi.when('country', {
-    is: Joi.string().lowercase().replace(/\./g, '').valid(mandatoryPostcodeCountries),
+    is: Joi.string().lowercase().replace(/\./g, '').valid(...mandatoryPostcodeCountries),
     then: Joi.string().required()
       // uppercase and remove any spaces (BS1 1SB -> BS11SB)
       .uppercase().replace(/ /g, '')

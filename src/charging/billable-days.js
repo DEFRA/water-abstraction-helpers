@@ -1,6 +1,6 @@
 'use strict';
 
-const Joi = require('@hapi/joi');
+const Joi = require('joi');
 const moment = require('moment');
 
 const MONTH_SCHEMA = Joi.number().integer().min(1).max(12).required();
