@@ -4,7 +4,7 @@
  * Based on {@link https://github.com/DEFRA/data-returns-pi-frontend/blob/develop/src/lib/logging.js}
  */
 const winston = require('winston');
-const Joi = require('@hapi/joi');
+const Joi = require('joi');
 const Airbrake = require('./vendor/winston-airbrake').Airbrake;
 const { get, negate } = require('lodash');
 
@@ -131,15 +131,15 @@ const createLogger = (config = {}) => {
   // Validate the provided config object
   const logger = new winston.Logger();
 
-  const schema = {
+  const schema = Joi.object({
     level: Joi.string().allow('debug', 'verbose', 'info', 'warn', 'error').default('info'),
     airbrakeKey: Joi.string().allow(''),
     airbrakeHost: Joi.string().allow(''),
     airbrakeLevel: Joi.string().allow('debug', 'verbose', 'info', 'warn', 'error').default('error'),
     startFileNameAfter: Joi.string().default('src')
-  };
+  });
 
-  const { error, value: options } = Joi.validate(config, schema);
+  const { error, value: options } = schema.validate(config);
 
   if (error) {
     throw new Error('Invalid log configuration', error);
