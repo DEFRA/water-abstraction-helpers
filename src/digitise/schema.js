@@ -3,7 +3,7 @@ const { cloneDeep, sortBy } = require('lodash');
 const path = require('path');
 const fs = require('fs');
 
-const schemaPath = path.join(__dirname, '../schema/wr22/');
+const schemaPath = path.join(__dirname, './schema/wr22/');
 
 /**
  * Given a WR22 schema filename, e.g. 1.14.json, returns a version which can
