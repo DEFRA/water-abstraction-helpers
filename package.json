@@ -51,6 +51,7 @@
     "request": "^2.88.0",
     "request-promise-native": "^1.0.8",
     "shallow-diff": "0.0.5",
+    "slugify": "^1.6.0",
     "winston": "^2.4.4"
   },
   "publishConfig": {
