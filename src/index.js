@@ -9,3 +9,4 @@ exports.serviceRequest = require('./service-request');
 exports.hapiPgBoss = require('./hapi-pg-boss');
 exports.process = require('./process');
 exports.validators = require('./validators');
+exports.digitise = require('./digitise');
