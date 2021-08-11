@@ -37,9 +37,8 @@ const getBaseQuery = (action, status = STATUS_IN_PROGRESS) => {
 const editPurpose = (state, action) => {
   const { purposeId, data } = action.payload;
 
-  const index = findIndex(state.licence.data.current_version.purposes, (row) => {
-    return parseInt(row.ID) === parseInt(purposeId);
-  });
+  const index = findIndex(state.licence.data.current_version.purposes, (row) =>
+    parseInt(row.ID) === parseInt(purposeId));
 
   if (index === -1) {
     return state;
@@ -88,8 +87,7 @@ const editPoint = (state, action) => {
     licence: {
       data: {
         current_version: {
-          purposes: {
-          }
+          purposes: {}
         }
       }
     }
@@ -122,8 +120,7 @@ const editCondition = (state, action) => {
     licence: {
       data: {
         current_version: {
-          purposes: {
-          }
+          purposes: {}
         }
       }
     }
@@ -282,7 +279,7 @@ const reducer = (state, action) => {
 
   if (commands[action.type]) {
     return commands[action.type](state, action);
-  };
+  }
 
   return state;
 };

@@ -19,8 +19,8 @@ const createCategory = schema => {
   const { category } = schema;
   const slug = slugify(category, { lower: true });
   return {
-    title: category,
     slug,
+    title: category,
     subcategories: []
   };
 };
@@ -72,26 +72,23 @@ const findSubcategory = (arr, schema) => {
  * @param  {Array} schema - list of custom schemas
  * @return {Object}        - indexed by category, subcategory
  */
-const getSchemaCategories = schema => {
-  return schema.reduce((acc, schema) => {
-    const category = findCategory(acc, schema);
-    const subcategory = findSubcategory(category.subcategories, schema);
-    subcategory.schemas.push(schema.id);
-    return acc;
-  }, []);
-};
+const getSchemaCategories = schema => schema.reduce((acc, schema) => {
+  const category = findCategory(acc, schema);
+  const subcategory = findSubcategory(category.subcategories, schema);
+  subcategory.schemas.push(schema.id);
+  return acc;
+}, []);
 
 /**
  * Given a schema, finds the category which contains it
- * @param  {Object} schema - WR22 JSON schema
  * @return {[type]}        [description]
+ * @param categories
+ * @param id
  */
-const getSchemaCategory = (categories, id) => {
-  return find(categories, category => {
-    const ids = flatMap(category.subcategories, subcat => subcat.schemas);
-    return ids.includes(id);
-  });
-};
+const getSchemaCategory = (categories, id) => find(categories, category => {
+  const ids = flatMap(category.subcategories, subcat => subcat.schemas);
+  return ids.includes(id);
+});
 
 module.exports = {
   getSchemaCategories,

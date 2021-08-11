@@ -46,7 +46,7 @@ const addData = (state, action) => {
     content: {}
   };
 
-  const ids = (state.licence.arData || []).map(item => item.id);
+  const ids = (state.licence.arData || []).map(subitem => subitem.id);
   if (ids.includes(id)) {
     throw new Error(`Cannot add data with ID ${id}, already exists`);
   }

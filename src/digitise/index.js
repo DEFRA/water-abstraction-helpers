@@ -34,15 +34,13 @@ const { getWR22 } = require('./schema');
  * @param {Object} data
  * @return {Object} with any 'null' converted to null
  */
-const transformNulls = (data) => {
-  return deepMap(data, (val) => {
-    // Convert string null to real null
-    if (typeof (val) === 'string' && (val === '' || val === 'null')) {
-      return null;
-    }
-    return val;
-  });
-};
+const transformNulls = (data) => deepMap(data, (val) => {
+  // Convert string null to real null
+  if (typeof (val) === 'string' && (val === '' || val === 'null')) {
+    return null;
+  }
+  return val;
+});
 
 /**
  * A function that generates a simple JSON schema as a starting point for the supplied object
@@ -52,7 +50,7 @@ const transformNulls = (data) => {
  */
 const generateJsonSchema = (obj) => ({
   type: 'object',
-  properties: mapValues(obj, (value) => {
+  properties: mapValues(obj, () => {
     return {
       type: 'string'
     };
@@ -62,14 +60,12 @@ const generateJsonSchema = (obj) => ({
 /**
  * Like lodash set, but always creates an object
  * even if key is numeric
- * @param {Object} object
+ * @param {Object} obj
  * @param {String} path
  * @param {Mixed} value
  * @return {Object}
  */
-const setObject = (obj, path, value) => {
-  return setWith(obj, path, value, (obj) => obj || {});
-};
+const setObject = (obj, path, value) => setWith(obj, path, value, (subObj) => subObj || {});
 
 /**
  * Checks for match for items with integer ids
@@ -78,9 +74,7 @@ const setObject = (obj, path, value) => {
  * @param {Number} id - ID to check item ID against
  * @return {Boolean}
  */
-const isMatch = (item, id) => {
-  return parseInt(item.ID) === parseInt(id);
-};
+const isMatch = (item, id) => parseInt(item.ID) === parseInt(id);
 
 /**
  * Checks if version matches the supplied issue and increment number
@@ -89,9 +83,8 @@ const isMatch = (item, id) => {
  * @param {Number} incrementNumber
  * @return {Boolean}
  */
-const isVersion = (version, issueNumber, incrementNumber) => {
-  return issueNumber === parseInt(version.ISSUE_NO) && incrementNumber === parseInt(version.INCR_NO);
-};
+const isVersion = (version, issueNumber, incrementNumber) =>
+  issueNumber === parseInt(version.ISSUE_NO) && incrementNumber === parseInt(version.INCR_NO);
 
 /**
  * Formats the supplied object and filters out any non-scalar values
@@ -126,9 +119,7 @@ const prepareItem = (licence, finalState, getter = x => x) => {
  * @param {Object} schema - JSON schema
  * @return {Object}
  */
-const extractData = (object, schema) => {
-  return pick(object, Object.keys(schema.properties));
-};
+const extractData = (object, schema) => pick(object, Object.keys(schema.properties));
 
 /**
  * Maps an AR item in the AR licence to a format expected by the view
@@ -164,7 +155,6 @@ const prepareData = (licence, finalState) => {
   const address = prepareItem(licence, finalState, getCurrentVersionAddress);
 
   // Prepare purposes
-  // @TODO - we will need to compare to check for deleted/added items
   const purposes = getPurposes(licence.licence_data_value).map((purpose, index) => {
     return {
       base: filterScalars(purpose),
@@ -191,15 +181,15 @@ const prepareData = (licence, finalState) => {
   const arData = (finalState.licence.arData || []).map(mapARItem);
 
   return {
-    licence: base,
     currentVersion,
     purposes,
     points,
     conditions,
-    notes: finalState.notes,
     party,
     address,
-    arData
+    arData,
+    licence: base,
+    notes: finalState.notes
   };
 };
 
@@ -208,11 +198,7 @@ const prepareData = (licence, finalState) => {
  * @param {Object} obj
  * @return {Object}
  */
-const filterScalars = (obj) => {
-  return pickBy(obj, (val) => {
-    return !(isArray(val) || isObject(val));
-  });
-};
+const filterScalars = obj => pickBy(obj, val => !(isArray(val) || isObject(val)));
 
 module.exports = {
   getPurpose,
