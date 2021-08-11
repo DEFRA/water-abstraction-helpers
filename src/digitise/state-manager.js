@@ -1,4 +1,4 @@
-const { reducer, statuses } = require('@envage/water-abstraction-helpers').digitise;
+const { reducer, statuses } = require('./index');
 const { STATUS_IN_PROGRESS } = statuses;
 
 /**
