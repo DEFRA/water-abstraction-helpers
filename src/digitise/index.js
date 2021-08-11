@@ -1,5 +1,6 @@
 'use strict';
 const deepMap = require('deep-map');
+const reducer = require('./reducer');
 const { pickBy, isArray, isObject, mapValues, pick, setWith, find } = require('lodash');
 const {
   getAddress,
@@ -212,6 +213,7 @@ module.exports = {
   getLicence,
   getPoint,
   getCondition,
+  getConditions,
   getVersion,
   getParty,
   getAddress,
@@ -226,5 +228,6 @@ module.exports = {
   isVersion,
   extractData,
   prepareData,
-  filterScalars
+  filterScalars,
+  reducer
 };
