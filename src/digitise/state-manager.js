@@ -7,7 +7,7 @@ const { STATUS_IN_PROGRESS } = statuses;
  * @param {Object} licence  - row from permit repo data
  * @return {Object} initial state for state manager
  */
-const getInitialState = (licence) => {
+const getInitialState = licence => {
   return {
     licence: licence.licence_data_value,
     status: STATUS_IN_PROGRESS,

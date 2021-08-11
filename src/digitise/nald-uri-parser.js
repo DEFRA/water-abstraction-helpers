@@ -10,7 +10,7 @@
  * @param  {String} uri - NALD data URI
  * @return {Object}     parsed data
  */
-const parseNaldDataURI = (uri) => {
+const parseNaldDataURI = uri => {
   const r = new RegExp('^nald://([^/]+)/([^/]+)/([^/]+)');
 
   const match = r.exec(uri);

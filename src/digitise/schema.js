@@ -11,7 +11,7 @@ const schemaPath = path.join(__dirname, './schema/wr22/');
  * @param  {String} file - the WR22 JSON schema filename
  * @return {String}      - sortable version
  */
-const getSortableFilename = (file) => {
+const getSortableFilename = file => {
   const [integer, fraction] = file.split('.');
   return `${integer.padStart(3, '0')}.${fraction.padStart(3, '0')}`;
 };
@@ -21,7 +21,7 @@ const getSortableFilename = (file) => {
  * @param  {String} fileName - the JSON file
  * @return {Object}          parsed JSON
  */
-const loadJson = (fileName) => {
+const loadJson = fileName => {
   const data = fs.readFileSync(`${schemaPath}${fileName}`);
   return JSON.parse(data);
 };

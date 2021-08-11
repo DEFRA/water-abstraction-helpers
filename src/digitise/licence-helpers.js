@@ -9,7 +9,7 @@ const { find, flatMap } = require('lodash');
  * @param {Object} data - permit data for licence
  * @return {Array} array of purposes
  */
-const getPurposes = (data) => {
+const getPurposes = data => {
   return data.data.current_version.purposes;
 };
 
@@ -27,7 +27,7 @@ const getPurpose = (data, purposeId) => {
  * @param {Object} data - permit data for licence
  * @param
  */
-const getLicence = (data) => {
+const getLicence = data => {
   return data;
 };
 
@@ -41,7 +41,7 @@ const partyAddressesMapper = party => party.contacts.map(contact => contact.part
  * @param {Object} data - permit data for licence
  * @return {Array} array of licence points
  */
-const getPoints = (data) => {
+const getPoints = data => {
   return flatMap(getPurposes(data), purposePointsMapper);
 };
 
@@ -60,7 +60,7 @@ const getPoint = (data, pointId) => {
  * @param {Object} data - permit data for licence
  * @return {Array} array of licence conditions
  */
-const getConditions = (data) => {
+const getConditions = data => {
   return flatMap(getPurposes(data), purposeConditionsMapper);
 };
 
@@ -79,7 +79,7 @@ const getCondition = (data, conditionId) => {
  * @param {Object} data - all licence data
  * @return {Object} current version
  */
-const getCurrentVersion = (data) => {
+const getCurrentVersion = data => {
   const { ISSUE_NO: issue, INCR_NO: increment } = data.data.current_version.licence;
   return find(data.data.versions, { ISSUE_NO: issue, INCR_NO: increment });
 };
@@ -102,7 +102,7 @@ const getVersion = (data, issueNumber, incrementNumber) => {
  * @param {Object} data - all licence data
  * @return {Object} current version
  */
-const getCurrentVersionParty = (data) => {
+const getCurrentVersionParty = data => {
   return data.data.current_version.party;
 };
 
@@ -112,7 +112,7 @@ const getCurrentVersionParty = (data) => {
  * @param {Object} data - licence data
  * @return {Array} parties list
  */
-const getParties = (data) => {
+const getParties = data => {
   return flatMap(data.data.versions, versionPartiesMapper);
 };
 
@@ -133,7 +133,7 @@ const getParty = (data, partyId) => {
  * @param {Object} data
  * @return {Array} address list
  */
-const getAddresses = (data) => {
+const getAddresses = data => {
   const parties = getParties(data);
   return flatMap(parties, partyAddressesMapper);
 };
@@ -154,7 +154,7 @@ const getAddress = (data, addressId) => {
  * @param {Object} data - all licence data
  * @return {Object} current version
  */
-const getCurrentVersionAddress = (data) => {
+const getCurrentVersionAddress = data => {
   return data.data.current_version.address;
 };
 

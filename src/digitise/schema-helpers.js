@@ -15,7 +15,7 @@ const slugify = require('slugify');
 
 const findByTitle = (arr, title) => find(arr, { title });
 
-const createCategory = (schema) => {
+const createCategory = schema => {
   const { category } = schema;
   const slug = slugify(category, { lower: true });
   return {
@@ -25,7 +25,7 @@ const createCategory = (schema) => {
   };
 };
 
-const createSubcategory = (schema) => {
+const createSubcategory = schema => {
   const { subcategory } = schema;
   return {
     title: subcategory || '',
@@ -72,7 +72,7 @@ const findSubcategory = (arr, schema) => {
  * @param  {Array} schema - list of custom schemas
  * @return {Object}        - indexed by category, subcategory
  */
-const getSchemaCategories = (schema) => {
+const getSchemaCategories = schema => {
   return schema.reduce((acc, schema) => {
     const category = findCategory(acc, schema);
     const subcategory = findSubcategory(category.subcategories, schema);

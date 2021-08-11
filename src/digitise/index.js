@@ -135,7 +135,7 @@ const extractData = (object, schema) => {
  * @param  {Object} item - item from arData in licence
  * @return {Object}      - item for display in the view
  */
-const mapARItem = (item) => {
+const mapARItem = item => {
   const { schema: schemaName } = item;
   const schema = find(getWR22(), { id: schemaName });
 
