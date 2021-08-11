@@ -78,7 +78,7 @@ const getCurrentVersion = data => {
  * @return {Object}
  */
 const getVersion = (data, issueNumber, incrementNumber) =>
-  find(data.data.versions, (version) =>
+  find(data.data.versions, version =>
     (version.ISSUE_NO === issueNumber) && (version.INCR_NO === incrementNumber));
 
 /**

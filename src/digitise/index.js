@@ -34,7 +34,7 @@ const { getWR22 } = require('./schema');
  * @param {Object} data
  * @return {Object} with any 'null' converted to null
  */
-const transformNulls = (data) => deepMap(data, (val) => {
+const transformNulls = data => deepMap(data, val => {
   // Convert string null to real null
   if (typeof (val) === 'string' && (val === '' || val === 'null')) {
     return null;
@@ -48,7 +48,7 @@ const transformNulls = (data) => deepMap(data, (val) => {
  * @param {Object} obj
  * @return {Object} JSON schema
  */
-const generateJsonSchema = (obj) => ({
+const generateJsonSchema = obj => ({
   type: 'object',
   properties: mapValues(obj, () => {
     return {
@@ -65,7 +65,7 @@ const generateJsonSchema = (obj) => ({
  * @param {Mixed} value
  * @return {Object}
  */
-const setObject = (obj, path, value) => setWith(obj, path, value, (subObj) => subObj || {});
+const setObject = (obj, path, value) => setWith(obj, path, value, subObj => subObj || {});
 
 /**
  * Checks for match for items with integer ids
