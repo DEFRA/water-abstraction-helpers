@@ -5,6 +5,7 @@ const {
   getInitialState,
   stateManager
 } = require('./state-manager');
+const actionTypes = require('./action-types');
 const statuses = require('./statuses');
 const { pickBy, isArray, isObject, mapValues, pick, setWith, find } = require('lodash');
 const {
@@ -237,5 +238,7 @@ module.exports = {
   reducer,
   getInitialState,
   stateManager,
-  statuses
+  statuses,
+  parseNaldDataURI,
+  actionTypes
 };
