@@ -1,4 +1,4 @@
-const { reducer } = require('./reducer');
+const reducer = require('./reducer');
 const statuses = require('./statuses');
 const { STATUS_IN_PROGRESS } = statuses;
 
