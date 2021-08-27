@@ -37,6 +37,10 @@ const getBaseQuery = (action, status = STATUS_IN_PROGRESS) => {
 const editPurpose = (state, action) => {
   const { purposeId, data } = action.payload;
 
+  if (!state.licence.data) {
+    return state;
+  }
+
   const index = findIndex(state.licence.data.current_version.purposes, row =>
     parseInt(row.ID) === parseInt(purposeId));
 
