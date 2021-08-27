@@ -178,7 +178,9 @@ const prepareData = (licence, finalState) => {
     };
   });
 
-  const arData = (finalState.licence.arData || []).map(mapARItem);
+  const arDataArray = finalState.licence.arData || [];
+
+  const arData = arDataArray.filter(x => x.content.nald_condition).map(mapARItem);
 
   return {
     currentVersion,
