@@ -1,14 +1,42 @@
 const update = require('immutability-helper');
-const { findIndex, set } = require('lodash');
+const { findIndex, setWith, set } = require('lodash');
 const {
   EDIT_PURPOSE, EDIT_LICENCE, EDIT_POINT, EDIT_CONDITION, SET_STATUS,
   EDIT_VERSION, EDIT_PARTY, EDIT_ADDRESS,
   ADD_DATA, EDIT_DATA, DELETE_DATA
 } = require('./action-types');
 const { STATUS_IN_PROGRESS } = require('./statuses');
-const { setObject, isMatch, isVersion } = require('./index');
 
 const { addData, editData, deleteData } = require('./ar-reducer');
+
+/**
+ * Like lodash set, but always creates an object
+ * even if key is numeric
+ * @param {Object} obj
+ * @param {String} path
+ * @param {Mixed} value
+ * @return {Object}
+ */
+const setObject = (obj, path, value) => setWith(obj, path, value, subObj => subObj || {});
+
+/**
+ * Checks for match for items with integer ids
+ * @param {Object} item
+ * @param {Number} item.ID
+ * @param {Number} id - ID to check item ID against
+ * @return {Boolean}
+ */
+const isMatch = (item, id) => parseInt(item.ID) === parseInt(id);
+
+/**
+ * Checks if version matches the supplied issue and increment number
+ * @param {Object} version
+ * @param {Number} issueNumber
+ * @param {Number} incrementNumber
+ * @return {Boolean}
+ */
+const isVersion = (version, issueNumber, incrementNumber) =>
+  issueNumber === parseInt(version.ISSUE_NO) && incrementNumber === parseInt(version.INCR_NO);
 
 /**
  * Gets a base update query with the user who edited and timestamp
