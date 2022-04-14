@@ -7,7 +7,6 @@ on:
 jobs:
   # Test should have passed before this job is manually triggered
   publish-npm:
-    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -18,4 +17,4 @@ jobs:
       - run: npm ci
       - run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+          NODE_AUTH_TOKEN: ${{secrets.WATER_NPM_TOKEN}}

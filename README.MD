@@ -13,6 +13,17 @@ This module was developed by the Water Resource Licensing Service team as part o
 
 To find out more about planned reforms to the abstraction licensing service, see the policy paper: [Water abstraction plan: Abstraction licensing service](https://www.gov.uk/government/publications/water-abstraction-plan-2017/water-abstraction-plan-abstraction-licensing-service)
 
+
+## Publishing to NPM
+
+This module is available via npm. The steps to publish are as follows: 
+- Create a branch to make changes
+- Ensure the pipeline passes 
+- Merge into master
+- Create a Release / Tag (This will trigger the release pipeline)
+
+The pipeline relies on a `WATER_NPM_TOKEN` to publish to npm which is held by the DEFRA organization. 
+
 ## Contributing to this project
 
 If you have an idea you'd like to contribute please log an issue.
