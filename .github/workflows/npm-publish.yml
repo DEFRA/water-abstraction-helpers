@@ -7,7 +7,6 @@ on:
 jobs:
   # Test should have passed before this job is manually triggered
   publish-npm:
-    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
