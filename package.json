@@ -6,8 +6,7 @@
   "scripts": {
     "test": "lab",
     "test:bail": "lab --bail",
-    "test:travis": "lab -t 55 -m 0 -r lcov -o coverage/lcov.info -r console -o stdout",
-    "codecov": "codecov",
+    "test:ci": "lab -t 55 -m 0 -r html -o coverage/coverage.html -r lcov -o coverage/lcov.info --reporter junit -o coverage/junit.xml -r console -o stdout",
     "lint": "eslint .",
     "version": "auto-changelog -p --commit-limit false && git add CHANGELOG.md"
   },
@@ -22,26 +21,22 @@
   },
   "homepage": "https://github.com/DEFRA/water-abstraction-helpers#readme",
   "devDependencies": {
-    "@hapi/code": "^6.0.0",
-    "@hapi/hapi": "^18.4.1",
-    "@hapi/lab": "^19.1.0",
     "auto-changelog": "^1.16.4",
-    "codecov": "^3.7.0",
-    "dotenv": "^8.2.0",
-    "eslint": "^6.8.0",
-    "eslint-config-standard": "^14.1.0",
-    "eslint-plugin-import": "^2.20.2",
+    "eslint": "^7.12.1",
+    "eslint-config-standard": "^16.0.3",
+    "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^4.2.1",
-    "eslint-plugin-standard": "^4.0.1",
-    "pg": "^7.18.2",
-    "pg-boss": "^3.2.2",
+    "eslint-plugin-promise": "^5.2.0",
     "sinon": "^7.5.0"
   },
   "dependencies": {
+    "@hapi/code": "^6.0.0",
+    "@hapi/hapi": "^18.4.1",
+    "@hapi/lab": "^19.1.0",
     "airbrake-js": "^1.6.8",
     "cross-fetch": "^3.0.4",
     "deep-map": "^2.0.0",
+    "dotenv": "^8.2.0",
     "es6-weak-map": "^2.0.3",
     "glob": "^7.1.7",
     "immutability-helper": "^3.1.1",
@@ -49,6 +44,8 @@
     "lodash": "^4.17.21",
     "moment": "^2.26.0",
     "moment-range": "^4.0.2",
+    "pg": "7.x",
+    "pg-boss": "3.x",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.8",
     "shallow-diff": "0.0.5",
@@ -59,7 +56,7 @@
     "access": "public"
   },
   "peerDependencies": {
-    "pg-boss": "3.x",
-    "pg": "7.x"
+    "pg": "7.x",
+    "pg-boss": "3.x"
   }
 }

@@ -4,10 +4,10 @@
  */
 
 // winston-airbrake.js: Transport for outputting logs to Airbrake
-var request = require('request');
-var util = require('util');
-var winston = require('winston');
-var AirbrakeClient = require('airbrake-js');
+const request = require('request');
+const util = require('util');
+const winston = require('winston');
+const AirbrakeClient = require('airbrake-js');
 const { isError } = require('lodash');
 
 /**
