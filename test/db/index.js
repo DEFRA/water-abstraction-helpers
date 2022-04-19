@@ -40,7 +40,7 @@ experiment('db/index.js', () => {
     });
 
     test('pool is an instance of pg.Pool', async () => {
-      expect(pool.constructor.name).to.equal('Pool');
+      expect(pool.constructor.name).to.equal('BoundPool');
     });
 
     experiment('when a client is acquired', () => {
