@@ -97,5 +97,7 @@ const mapQueryToKnex = (query, params = []) => {
   return [data.query, data.params];
 };
 
-exports.createPool = createPool;
-exports.mapQueryToKnex = mapQueryToKnex;
+module.exports = {
+  createPool,
+  mapQueryToKnex
+};
