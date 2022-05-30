@@ -18,6 +18,18 @@ const absPeriods = {
     endDay: 31,
     endMonth: 10
   },
+  singleRange2: {
+    startDay: 1,
+    startMonth: 11,
+    endDay: 30,
+    endMonth: 11
+  },
+  singleRange3: {
+    startDay: 1,
+    startMonth: 8,
+    endDay: 31,
+    endMonth: 8
+  },
   doubleRange: {
     startDay: 1,
     startMonth: 12,
@@ -103,6 +115,29 @@ experiment('charging.getBillableDays', () => {
     test('when there are no billable days, zero is returned', async () => {
       const result = charging.getBillableDays(absPeriods.singleRange, '2018-11-01', '2019-03-31');
       expect(result).to.equal(0);
+    });
+  });
+
+  experiment('when multiple abs periods are within the calendar year', async () => {
+    test('when the second abs period does not overlap with the charge period', async () => {
+      const result = charging.getBillableDays([absPeriods.singleRange, absPeriods.doubleRange], '2018-04-01', '2018-09-30');
+      expect(result).to.equal(183);
+    });
+    test('when the second abs period does overlap with the charge period', async () => {
+      const result = charging.getBillableDays([absPeriods.singleRange, absPeriods.doubleRange], '2018-04-01', '2019-01-31');
+      expect(result).to.equal(276);
+    });
+    test('when the two abs periods overlap with each other and the charge period', async () => {
+      const result = charging.getBillableDays([absPeriods.doubleRange2, absPeriods.doubleRange], '2018-04-01', '2019-01-31');
+      expect(result).to.equal(123);
+    });
+    test('when one abs period falls within the boundaries of another', async () => {
+      const result = charging.getBillableDays([absPeriods.singleRange, absPeriods.singleRange3], '2018-04-01', '2019-01-31');
+      expect(result).to.equal(214);
+    });
+    test('when the two abs periods do not overlap with each other but is within the charge period', async () => {
+      const result = charging.getBillableDays([absPeriods.singleRange, absPeriods.singleRange2], '2018-04-01', '2019-01-31');
+      expect(result).to.equal(244);
     });
   });
 
