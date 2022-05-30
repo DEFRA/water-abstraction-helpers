@@ -70,6 +70,21 @@ const getIntersection = ranges => {
 const formatDate = str => moment(str).format(DATE_FORMAT);
 
 /**
+ * Creates an array of date ranges from an abstraction period within a financial year
+ * @param {Object} absPeriod  - the abstraction period start/end day/month
+ * @param {integer} financialYear 4 digit financial year ending
+ * @param {String} startDate - start of the billing period
+ * @param {String} endDate - end of the billing period
+ */
+const createAbstractionDateRange = (absPeriod, financialYear, startDate, endDate) => {
+  const absStart = getFinancialYearDate(absPeriod.startDay, absPeriod.startMonth, financialYear);
+  const absEnd = getFinancialYearDate(absPeriod.endDay, absPeriod.endMonth, financialYear);
+  return moment(absEnd).isBefore(absStart, 'day')
+    ? [[startDate, absEnd], [absStart, endDate]]
+    : [[absStart, absEnd]];
+};
+
+/**
  * Gets the number of billable days between the start and end date,
  * when the abstraction period is taken into account
  * @param {Object} absPeriod - the abstraction period start/end day/month
@@ -78,20 +93,47 @@ const formatDate = str => moment(str).format(DATE_FORMAT);
  */
 const getBillableDays = (absPeriod, startDate, endDate) => {
   // Validate inputs
-  Joi.assert(absPeriod, ABS_PERIOD_SCHEMA);
   Joi.assert(startDate, DATE_SCHEMA);
   Joi.assert(endDate, DATE_SCHEMA);
 
   // Calculate important dates
   const financialYear = getFinancialYear(endDate);
 
-  const absStart = getFinancialYearDate(absPeriod.startDay, absPeriod.startMonth, financialYear);
-  const absEnd = getFinancialYearDate(absPeriod.endDay, absPeriod.endMonth, financialYear);
+  const absPeriodRanges = [];
+  if (Array.isArray(absPeriod)) {
+    const absPeriodRangesTemp = [];
+    Joi.assert(absPeriod, Joi.array().items(ABS_PERIOD_SCHEMA));
 
-  // Create time ranges for the abs period
-  const absPeriodRanges = moment(absEnd).isBefore(absStart, 'day')
-    ? [[startDate, absEnd], [absStart, endDate]]
-    : [[absStart, absEnd]];
+    // Create time ranges for all the abstraction periods
+    absPeriod.forEach(range => {
+      absPeriodRangesTemp.push(...createAbstractionDateRange(range, financialYear, startDate, endDate));
+    });
+
+    // loop through all the time ranges and if they overlap merge the range
+    absPeriodRanges.push(...(absPeriodRangesTemp.sort().reduce((acc, row) => {
+      if (acc.length === 0) {
+        acc.push(row);
+        return acc;
+      } else {
+        const addToList = acc.every((item, index) => {
+          if (getIntersection([item, row])) {
+            // if the ranges overlap take the min start and max end date
+            const start = moment(row[0]).isBefore(moment(item[0])) ? row[0] : item[0];
+            const end = moment(row[1]).isAfter(moment(item[1])) ? row[1] : item[1];
+            acc[index] = [start, end];
+            return false;
+          }
+          return true;
+        });
+        if (addToList) acc.push(row);
+        return acc;
+      }
+    }, [])));
+  } else {
+    Joi.assert(absPeriod, ABS_PERIOD_SCHEMA);
+    // Create time ranges for the abs period
+    absPeriodRanges.push(...createAbstractionDateRange(absPeriod, financialYear, startDate, endDate));
+  }
 
   // Create time range for the billing period
   const billingPeriod = [
