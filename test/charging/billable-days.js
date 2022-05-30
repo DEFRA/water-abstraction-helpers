@@ -24,6 +24,12 @@ const absPeriods = {
     endDay: 30,
     endMonth: 11
   },
+  singleRange3: {
+    startDay: 1,
+    startMonth: 8,
+    endDay: 31,
+    endMonth: 8
+  },
   doubleRange: {
     startDay: 1,
     startMonth: 12,
@@ -124,6 +130,10 @@ experiment('charging.getBillableDays', () => {
     test('when the two abs periods overlap with each other and the charge period', async () => {
       const result = charging.getBillableDays([absPeriods.doubleRange2, absPeriods.doubleRange], '2018-04-01', '2019-01-31');
       expect(result).to.equal(123);
+    });
+    test('when one abs period falls within the boundaries of another', async () => {
+      const result = charging.getBillableDays([absPeriods.singleRange, absPeriods.singleRange3], '2018-04-01', '2019-01-31');
+      expect(result).to.equal(214);
     });
     test('when the two abs periods do not overlap with each other but is within the charge period', async () => {
       const result = charging.getBillableDays([absPeriods.singleRange, absPeriods.singleRange2], '2018-04-01', '2019-01-31');
