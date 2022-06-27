@@ -1,9 +1,9 @@
-const moment = require('moment');
-const naldDates = require('../nald/dates');
+const moment = require('moment')
+const naldDates = require('../nald/dates')
 
-const formatMoment = date => date.format('YYYY-MM-DD');
+const formatMoment = date => date.format('YYYY-MM-DD')
 
-const isLastDayOfMonth = endDate => moment(endDate).isSame(moment(endDate).endOf('month'), 'day');
+const isLastDayOfMonth = endDate => moment(endDate).isSame(moment(endDate).endOf('month'), 'day')
 
 /**
  * Get required daily return lines
@@ -12,20 +12,20 @@ const isLastDayOfMonth = endDate => moment(endDate).isSame(moment(endDate).endOf
  * @return {Array} list of required return lines
  */
 const getDays = (startDate, endDate) => {
-  const datePtr = moment(startDate);
-  const lines = [];
+  const datePtr = moment(startDate)
+  const lines = []
   do {
     lines.push({
       startDate: formatMoment(datePtr),
       endDate: formatMoment(datePtr),
       timePeriod: 'day'
-    });
-    datePtr.add(1, 'day');
+    })
+    datePtr.add(1, 'day')
   }
-  while (datePtr.isSameOrBefore(endDate, 'day'));
+  while (datePtr.isSameOrBefore(endDate, 'day'))
 
-  return lines;
-};
+  return lines
+}
 
 /**
  * Get required weekly return lines
@@ -34,21 +34,21 @@ const getDays = (startDate, endDate) => {
  * @return {Array} list of required return lines
  */
 const getWeeks = (startDate, endDate) => {
-  let datePtr = naldDates.getWeek(startDate);
-  const lines = [];
+  let datePtr = naldDates.getWeek(startDate)
+  const lines = []
 
   do {
     lines.push({
       startDate: formatMoment(datePtr.start),
       endDate: formatMoment(datePtr.end),
       timePeriod: 'week'
-    });
-    datePtr = naldDates.getWeek(datePtr.start.add(1, 'week'));
+    })
+    datePtr = naldDates.getWeek(datePtr.start.add(1, 'week'))
   }
-  while (datePtr.end.isSameOrBefore(endDate, 'day'));
+  while (datePtr.end.isSameOrBefore(endDate, 'day'))
 
-  return lines;
-};
+  return lines
+}
 
 /**
  * Get required monthly return lines
@@ -58,20 +58,20 @@ const getWeeks = (startDate, endDate) => {
  * @return {Array} list of required return lines
  */
 const getMonths = (startDate, endDate, isFinalReturn) => {
-  const method = isFinalReturn && !isLastDayOfMonth(endDate) ? 'isBefore' : 'isSameOrBefore';
-  const datePtr = moment(startDate);
-  const lines = [];
+  const method = isFinalReturn && !isLastDayOfMonth(endDate) ? 'isBefore' : 'isSameOrBefore'
+  const datePtr = moment(startDate)
+  const lines = []
   do {
     lines.push({
       startDate: formatMoment(datePtr.startOf('month')),
       endDate: formatMoment(datePtr.endOf('month')),
       timePeriod: 'month'
-    });
-    datePtr.add(1, 'month');
+    })
+    datePtr.add(1, 'month')
   }
-  while (datePtr[method](endDate, 'month'));
-  return lines;
-};
+  while (datePtr[method](endDate, 'month'))
+  return lines
+}
 
 /**
  * Get required annual return lines
@@ -84,8 +84,8 @@ const getYears = (startDate, endDate) => {
     startDate,
     endDate,
     timePeriod: 'year'
-  }];
-};
+  }]
+}
 
 /**
  * Calculates lines required in return
@@ -101,17 +101,17 @@ const getRequiredLines = (startDate, endDate, frequency, isFinalReturn) => {
     week: getWeeks,
     month: getMonths,
     year: getYears
-  };
-
-  if (map[frequency]) {
-    return map[frequency](startDate, endDate, isFinalReturn);
   }
 
-  throw new Error(`Unknown frequency ${frequency}`);
-};
+  if (map[frequency]) {
+    return map[frequency](startDate, endDate, isFinalReturn)
+  }
 
-exports.getDays = getDays;
-exports.getWeeks = getWeeks;
-exports.getMonths = getMonths;
-exports.getYears = getYears;
-exports.getRequiredLines = getRequiredLines;
+  throw new Error(`Unknown frequency ${frequency}`)
+}
+
+exports.getDays = getDays
+exports.getWeeks = getWeeks
+exports.getMonths = getMonths
+exports.getYears = getYears
+exports.getRequiredLines = getRequiredLines

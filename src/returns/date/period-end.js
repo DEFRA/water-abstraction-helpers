@@ -1,5 +1,5 @@
-const moment = require('moment');
-const { getPeriodStart } = require('./period-start');
+const moment = require('moment')
+const { getPeriodStart } = require('./period-start')
 
 /**
  * Given a particular date and a isSummer flag, calculates the end date
@@ -9,13 +9,13 @@ const { getPeriodStart } = require('./period-start');
  * @return {String} YYYY-MM-DD period end date
  */
 const getPeriodEnd = (date, isSummer) => {
-  const startDate = getPeriodStart(date, isSummer);
+  const startDate = getPeriodStart(date, isSummer)
   return moment(startDate)
     .add(1, 'year')
     .subtract(1, 'day')
-    .format('YYYY-MM-DD');
-};
+    .format('YYYY-MM-DD')
+}
 
 module.exports = {
   getPeriodEnd
-};
+}

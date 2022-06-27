@@ -1,5 +1,5 @@
-'use strict';
-const pg = require('pg');
+'use strict'
+const pg = require('pg')
 
 /**
  * Formats a log message if pool low on connections
@@ -7,9 +7,9 @@ const pg = require('pg');
  * @return {String} - the message to log
  */
 const formatLogMessage = pool => {
-  const { totalCount, idleCount, waitingCount } = pool;
-  return `Pool low on connections::Total:${totalCount},Idle:${idleCount},Waiting:${waitingCount}`;
-};
+  const { totalCount, idleCount, waitingCount } = pool
+  return `Pool low on connections::Total:${totalCount},Idle:${idleCount},Waiting:${waitingCount}`
+}
 
 /**
  * Determines whether to log message if pool low on connections
@@ -18,9 +18,9 @@ const formatLogMessage = pool => {
  * @return {Boolean} - whether to log message
  */
 const isLogMessage = (config, pool) => {
-  const { totalCount, idleCount, waitingCount } = pool;
-  return totalCount === config.max && idleCount === 0 && waitingCount > 0;
-};
+  const { totalCount, idleCount, waitingCount } = pool
+  return totalCount === config.max && idleCount === 0 && waitingCount > 0
+}
 
 /**
  * Registers event listeners on the PG pool instance
@@ -31,13 +31,13 @@ const isLogMessage = (config, pool) => {
 const registerEventListeners = (pool, config, logger) => {
   pool.on('acquire', () => {
     if (isLogMessage(config, pool)) {
-      logger.info(formatLogMessage(pool));
+      logger.info(formatLogMessage(pool))
     }
-  });
+  })
   pool.on('error', err => {
-    logger.error('Database pool error', err);
-  });
-};
+    logger.error('Database pool error', err)
+  })
+}
 
 /**
  * Creates a Postgres pool instance
@@ -45,10 +45,10 @@ const registerEventListeners = (pool, config, logger) => {
  * @param {Object} postgres pool instance
  */
 const createPool = (config, logger) => {
-  const pool = new pg.Pool(config);
-  registerEventListeners(pool, config, logger);
-  return pool;
-};
+  const pool = new pg.Pool(config)
+  registerEventListeners(pool, config, logger)
+  return pool
+}
 
 /**
  * Maps a query and params written for use with pg.pool
@@ -67,13 +67,13 @@ const createPool = (config, logger) => {
  */
 const mapQueryToKnex = (query, params = []) => {
   if (params.length === 0) {
-    return [query];
+    return [query]
   }
 
   const data = params.reduce((acc, param, i) => {
     // This is the parameter name for the knex query - in knex
     // parameters are passed as a hash
-    const key = `param_${i}`;
+    const key = `param_${i}`
 
     // This regex is looking for a pattern such as $4 in the query
     // as this is how bound parameters are specified in the underlying
@@ -83,7 +83,7 @@ const mapQueryToKnex = (query, params = []) => {
     // ${i + 1} is the integer to search for
     // (?![0-9]) is a negative lookahead, and ensures the integer isn't followed by another integer
     // - this avoids e.g. $11 being a match when we are replacing $1
-    const r = new RegExp(`\\$${i + 1}(?![0-9])`, 'g');
+    const r = new RegExp(`\\$${i + 1}(?![0-9])`, 'g')
 
     return {
       params: {
@@ -91,13 +91,13 @@ const mapQueryToKnex = (query, params = []) => {
         [key]: param
       },
       query: acc.query.replace(r, `:${key}`)
-    };
-  }, { query, params: {} });
+    }
+  }, { query, params: {} })
 
-  return [data.query, data.params];
-};
+  return [data.query, data.params]
+}
 
 module.exports = {
   createPool,
   mapQueryToKnex
-};
+}

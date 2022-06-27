@@ -1,5 +1,5 @@
-const update = require('immutability-helper');
-const { findIndex } = require('lodash');
+const update = require('immutability-helper')
+const { findIndex } = require('lodash')
 
 /**
  * Gets the query for the immutability helper to add a new data item
@@ -9,7 +9,7 @@ const { findIndex } = require('lodash');
  * @return {Object}       query object for immutability helper
  */
 const getAddDataQuery = (state, item) => {
-  const hasARData = 'arData' in state.licence;
+  const hasARData = 'arData' in state.licence
   if (hasARData) {
     return {
       licence: {
@@ -17,7 +17,7 @@ const getAddDataQuery = (state, item) => {
           $push: [item]
         }
       }
-    };
+    }
   } else {
     return {
       licence: {
@@ -25,9 +25,9 @@ const getAddDataQuery = (state, item) => {
           $set: [item]
         }
       }
-    };
+    }
   }
-};
+}
 
 /**
  * Adds a new AR data item to the licence
@@ -36,7 +36,7 @@ const getAddDataQuery = (state, item) => {
  * @return {Object} state - next state of licence
  */
 const addData = (state, action) => {
-  const { id, schema, issueNumber, incrementNumber } = action.payload;
+  const { id, schema, issueNumber, incrementNumber } = action.payload
 
   const item = {
     id,
@@ -44,18 +44,18 @@ const addData = (state, action) => {
     issueNumber,
     incrementNumber,
     content: {}
-  };
+  }
 
-  const ids = (state.licence.arData || []).map(subitem => subitem.id);
+  const ids = (state.licence.arData || []).map(subitem => subitem.id)
   if (ids.includes(id)) {
-    throw new Error(`Cannot add data with ID ${id}, already exists`);
+    throw new Error(`Cannot add data with ID ${id}, already exists`)
   }
 
   // Get query object for immutability-helper update to state
-  const query = getAddDataQuery(state, item);
+  const query = getAddDataQuery(state, item)
 
-  return update(state, query);
-};
+  return update(state, query)
+}
 
 /**
  * Edits an AR data item
@@ -64,10 +64,10 @@ const addData = (state, action) => {
  * @return {Object} state - next state of licence
  */
 const editData = (state, action) => {
-  const { id, data } = action.payload;
-  const index = findIndex(state.licence.arData, item => item.id === id);
+  const { id, data } = action.payload
+  const index = findIndex(state.licence.arData, item => item.id === id)
   if (index === -1) {
-    throw new Error(`Cannot edit data with ID ${id}, not found`);
+    throw new Error(`Cannot edit data with ID ${id}, not found`)
   }
   const query = {
     licence: {
@@ -79,19 +79,19 @@ const editData = (state, action) => {
         }
       }
     }
-  };
-  return update(state, query);
-};
+  }
+  return update(state, query)
+}
 
 /**
  * Deletes an AR data item
  * @type {Object}
  */
 const deleteData = (state, action) => {
-  const { id } = action.payload;
-  const index = findIndex(state.licence.arData, item => item.id === id);
+  const { id } = action.payload
+  const index = findIndex(state.licence.arData, item => item.id === id)
   if (index === -1) {
-    throw new Error(`Cannot delete data with ID ${id}, not found`);
+    throw new Error(`Cannot delete data with ID ${id}, not found`)
   }
 
   const query = {
@@ -100,12 +100,12 @@ const deleteData = (state, action) => {
         $splice: [[index, 1]]
       }
     }
-  };
-  return update(state, query);
-};
+  }
+  return update(state, query)
+}
 
 module.exports = {
   addData,
   editData,
   deleteData
-};
+}

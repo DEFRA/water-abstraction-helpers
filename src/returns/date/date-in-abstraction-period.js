@@ -1,17 +1,17 @@
-'use strict';
+'use strict'
 
-const moment = require('moment');
-const Joi = require('joi');
+const moment = require('moment')
+const Joi = require('joi')
 
-const VALID_DAY = Joi.number().integer().min(1).max(31).required();
-const VALID_MONTH = Joi.number().integer().min(1).max(12).required();
+const VALID_DAY = Joi.number().integer().min(1).max(31).required()
+const VALID_MONTH = Joi.number().integer().min(1).max(12).required()
 
 const abstractionPeriodSchema = Joi.object({
   periodEndDay: VALID_DAY,
   periodEndMonth: VALID_MONTH,
   periodStartDay: VALID_DAY,
   periodStartMonth: VALID_MONTH
-});
+})
 
 /**
  * Checks whether a supplied day/month is the same or after a reference day/month
@@ -23,10 +23,10 @@ const abstractionPeriodSchema = Joi.object({
  */
 const isSameOrAfter = (day, month, refDay, refMonth) => {
   if (month > refMonth) {
-    return true;
+    return true
   }
-  return ((month === refMonth) && (day >= refDay));
-};
+  return ((month === refMonth) && (day >= refDay))
+}
 
 /**
  * Checks whether a supplied day/month is the same or before a reference day/month
@@ -38,10 +38,10 @@ const isSameOrAfter = (day, month, refDay, refMonth) => {
  */
 const isSameOrBefore = (day, month, refDay, refMonth) => {
   if (month < refMonth) {
-    return true;
+    return true
   }
-  return (month === refMonth) && (day <= refDay);
-};
+  return (month === refMonth) && (day <= refDay)
+}
 
 /**
  * Validates the supplied abstraction period.  If properties are strings, converts them
@@ -55,12 +55,12 @@ const isSameOrBefore = (day, month, refDay, refMonth) => {
  * @return {Object} abstractionPeriod - any strings are converted to integers
  */
 const validateAbstractionPeriod = abstractionPeriod => {
-  const { error, value } = abstractionPeriodSchema.validate(abstractionPeriod);
+  const { error, value } = abstractionPeriodSchema.validate(abstractionPeriod)
   if (error) {
-    throw new Error('Invalid abstraction period - ', JSON.stringify(abstractionPeriod));
+    throw new Error('Invalid abstraction period - ', JSON.stringify(abstractionPeriod))
   }
-  return value;
-};
+  return value
+}
 
 /**
  * Checks whether the specified date is within the abstraction period
@@ -78,25 +78,25 @@ const isDateWithinAbstractionPeriod = (date, options) => {
     periodEndMonth,
     periodStartDay,
     periodStartMonth
-  } = validateAbstractionPeriod(options);
+  } = validateAbstractionPeriod(options)
 
   // Month and day of test date
-  const month = moment(date).month() + 1;
-  const day = moment(date).date();
+  const month = moment(date).month() + 1
+  const day = moment(date).date()
 
   // Period start date is >= period end date
   if (isSameOrAfter(periodEndDay, periodEndMonth, periodStartDay, periodStartMonth)) {
     return isSameOrAfter(day, month, periodStartDay, periodStartMonth) &&
-      isSameOrBefore(day, month, periodEndDay, periodEndMonth);
+      isSameOrBefore(day, month, periodEndDay, periodEndMonth)
   } else {
     const prevYear = isSameOrAfter(day, month, 1, 1) &&
-      isSameOrBefore(day, month, periodEndDay, periodEndMonth);
+      isSameOrBefore(day, month, periodEndDay, periodEndMonth)
 
     const thisYear = isSameOrAfter(day, month, periodStartDay, periodStartMonth) &&
-      isSameOrBefore(day, month, 31, 12);
+      isSameOrBefore(day, month, 31, 12)
 
-    return prevYear || thisYear;
+    return prevYear || thisYear
   }
-};
+}
 
-exports.isDateWithinAbstractionPeriod = isDateWithinAbstractionPeriod;
+exports.isDateWithinAbstractionPeriod = isDateWithinAbstractionPeriod

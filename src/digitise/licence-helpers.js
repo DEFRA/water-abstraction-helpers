@@ -2,40 +2,40 @@
  * Helpers for finding data values within licence
  */
 
-const { find, flatMap } = require('lodash');
+const { find, flatMap } = require('lodash')
 
 /**
  * Get purposes
  * @param {Object} data - permit data for licence
  * @return {Array} array of purposes
  */
-const getPurposes = data => data.data.current_version.purposes;
+const getPurposes = data => data.data.current_version.purposes
 
 /**
  * Get purpose
  * @param {Object} data - permit data for licence
  * @param
  */
-const getPurpose = (data, purposeId) => find(getPurposes(data), { ID: purposeId });
+const getPurpose = (data, purposeId) => find(getPurposes(data), { ID: purposeId })
 
 /**
  * Get licence
  * @param {Object} data - permit data for licence
  * @param
  */
-const getLicence = data => data;
+const getLicence = data => data
 
-const purposePointsMapper = purpose => purpose.purposePoints.map(row => row.point_detail);
-const purposeConditionsMapper = purpose => purpose.licenceConditions;
-const versionPartiesMapper = version => version.parties;
-const partyAddressesMapper = party => party.contacts.map(contact => contact.party_address);
+const purposePointsMapper = purpose => purpose.purposePoints.map(row => row.point_detail)
+const purposeConditionsMapper = purpose => purpose.licenceConditions
+const versionPartiesMapper = version => version.parties
+const partyAddressesMapper = party => party.contacts.map(contact => contact.party_address)
 
 /**
  * Gets points from the supplied licence data
  * @param {Object} data - permit data for licence
  * @return {Array} array of licence points
  */
-const getPoints = data => flatMap(getPurposes(data), purposePointsMapper);
+const getPoints = data => flatMap(getPurposes(data), purposePointsMapper)
 
 /**
  * Get a single point
@@ -43,14 +43,14 @@ const getPoints = data => flatMap(getPurposes(data), purposePointsMapper);
  * @param {String} pointId - the point ID
  * @return {Object} point
  */
-const getPoint = (data, pointId) => find(getPoints(data), { ID: pointId });
+const getPoint = (data, pointId) => find(getPoints(data), { ID: pointId })
 
 /**
  * Get conditions from licence
  * @param {Object} data - permit data for licence
  * @return {Array} array of licence conditions
  */
-const getConditions = data => flatMap(getPurposes(data), purposeConditionsMapper);
+const getConditions = data => flatMap(getPurposes(data), purposeConditionsMapper)
 
 /**
  * Get a single condition
@@ -58,7 +58,7 @@ const getConditions = data => flatMap(getPurposes(data), purposeConditionsMapper
  * @param {String} conditionId - the condition ID
  * @return {Object} condition
  */
-const getCondition = (data, conditionId) => find(getConditions(data), { ID: conditionId });
+const getCondition = (data, conditionId) => find(getConditions(data), { ID: conditionId })
 
 /**
  * Get the current licence version
@@ -66,9 +66,9 @@ const getCondition = (data, conditionId) => find(getConditions(data), { ID: cond
  * @return {Object} current version
  */
 const getCurrentVersion = data => {
-  const { ISSUE_NO: issue, INCR_NO: increment } = data.data.current_version.licence;
-  return find(data.data.versions, { ISSUE_NO: issue, INCR_NO: increment });
-};
+  const { ISSUE_NO: issue, INCR_NO: increment } = data.data.current_version.licence
+  return find(data.data.versions, { ISSUE_NO: issue, INCR_NO: increment })
+}
 
 /**
  * Gets a licence version.
@@ -79,14 +79,14 @@ const getCurrentVersion = data => {
  */
 const getVersion = (data, issueNumber, incrementNumber) =>
   find(data.data.versions, version =>
-    (version.ISSUE_NO === issueNumber) && (version.INCR_NO === incrementNumber));
+    (version.ISSUE_NO === issueNumber) && (version.INCR_NO === incrementNumber))
 
 /**
  * Get the licence holder party for the current licence version
  * @param {Object} data - all licence data
  * @return {Object} current version
  */
-const getCurrentVersionParty = data => data.data.current_version.party;
+const getCurrentVersionParty = data => data.data.current_version.party
 
 /**
  * Gets flat list of parties from supplied licence data
@@ -94,7 +94,7 @@ const getCurrentVersionParty = data => data.data.current_version.party;
  * @param {Object} data - licence data
  * @return {Array} parties list
  */
-const getParties = data => flatMap(data.data.versions, versionPartiesMapper);
+const getParties = data => flatMap(data.data.versions, versionPartiesMapper)
 
 /**
  * Gets party by ID from licence data
@@ -103,9 +103,9 @@ const getParties = data => flatMap(data.data.versions, versionPartiesMapper);
  * @return {Object} party data
  */
 const getParty = (data, partyId) => {
-  const parties = getParties(data);
-  return find(parties, { ID: partyId });
-};
+  const parties = getParties(data)
+  return find(parties, { ID: partyId })
+}
 
 /**
  * Get flat list of addresses from licence data
@@ -114,9 +114,9 @@ const getParty = (data, partyId) => {
  * @return {Array} address list
  */
 const getAddresses = data => {
-  const parties = getParties(data);
-  return flatMap(parties, partyAddressesMapper);
-};
+  const parties = getParties(data)
+  return flatMap(parties, partyAddressesMapper)
+}
 
 /**
  * Gets address by ID from licence data
@@ -125,16 +125,16 @@ const getAddresses = data => {
  * @return {Object} party data
  */
 const getAddress = (data, addressId) => {
-  const addresses = getAddresses(data);
-  return find(addresses, { ID: addressId });
-};
+  const addresses = getAddresses(data)
+  return find(addresses, { ID: addressId })
+}
 
 /**
  * Get the licence holder party for the current licence version
  * @param {Object} data - all licence data
  * @return {Object} current version
  */
-const getCurrentVersionAddress = data => data.data.current_version.address;
+const getCurrentVersionAddress = data => data.data.current_version.address
 
 module.exports = {
   getPurposes,
@@ -150,4 +150,4 @@ module.exports = {
   getVersion,
   getParty,
   getAddress
-};
+}

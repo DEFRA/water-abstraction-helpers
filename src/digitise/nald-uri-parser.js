@@ -12,21 +12,21 @@
  */
 
 const parseNaldDataURI = uri => {
-  const NALD_REGEX = '^nald://([^/]+)/([^/]+)/([^/]+)';
-  const REG_EXP = new RegExp(NALD_REGEX);
+  const NALD_REGEX = '^nald://([^/]+)/([^/]+)/([^/]+)'
+  const REG_EXP = new RegExp(NALD_REGEX)
 
-  const match = REG_EXP.exec(uri);
+  const match = REG_EXP.exec(uri)
 
   if (match) {
     return {
       entity: match[1],
       regionId: parseInt(match[2]),
       id: parseInt(match[3])
-    };
+    }
   }
-  throw new Error(`Error parsing NALD data URI ${uri}`);
-};
+  throw new Error(`Error parsing NALD data URI ${uri}`)
+}
 
 module.exports = {
   parseNaldDataURI
-};
+}

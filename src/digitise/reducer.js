@@ -1,13 +1,13 @@
-const update = require('immutability-helper');
-const { findIndex, setWith, set } = require('lodash');
+const update = require('immutability-helper')
+const { findIndex, setWith, set } = require('lodash')
 const {
   EDIT_PURPOSE, EDIT_LICENCE, EDIT_POINT, EDIT_CONDITION, SET_STATUS,
   EDIT_VERSION, EDIT_PARTY, EDIT_ADDRESS,
   ADD_DATA, EDIT_DATA, DELETE_DATA
-} = require('./action-types');
-const { STATUS_IN_PROGRESS } = require('./statuses');
+} = require('./action-types')
+const { STATUS_IN_PROGRESS } = require('./statuses')
 
-const { addData, editData, deleteData } = require('./ar-reducer');
+const { addData, editData, deleteData } = require('./ar-reducer')
 
 /**
  * Like lodash set, but always creates an object
@@ -17,7 +17,7 @@ const { addData, editData, deleteData } = require('./ar-reducer');
  * @param {Mixed} value
  * @return {Object}
  */
-const setObject = (obj, path, value) => setWith(obj, path, value, subObj => subObj || {});
+const setObject = (obj, path, value) => setWith(obj, path, value, subObj => subObj || {})
 
 /**
  * Checks for match for items with integer ids
@@ -26,7 +26,7 @@ const setObject = (obj, path, value) => setWith(obj, path, value, subObj => subO
  * @param {Number} id - ID to check item ID against
  * @return {Boolean}
  */
-const isMatch = (item, id) => parseInt(item.ID) === parseInt(id);
+const isMatch = (item, id) => parseInt(item.ID) === parseInt(id)
 
 /**
  * Checks if version matches the supplied issue and increment number
@@ -36,7 +36,7 @@ const isMatch = (item, id) => parseInt(item.ID) === parseInt(id);
  * @return {Boolean}
  */
 const isVersion = (version, issueNumber, incrementNumber) =>
-  issueNumber === parseInt(version.ISSUE_NO) && incrementNumber === parseInt(version.INCR_NO);
+  issueNumber === parseInt(version.ISSUE_NO) && incrementNumber === parseInt(version.INCR_NO)
 
 /**
  * Gets a base update query with the user who edited and timestamp
@@ -45,7 +45,7 @@ const isVersion = (version, issueNumber, incrementNumber) =>
  * @return {Object} query for immutability helper
  */
 const getBaseQuery = (action, status = STATUS_IN_PROGRESS) => {
-  const { user, timestamp } = action.payload;
+  const { user, timestamp } = action.payload
   return {
     status: {
       $set: status
@@ -56,24 +56,24 @@ const getBaseQuery = (action, status = STATUS_IN_PROGRESS) => {
         timestamp
       }
     }
-  };
-};
+  }
+}
 
 /**
  * Edits a licence purpose within the current_version by ID
  */
 const editPurpose = (state, action) => {
-  const { purposeId, data } = action.payload;
+  const { purposeId, data } = action.payload
 
   if (!state.licence.data) {
-    return state;
+    return state
   }
 
   const index = findIndex(state.licence.data.current_version.purposes, row =>
-    parseInt(row.ID) === parseInt(purposeId));
+    parseInt(row.ID) === parseInt(purposeId))
 
   if (index === -1) {
-    return state;
+    return state
   }
 
   const query = {
@@ -89,30 +89,30 @@ const editPurpose = (state, action) => {
         }
       }
     }
-  };
+  }
 
-  return update(state, query);
-};
+  return update(state, query)
+}
 
 /**
  * Edits base level licence data
  */
 const editLicence = (state, action) => {
-  const { data } = action.payload;
+  const { data } = action.payload
   const query = {
     ...getBaseQuery(action),
     licence: {
       $merge: data
     }
-  };
-  return update(state, query);
-};
+  }
+  return update(state, query)
+}
 
 /**
  * Edits a point within current licence data
  */
 const editPoint = (state, action) => {
-  const { pointId, data } = action.payload;
+  const { pointId, data } = action.payload
 
   const query = {
     ...getBaseQuery(action),
@@ -123,7 +123,7 @@ const editPoint = (state, action) => {
         }
       }
     }
-  };
+  }
 
   state.licence.data.current_version.purposes.forEach((purpose, i) => {
     purpose.purposePoints.forEach((point, j) => {
@@ -136,16 +136,16 @@ const editPoint = (state, action) => {
               }
             }
           }
-        };
+        }
       }
-    });
-  });
+    })
+  })
 
-  return update(state, query);
-};
+  return update(state, query)
+}
 
 const editCondition = (state, action) => {
-  const { conditionId, data } = action.payload;
+  const { conditionId, data } = action.payload
 
   const query = {
     ...getBaseQuery(action),
@@ -156,7 +156,7 @@ const editCondition = (state, action) => {
         }
       }
     }
-  };
+  }
 
   state.licence.data.current_version.purposes.forEach((purpose, i) => {
     purpose.licenceConditions.forEach((condition, j) => {
@@ -167,13 +167,13 @@ const editCondition = (state, action) => {
               $merge: data
             }
           }
-        };
+        }
       }
-    });
-  });
+    })
+  })
 
-  return update(state, query);
-};
+  return update(state, query)
+}
 
 /**
  * Edits a licence version
@@ -184,26 +184,26 @@ const editCondition = (state, action) => {
  * @param {Number} action.payload.incrementNumber - licence increment number
  */
 const editVersion = (state, action) => {
-  const { data, issueNumber, incrementNumber } = action.payload;
+  const { data, issueNumber, incrementNumber } = action.payload
 
   const query = {
     ...getBaseQuery(action)
-  };
+  }
 
   // Check current licence version
   if (isVersion(state.licence.data.current_version.licence, issueNumber, incrementNumber)) {
-    set(query, 'licence.data.current_version.licence.$merge', data);
+    set(query, 'licence.data.current_version.licence.$merge', data)
   }
 
   // Check versions array
   state.licence.data.versions.forEach((version, i) => {
     if (isVersion(version, issueNumber, incrementNumber)) {
-      setObject(query, `licence.data.versions.${i}.$merge`, data);
+      setObject(query, `licence.data.versions.${i}.$merge`, data)
     }
-  });
+  })
 
-  return update(state, query);
-};
+  return update(state, query)
+}
 
 /**
  * Edits party
@@ -211,35 +211,35 @@ const editVersion = (state, action) => {
  * @param {Object} action - action data
  */
 const editParty = (state, action) => {
-  const { data, partyId } = action.payload;
+  const { data, partyId } = action.payload
 
   const query = {
     ...getBaseQuery(action)
-  };
+  }
 
   // Check current licence version
   if (isMatch(state.licence.data.current_version.party, partyId)) {
-    set(query, 'licence.data.current_version.party.$merge', data);
+    set(query, 'licence.data.current_version.party.$merge', data)
   }
 
   // Check other parties nested in versions
   state.licence.data.versions.forEach((version, i) => {
     version.parties.forEach((party, j) => {
       if (isMatch(party, partyId)) {
-        setObject(query, `licence.data.versions.${i}.parties.${j}.$merge`, data);
+        setObject(query, `licence.data.versions.${i}.parties.${j}.$merge`, data)
       }
-    });
-  });
+    })
+  })
 
   // Check licence party
   state.licence.data.current_version.licence.party.forEach((party, i) => {
     if (isMatch(party, partyId)) {
-      setObject(query, `licence.data.current_version.licence.party.${i}.$merge`, data);
+      setObject(query, `licence.data.current_version.licence.party.${i}.$merge`, data)
     }
-  });
+  })
 
-  return update(state, query);
-};
+  return update(state, query)
+}
 
 /**
  * Edits address
@@ -247,39 +247,39 @@ const editParty = (state, action) => {
  * @param {Object} action - action data
  */
 const editAddress = (state, action) => {
-  const { data, addressId } = action.payload;
+  const { data, addressId } = action.payload
 
   const query = {
     ...getBaseQuery(action)
-  };
+  }
 
   // Check current licence version
   if (isMatch(state.licence.data.current_version.address, addressId)) {
-    set(query, 'licence.data.current_version.address.$merge', data);
+    set(query, 'licence.data.current_version.address.$merge', data)
   }
 
   // Check other parties nested in versions
   state.licence.data.versions.forEach((version, i) => {
     version.parties.forEach((party, j) => {
       party.contacts.forEach((contact, k) => {
-        const { party_address: address } = contact;
+        const { party_address: address } = contact
         if (isMatch(address, addressId)) {
-          setObject(query, `licence.data.versions.${i}.parties.${j}.contacts.${k}.party_address.$merge`, data);
+          setObject(query, `licence.data.versions.${i}.parties.${j}.contacts.${k}.party_address.$merge`, data)
         }
-      });
-    });
-  });
+      })
+    })
+  })
 
-  return update(state, query);
-};
+  return update(state, query)
+}
 
 /**
  * Updates document workflow state
  */
 const setState = (state, action) => {
-  const { status, notes, user, timestamp } = action.payload;
+  const { status, notes, user, timestamp } = action.payload
 
-  const query = getBaseQuery(action, status);
+  const query = getBaseQuery(action, status)
 
   if (notes) {
     query.notes = {
@@ -288,11 +288,11 @@ const setState = (state, action) => {
         user,
         timestamp
       }]
-    };
+    }
   }
 
-  return update(state, query);
-};
+  return update(state, query)
+}
 
 const reducer = (state, action) => {
   const commands = {
@@ -307,13 +307,13 @@ const reducer = (state, action) => {
     [ADD_DATA]: addData,
     [EDIT_DATA]: editData,
     [DELETE_DATA]: deleteData
-  };
-
-  if (commands[action.type]) {
-    return commands[action.type](state, action);
   }
 
-  return state;
-};
+  if (commands[action.type]) {
+    return commands[action.type](state, action)
+  }
 
-module.exports = reducer;
+  return state
+}
+
+module.exports = reducer

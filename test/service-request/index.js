@@ -1,13 +1,13 @@
-'use strict';
+'use strict'
 
-const { expect } = require('@hapi/code');
-const { experiment, test, beforeEach, afterEach } = exports.lab = require('@hapi/lab').script();
+const { expect } = require('@hapi/code')
+const { experiment, test, beforeEach, afterEach } = exports.lab = require('@hapi/lab').script()
 
-const sinon = require('sinon');
-const sandbox = sinon.createSandbox();
+const sinon = require('sinon')
+const sandbox = sinon.createSandbox()
 
-const http = require('../../src/http');
-const serviceRequest = require('../../src/service-request');
+const http = require('../../src/http')
+const serviceRequest = require('../../src/service-request')
 
 const getExpectedOptions = (method, data) => {
   return {
@@ -18,8 +18,8 @@ const getExpectedOptions = (method, data) => {
     headers: {
       Authorization: data.token
     }
-  };
-};
+  }
+}
 
 experiment('serviceRequest', () => {
   const data = {
@@ -30,40 +30,40 @@ experiment('serviceRequest', () => {
       bar: 'foo'
     },
     token: 'token'
-  };
+  }
 
   beforeEach(async () => {
-    process.env.JWT_TOKEN = data.token;
-    sandbox.stub(http, 'request');
-  });
+    process.env.JWT_TOKEN = data.token
+    sandbox.stub(http, 'request')
+  })
 
   afterEach(async () => {
-    process.env.JWT_TOKEN = data.originalJwtToken;
-    sandbox.restore();
-  });
+    process.env.JWT_TOKEN = data.originalJwtToken
+    sandbox.restore()
+  })
 
   test('get', async () => {
-    serviceRequest.get(data.url, data.options);
-    expect(http.request.lastCall.args[0]).to.equal(getExpectedOptions('GET', data));
-  });
+    serviceRequest.get(data.url, data.options)
+    expect(http.request.lastCall.args[0]).to.equal(getExpectedOptions('GET', data))
+  })
 
   test('post', async () => {
-    serviceRequest.post(data.url, data.options);
-    expect(http.request.lastCall.args[0]).to.equal(getExpectedOptions('POST', data));
-  });
+    serviceRequest.post(data.url, data.options)
+    expect(http.request.lastCall.args[0]).to.equal(getExpectedOptions('POST', data))
+  })
 
   test('patch', async () => {
-    serviceRequest.patch(data.url, data.options);
-    expect(http.request.lastCall.args[0]).to.equal(getExpectedOptions('PATCH', data));
-  });
+    serviceRequest.patch(data.url, data.options)
+    expect(http.request.lastCall.args[0]).to.equal(getExpectedOptions('PATCH', data))
+  })
 
   test('delete', async () => {
-    serviceRequest.delete(data.url, data.options);
-    expect(http.request.lastCall.args[0]).to.equal(getExpectedOptions('DELETE', data));
-  });
+    serviceRequest.delete(data.url, data.options)
+    expect(http.request.lastCall.args[0]).to.equal(getExpectedOptions('DELETE', data))
+  })
 
   test('put', async () => {
-    serviceRequest.put(data.url, data.options);
-    expect(http.request.lastCall.args[0]).to.equal(getExpectedOptions('PUT', data));
-  });
-});
+    serviceRequest.put(data.url, data.options)
+    expect(http.request.lastCall.args[0]).to.equal(getExpectedOptions('PUT', data))
+  })
+})

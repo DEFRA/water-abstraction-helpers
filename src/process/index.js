@@ -1,3 +1,3 @@
-'use strict';
+'use strict'
 
-exports.execCommand = require('./exec-command');
+exports.execCommand = require('./exec-command')

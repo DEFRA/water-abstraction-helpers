@@ -11,4 +11,4 @@ module.exports = {
   ADD_DATA: 'add.data',
   EDIT_DATA: 'edit.data',
   DELETE_DATA: 'delete.data'
-};
+}
