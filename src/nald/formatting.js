@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
-const nald = require('../nald');
-const { trim } = require('lodash');
+const nald = require('../nald')
+const { trim } = require('lodash')
 /**
  * Formats a NGR reference to string format
  * @param {String} sheet - the sheet string, 2 chars
@@ -12,7 +12,7 @@ const { trim } = require('lodash');
 function formatNGRPointStr (sheet, east, north) {
   return sheet
     ? `${sheet} ${east.substr(0, 3)} ${north.substr(0, 3)}`
-    : null;
+    : null
 }
 
 /**
@@ -27,7 +27,7 @@ function formatAbstractionPoint (point) {
     ngr3: formatNGRPointStr(point.NGR3_SHEET, point.NGR3_EAST, point.NGR3_NORTH),
     ngr4: formatNGRPointStr(point.NGR4_SHEET, point.NGR4_EAST, point.NGR4_NORTH),
     name: point.LOCAL_NAME
-  };
+  }
 };
 
 /**
@@ -45,10 +45,10 @@ const addressFormatter = (contactAddress) => {
     county: contactAddress.COUNTY,
     postcode: contactAddress.POSTCODE,
     country: contactAddress.COUNTRY
-  };
+  }
 
-  return nald.trimValues(nald.transformNull(address));
-};
+  return nald.trimValues(nald.transformNull(address))
+}
 
 const partyToPerson = party => {
   return {
@@ -57,15 +57,15 @@ const partyToPerson = party => {
       .map(part => trim(nald.stringNullToNull(part)))
       .filter(i => i)
       .join(' ')
-  };
-};
+  }
+}
 
 const partyToOrganisation = party => {
   return nald.trimValues({
     contactType: 'Organisation',
     name: party.NAME
-  });
-};
+  })
+}
 
 /**
  * Formats a party name - whether person or organisation
@@ -74,13 +74,13 @@ const partyToOrganisation = party => {
  */
 const nameFormatter = (party) => {
   if (party.APAR_TYPE === 'PER') {
-    return partyToPerson(party);
+    return partyToPerson(party)
   }
 
   if (party.APAR_TYPE === 'ORG') {
-    return partyToOrganisation(party);
+    return partyToOrganisation(party)
   }
-};
+}
 
 /**
  * Format name parts from NALD party for CRM contacts
@@ -88,18 +88,18 @@ const nameFormatter = (party) => {
  * @return {Object} party
  */
 const crmNameFormatter = (party) => {
-  const { SALUTATION: salutation, INITIALS: initials, NAME: name, APAR_TYPE, FORENAME: forename } = party;
+  const { SALUTATION: salutation, INITIALS: initials, NAME: name, APAR_TYPE, FORENAME: forename } = party
   return nald.transformNull(nald.trimValues({
     type: APAR_TYPE === 'PER' ? 'Person' : 'Organisation',
     salutation,
     forename,
     initials,
     name
-  }));
-};
+  }))
+}
 
-exports.addressFormatter = addressFormatter;
-exports.crmNameFormatter = crmNameFormatter;
-exports.formatAbstractionPoint = formatAbstractionPoint;
-exports.formatNGRPointStr = formatNGRPointStr;
-exports.nameFormatter = nameFormatter;
+exports.addressFormatter = addressFormatter
+exports.crmNameFormatter = crmNameFormatter
+exports.formatAbstractionPoint = formatAbstractionPoint
+exports.formatNGRPointStr = formatNGRPointStr
+exports.nameFormatter = nameFormatter

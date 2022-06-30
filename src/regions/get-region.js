@@ -13,10 +13,10 @@ const getRegion = (regionCode) => {
     6: 'Southern',
     7: 'Thames',
     8: 'Wales'
-  };
-  return codes[parseInt(regionCode)];
-};
+  }
+  return codes[parseInt(regionCode)]
+}
 
 module.exports = {
   getRegion
-};
+}

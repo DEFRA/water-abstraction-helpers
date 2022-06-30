@@ -1,5 +1,5 @@
-const { find, flatMap } = require('lodash');
-const slugify = require('slugify');
+const { find, flatMap } = require('lodash')
+const slugify = require('slugify')
 
 // Structure of categories/subcats
 // [
@@ -13,25 +13,25 @@ const slugify = require('slugify');
 //   }
 // ];
 
-const findByTitle = (arr, title) => find(arr, { title });
+const findByTitle = (arr, title) => find(arr, { title })
 
 const createCategory = schema => {
-  const { category } = schema;
-  const slug = slugify(category, { lower: true });
+  const { category } = schema
+  const slug = slugify(category, { lower: true })
   return {
     slug,
     title: category,
     subcategories: []
-  };
-};
+  }
+}
 
 const createSubcategory = schema => {
-  const { subcategory } = schema;
+  const { subcategory } = schema
   return {
     title: subcategory || '',
     schemas: []
-  };
-};
+  }
+}
 
 /**
  * Adds the specified item to the array and returns the item
@@ -40,9 +40,9 @@ const createSubcategory = schema => {
  * @return {Mixed}       - the item added
  */
 const pushAndReturn = (arr, item) => {
-  arr.push(item);
-  return item;
-};
+  arr.push(item)
+  return item
+}
 
 /**
  * Given an array of categories, finds or creates a category for the given schema
@@ -51,9 +51,9 @@ const pushAndReturn = (arr, item) => {
  * @return {Object}        - new or existing category object
  */
 const findCategory = (arr, schema) => {
-  const { category } = schema;
-  return findByTitle(arr, category) || pushAndReturn(arr, createCategory(schema));
-};
+  const { category } = schema
+  return findByTitle(arr, category) || pushAndReturn(arr, createCategory(schema))
+}
 
 /**
  * Given an array of subcategories, finds or creates a subcategory for the given schema
@@ -62,9 +62,9 @@ const findCategory = (arr, schema) => {
  * @return {Object}        - new or existing subcategory object
  */
 const findSubcategory = (arr, schema) => {
-  const { subcategory } = schema;
-  return findByTitle(arr, subcategory) || pushAndReturn(arr, createSubcategory(schema));
-};
+  const { subcategory } = schema
+  return findByTitle(arr, subcategory) || pushAndReturn(arr, createSubcategory(schema))
+}
 
 /**
  * Categorises and subcategories schema for display in schema selection page
@@ -73,11 +73,11 @@ const findSubcategory = (arr, schema) => {
  * @return {Object}        - indexed by category, subcategory
  */
 const getSchemaCategories = schema => schema.reduce((acc, schema) => {
-  const category = findCategory(acc, schema);
-  const subcategory = findSubcategory(category.subcategories, schema);
-  subcategory.schemas.push(schema.id);
-  return acc;
-}, []);
+  const category = findCategory(acc, schema)
+  const subcategory = findSubcategory(category.subcategories, schema)
+  subcategory.schemas.push(schema.id)
+  return acc
+}, [])
 
 /**
  * Given a schema, finds the category which contains it
@@ -86,11 +86,11 @@ const getSchemaCategories = schema => schema.reduce((acc, schema) => {
  * @param id
  */
 const getSchemaCategory = (categories, id) => find(categories, category => {
-  const ids = flatMap(category.subcategories, subcat => subcat.schemas);
-  return ids.includes(id);
-});
+  const ids = flatMap(category.subcategories, subcat => subcat.schemas)
+  return ids.includes(id)
+})
 
 module.exports = {
   getSchemaCategories,
   getSchemaCategory
-};
+}

@@ -1,5 +1,5 @@
-const { getRegion } = require('./get-region');
+const { getRegion } = require('./get-region')
 
 module.exports = {
   getRegion
-};
+}

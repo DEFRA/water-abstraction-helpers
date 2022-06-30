@@ -4,8 +4,8 @@
  * always pass a JWT auth header.
  */
 
-const http = require('../http');
-const { partial } = require('lodash');
+const http = require('../http')
+const { partial } = require('lodash')
 
 const makeRequest = (method, url, additionalOptions = {}) => {
   const options = Object.assign({
@@ -15,13 +15,13 @@ const makeRequest = (method, url, additionalOptions = {}) => {
     headers: {
       Authorization: process.env.JWT_TOKEN
     }
-  }, additionalOptions);
+  }, additionalOptions)
 
-  return http.request(options);
-};
+  return http.request(options)
+}
 
-exports.get = partial(makeRequest, 'GET');
-exports.post = partial(makeRequest, 'POST');
-exports.patch = partial(makeRequest, 'PATCH');
-exports.delete = partial(makeRequest, 'DELETE');
-exports.put = partial(makeRequest, 'PUT');
+exports.get = partial(makeRequest, 'GET')
+exports.post = partial(makeRequest, 'POST')
+exports.patch = partial(makeRequest, 'PATCH')
+exports.delete = partial(makeRequest, 'DELETE')
+exports.put = partial(makeRequest, 'PUT')

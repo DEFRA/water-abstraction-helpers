@@ -1,9 +1,9 @@
-const glob = require('glob');
-const { cloneDeep, sortBy } = require('lodash');
-const path = require('path');
-const fs = require('fs');
+const glob = require('glob')
+const { cloneDeep, sortBy } = require('lodash')
+const path = require('path')
+const fs = require('fs')
 
-const schemaPath = path.join(__dirname, './schema/wr22/');
+const schemaPath = path.join(__dirname, './schema/wr22/')
 
 /**
  * Given a WR22 schema filename, e.g. 1.14.json, returns a version which can
@@ -12,9 +12,9 @@ const schemaPath = path.join(__dirname, './schema/wr22/');
  * @return {String}      - sortable version
  */
 const getSortableFilename = file => {
-  const [integer, fraction] = file.split('.');
-  return `${integer.padStart(3, '0')}.${fraction.padStart(3, '0')}`;
-};
+  const [integer, fraction] = file.split('.')
+  return `${integer.padStart(3, '0')}.${fraction.padStart(3, '0')}`
+}
 
 /**
  * Load the JSON file specified and parse
@@ -22,9 +22,9 @@ const getSortableFilename = file => {
  * @return {Object}          parsed JSON
  */
 const loadJson = fileName => {
-  const data = fs.readFileSync(`${schemaPath}${fileName}`);
-  return JSON.parse(data);
-};
+  const data = fs.readFileSync(`${schemaPath}${fileName}`)
+  return JSON.parse(data)
+}
 
 /**
  * Loads all the WR22 condition schema in an array, sorted by the schema
@@ -32,13 +32,13 @@ const loadJson = fileName => {
  * @return {Array} Array of JSON schema objects
  */
 const loadSchema = () => {
-  const files = glob.sync('*.json', { cwd: schemaPath });
-  const sorted = sortBy(files, getSortableFilename);
-  const sortedSchemas = sorted.map(loadJson);
-  return sortedSchemas.filter(schema => !schema.hidden);
-};
+  const files = glob.sync('*.json', { cwd: schemaPath })
+  const sorted = sortBy(files, getSortableFilename)
+  const sortedSchemas = sorted.map(loadJson)
+  return sortedSchemas.filter(schema => !schema.hidden)
+}
 
-const schema = loadSchema();
+const schema = loadSchema()
 
 module.exports = {
 
@@ -47,6 +47,6 @@ module.exports = {
    * @type {Array}
    */
   getWR22 () {
-    return schema.map(cloneDeep);
+    return schema.map(cloneDeep)
   }
-};
+}

@@ -1,109 +1,109 @@
-'use strict';
+'use strict'
 
-require('dotenv').config();
+require('dotenv').config()
 
 const {
   beforeEach,
   experiment,
   test,
   afterEach
-} = exports.lab = require('@hapi/lab').script();
-const { expect } = require('@hapi/code');
-const sandbox = require('sinon').createSandbox();
+} = exports.lab = require('@hapi/lab').script()
+const { expect } = require('@hapi/code')
+const sandbox = require('sinon').createSandbox()
 
-const db = require('../../src/db');
+const db = require('../../src/db')
 
 const config = {
   connectionString: process.env.DATABASE_URL,
   max: 8,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 5000
-};
+}
 
 experiment('db/index.js', () => {
   afterEach(async () => {
-    sandbox.restore();
-  });
+    sandbox.restore()
+  })
 
   experiment('createPool', () => {
-    let pool, logger, client;
+    let pool, logger, client
 
     beforeEach(async () => {
       logger = {
         error: sandbox.stub(),
         info: sandbox.stub()
-      };
+      }
 
-      client = {};
+      client = {}
 
-      pool = db.createPool(config, logger);
-    });
+      pool = db.createPool(config, logger)
+    })
 
     test('pool is an instance of pg.Pool', async () => {
-      expect(pool.constructor.name).to.equal('BoundPool');
-    });
+      expect(pool.constructor.name).to.equal('BoundPool')
+    })
 
     experiment('when a client is acquired', () => {
       experiment('if pool is waiting for an available client', () => {
         beforeEach(async () => {
-          sandbox.stub(pool, 'waitingCount').get(() => 1);
-          sandbox.stub(pool, 'totalCount').get(() => 8);
-          pool.emit('acquire', client);
-        });
+          sandbox.stub(pool, 'waitingCount').get(() => 1)
+          sandbox.stub(pool, 'totalCount').get(() => 8)
+          pool.emit('acquire', client)
+        })
 
         test('an info message is logged', async () => {
-          const [msg] = logger.info.lastCall.args;
-          expect(msg).to.equal('Pool low on connections::Total:8,Idle:0,Waiting:1');
-        });
-      });
+          const [msg] = logger.info.lastCall.args
+          expect(msg).to.equal('Pool low on connections::Total:8,Idle:0,Waiting:1')
+        })
+      })
 
       experiment('if pool is not waiting for an available client', () => {
         beforeEach(async () => {
-          sandbox.stub(pool, 'waitingCount').get(() => 0);
-          sandbox.stub(pool, 'totalCount').get(() => 8);
-          pool.emit('acquire', client);
-        });
+          sandbox.stub(pool, 'waitingCount').get(() => 0)
+          sandbox.stub(pool, 'totalCount').get(() => 8)
+          pool.emit('acquire', client)
+        })
 
         test('no messages are logged', async () => {
-          expect(logger.info.called).to.be.false();
-        });
-      });
-    });
+          expect(logger.info.called).to.be.false()
+        })
+      })
+    })
 
     experiment('when a client errors', () => {
-      const err = new Error('some terrible problem');
+      const err = new Error('some terrible problem')
 
       beforeEach(async () => {
-        pool.emit('error', err);
-      });
+        pool.emit('error', err)
+      })
 
       test('an error message is logged', async () => {
-        const { args } = logger.error.lastCall;
-        expect(args[0]).to.equal('Database pool error');
-        expect(args[1]).to.equal(err);
-      });
-    });
-  });
+        const { args } = logger.error.lastCall
+        expect(args[0]).to.equal('Database pool error')
+        expect(args[1]).to.equal(err)
+      })
+    })
+  })
 
   experiment('.mapQueryToKnex', () => {
     test('when there are no params', async () => {
-      const QUERY = 'select some_column from some_table';
-      const result = db.mapQueryToKnex(QUERY);
-      expect(result).to.equal([QUERY]);
-    });
+      const QUERY = 'select some_column from some_table'
+      const result = db.mapQueryToKnex(QUERY)
+      expect(result).to.equal([QUERY])
+    })
 
     test('when there are bound params', async () => {
-      const QUERY = 'select * from some_table where column_a=$1 and column_b=$2 order by column_a=$1';
-      const PARAMS = ['foo', 'bar'];
-      const result = db.mapQueryToKnex(QUERY, PARAMS);
+      const QUERY = 'select * from some_table where column_a=$1 and column_b=$2 order by column_a=$1'
+      const PARAMS = ['foo', 'bar']
+      const result = db.mapQueryToKnex(QUERY, PARAMS)
 
-      expect(result[0]).to.equal('select * from some_table where column_a=:param_0 and column_b=:param_1 order by column_a=:param_0');
+      expect(result[0]).to.equal('select * from some_table where column_a=:param_0 and column_b=:param_1 order by column_a=:param_0')
       expect(result[1]).to.equal(
         {
           param_0: PARAMS[0],
           param_1: PARAMS[1]
         }
-      );
-    });
-  });
-});
+      )
+    })
+  })
+})

@@ -1,6 +1,6 @@
-const reducer = require('./reducer');
-const statuses = require('./statuses');
-const { STATUS_IN_PROGRESS } = statuses;
+const reducer = require('./reducer')
+const statuses = require('./statuses')
+const { STATUS_IN_PROGRESS } = statuses
 
 /**
  * Gets initial state for the specified licence row from the permit repo
@@ -12,8 +12,8 @@ const getInitialState = licence => {
     licence: licence.licence_data_value,
     status: STATUS_IN_PROGRESS,
     notes: []
-  };
-};
+  }
+}
 
 /**
  * Gets final state based on:
@@ -22,16 +22,16 @@ const getInitialState = licence => {
  * @param {Function} reducer - a function which accepts the state and an action, and returns the next state
  */
 const stateManager = (initialState, actions = []) => {
-  let state = initialState;
+  let state = initialState
 
   for (const action of actions) {
-    state = reducer(state, action);
+    state = reducer(state, action)
   }
 
-  return state;
-};
+  return state
+}
 
 module.exports = {
   getInitialState,
   stateManager
-};
+}

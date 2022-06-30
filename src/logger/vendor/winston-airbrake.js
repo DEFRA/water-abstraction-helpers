@@ -4,11 +4,11 @@
  */
 
 // winston-airbrake.js: Transport for outputting logs to Airbrake
-const request = require('request');
-const util = require('util');
-const winston = require('winston');
-const AirbrakeClient = require('airbrake-js');
-const { isError } = require('lodash');
+const request = require('request')
+const util = require('util')
+const winston = require('winston')
+const AirbrakeClient = require('airbrake-js')
+const { isError } = require('lodash')
 
 /**
  * Creates configuration object for Airbrake client
@@ -20,29 +20,29 @@ const createClientOptions = (options) => {
     projectId: options.projectId,
     projectKey: options.apiKey,
     host: options.host
-  };
+  }
 
   if (options.proxy) {
-    clientOptions.request = request.defaults({ proxy: options.proxy });
+    clientOptions.request = request.defaults({ proxy: options.proxy })
   }
 
-  return clientOptions;
-};
+  return clientOptions
+}
 
 const Airbrake = exports.Airbrake = winston.transports.Airbrake = function (options) {
-  this.name = 'airbrake';
-  this.level = options.level || 'info';
-  this.silent = options.silent || false;
-  this.handleExceptions = options.handleExceptions || false;
+  this.name = 'airbrake'
+  this.level = options.level || 'info'
+  this.silent = options.silent || false
+  this.handleExceptions = options.handleExceptions || false
 
   if (!options.apiKey) {
-    throw new Error('You must specify an airbrake API Key to use winston-airbrake');
+    throw new Error('You must specify an airbrake API Key to use winston-airbrake')
   }
 
-  this.airbrakeClient = new AirbrakeClient(createClientOptions(options));
-};
+  this.airbrakeClient = new AirbrakeClient(createClientOptions(options))
+}
 
-util.inherits(Airbrake, winston.Transport);
+util.inherits(Airbrake, winston.Transport)
 
 /**
  * Creates notice in a format expected by Airbrake client
@@ -52,36 +52,36 @@ util.inherits(Airbrake, winston.Transport);
  * @return {Object}       notice for sending to Airbrake API
  */
 const createNotice = (level, message, meta) => {
-  const err = isError(meta) ? meta : new Error(message);
-  err.type = level;
+  const err = isError(meta) ? meta : new Error(message)
+  err.type = level
   const notice = {
     error: err
-  };
+  }
   if (meta) {
-    notice.params = meta.params || {};
-    notice.context = meta.context;
+    notice.params = meta.params || {}
+    notice.context = meta.context
   }
 
   if (isError(meta)) {
-    notice.params.message = message;
+    notice.params.message = message
   }
-  return notice;
-};
+  return notice
+}
 
 Airbrake.prototype.log = function (level, msg, meta = {}, callback) {
   if (this.silent) {
-    return callback(null, true);
+    return callback(null, true)
   }
 
-  const notice = createNotice(level, msg, meta);
+  const notice = createNotice(level, msg, meta)
 
   this.airbrakeClient.notify(notice, function (err, url) {
     if (err) {
-      return callback(err, false);
+      return callback(err, false)
     }
-    return callback(null, { url });
-  });
-};
+    return callback(null, { url })
+  })
+}
 
-exports.createNotice = createNotice;
-exports.createClientOptions = createClientOptions;
+exports.createNotice = createNotice
+exports.createClientOptions = createClientOptions

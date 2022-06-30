@@ -1,14 +1,14 @@
-'use strict';
+'use strict'
 
-const EventEmitter = require('events');
-const emitter = new EventEmitter();
+const EventEmitter = require('events')
+const emitter = new EventEmitter()
 
 const rp = require('request-promise-native').defaults({
   proxy: null,
   strictSSL: false
-});
+})
 
-const ON_PRE_REQUEST = 'onPreRequest';
+const ON_PRE_REQUEST = 'onPreRequest'
 
 /**
  * Makes the request using request-promise-native
@@ -20,9 +20,9 @@ const ON_PRE_REQUEST = 'onPreRequest';
  * @param {Object} options Object representing the request as defined by request-promise
  */
 const request = options => {
-  emitter.emit(ON_PRE_REQUEST, options);
-  return rp(options);
-};
+  emitter.emit(ON_PRE_REQUEST, options)
+  return rp(options)
+}
 
 /**
  * Allows the registration of an event handler that is
@@ -30,14 +30,14 @@ const request = options => {
  *
  * @param {Function} handler Function that will receieve the options object
  */
-const onPreRequest = handler => emitter.on(ON_PRE_REQUEST, handler);
+const onPreRequest = handler => emitter.on(ON_PRE_REQUEST, handler)
 
 /**
  * Allows the listeners to onPreRequest to be removed to prevent
  * excess registrations.
  */
-const removePreRequestListener = () => emitter.removeAllListeners(ON_PRE_REQUEST);
+const removePreRequestListener = () => emitter.removeAllListeners(ON_PRE_REQUEST)
 
-exports.request = request;
-exports.onPreRequest = onPreRequest;
-exports.removePreRequestListener = removePreRequestListener;
+exports.request = request
+exports.onPreRequest = onPreRequest
+exports.removePreRequestListener = removePreRequestListener

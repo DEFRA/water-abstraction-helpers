@@ -1,7 +1,7 @@
-const moment = require('moment');
-const { last, omit, isEqual } = require('lodash');
+const moment = require('moment')
+const { last, omit, isEqual } = require('lodash')
 
-const DATE_FORMAT = 'YYYY-MM-DD';
+const DATE_FORMAT = 'YYYY-MM-DD'
 
 /**
  * Checks whether 2 objects have adjacent date ranges.
@@ -12,9 +12,9 @@ const DATE_FORMAT = 'YYYY-MM-DD';
  * @return {Boolean}
  */
 const isAdjacentDateRange = (a, b) => {
-  const expectedEndDate = moment(b.startDate).subtract(1, 'day').format(DATE_FORMAT);
-  return [null, expectedEndDate].includes(a.endDate);
-};
+  const expectedEndDate = moment(b.startDate).subtract(1, 'day').format(DATE_FORMAT)
+  return [null, expectedEndDate].includes(a.endDate)
+}
 
 /**
    * Default implementation of equality test between two objects
@@ -26,10 +26,10 @@ const isAdjacentDateRange = (a, b) => {
    * @return {Boolean}
    */
 const equalityTest = (a, b) => {
-  const objA = omit(a, ['startDate', 'endDate']);
-  const objB = omit(b, ['startDate', 'endDate']);
-  return isEqual(objA, objB);
-};
+  const objA = omit(a, ['startDate', 'endDate'])
+  const objB = omit(b, ['startDate', 'endDate'])
+  return isEqual(objA, objB)
+}
 
 /**
    * Given an array of objects sorted by date, de-duplicates them where adjacent array items
@@ -40,16 +40,16 @@ const equalityTest = (a, b) => {
    * @return {Array} an array with histories merged
    */
 const mergeHistory = (arr, isEqual = equalityTest) => arr.reduce((acc, row) => {
-  const previousRow = last(acc);
+  const previousRow = last(acc)
   if (acc.length && isEqual(row, previousRow) && isAdjacentDateRange(previousRow, row)) {
     acc[acc.length - 1] = {
       ...previousRow,
       endDate: row.endDate
-    };
+    }
   } else {
-    acc.push(row);
+    acc.push(row)
   }
-  return acc;
-}, []);
+  return acc
+}, [])
 
-exports.mergeHistory = mergeHistory;
+exports.mergeHistory = mergeHistory

@@ -1,8 +1,8 @@
 
-'use strict';
+'use strict'
 
-const moment = require('moment');
-const naldDates = require('../nald/dates');
+const moment = require('moment')
+const naldDates = require('../nald/dates')
 
 /**
  * Converts units in NALD to recognised SI unit
@@ -13,9 +13,9 @@ const mapUnit = (u) => {
   const units = {
     M: 'm³',
     I: 'gal'
-  };
-  return units[u] || u;
-};
+  }
+  return units[u] || u
+}
 
 /**
  * Map NALD quantity usability field
@@ -28,9 +28,9 @@ const mapUsability = (u) => {
     M: 'measured',
     D: 'derived',
     A: 'assessed'
-  };
-  return options[u];
-};
+  }
+  return options[u]
+}
 
 /**
  * Gets quantity from NALD value
@@ -38,8 +38,8 @@ const mapUsability = (u) => {
  * @return {Number|Boolean}
  */
 const mapQuantity = (value) => {
-  return value === '' ? null : parseFloat(value);
-};
+  return value === '' ? null : parseFloat(value)
+}
 
 /**
  * Calculates start of period based on start/end date and period
@@ -49,27 +49,27 @@ const mapQuantity = (value) => {
  * @return {String} a date in format YYYY-MM-DD
  */
 const getStartDate = (startDate, endDate, period) => {
-  const d = moment(endDate, 'YYYY-MM-DD');
-  let o;
+  const d = moment(endDate, 'YYYY-MM-DD')
+  let o
 
   if (period === 'year') {
-    o = moment(startDate, 'YYYY-MM-DD');
+    o = moment(startDate, 'YYYY-MM-DD')
   }
   if (period === 'month') {
-    o = d.startOf('month');
+    o = d.startOf('month')
   }
   if (period === 'week') {
-    const naldWeek = naldDates.getWeek(d);
-    o = naldWeek.start;
+    const naldWeek = naldDates.getWeek(d)
+    o = naldWeek.start
   }
   if (period === 'day') {
-    o = d;
+    o = d
   }
 
-  return o.format('YYYY-MM-DD');
-};
+  return o.format('YYYY-MM-DD')
+}
 
-exports.getStartDate = getStartDate;
-exports.mapQuantity = mapQuantity;
-exports.mapUnit = mapUnit;
-exports.mapUsability = mapUsability;
+exports.getStartDate = getStartDate
+exports.mapQuantity = mapQuantity
+exports.mapUnit = mapUnit
+exports.mapUsability = mapUsability

@@ -1,7 +1,7 @@
-'use strict';
+'use strict'
 
-const childProcess = require('child_process');
-const { promisify } = require('util');
+const childProcess = require('child_process')
+const { promisify } = require('util')
 
 /**
  * Executes (and logs) a shell command, returning a promise
@@ -9,7 +9,7 @@ const { promisify } = require('util');
  * @return {Promise}
  */
 const execCommand = (cmd) => {
-  return promisify(childProcess.exec)(cmd);
-};
+  return promisify(childProcess.exec)(cmd)
+}
 
-module.exports = execCommand;
+module.exports = execCommand
