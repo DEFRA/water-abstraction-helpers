@@ -1,8 +1,10 @@
 # Water Abstraction helpers
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/364c764646e6d476559a/maintainability)](https://codeclimate.com/github/DEFRA/water-abstraction-helpers/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/364c764646e6d476559a/test_coverage)](https://codeclimate.com/github/DEFRA/water-abstraction-helpers/test_coverage)
-[![Build Status](https://travis-ci.com/DEFRA/water-abstraction-helpers.svg?branch=master)](https://travis-ci.com/DEFRA/water-abstraction-helpers)
+![Build Status](https://github.com/DEFRA/water-abstraction-helpers/workflows/CI/badge.svg?branch=master)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=DEFRA_water-abstraction-helpers&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=DEFRA_water-abstraction-reporting)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=DEFRA_water-abstraction-helpers&metric=coverage)](https://sonarcloud.io/dashboard?id=DEFRA_water-abstraction-helpers)
+[![Known Vulnerabilities](https://snyk.io/test/github/DEFRA/water-abstraction-helpers/badge.svg)](https://snyk.io/test/github/DEFRA/water-abstraction-helpers)
+[![Licence](https://img.shields.io/badge/Licence-OGLv3-blue.svg)](http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3)
 
 This project contains shared code that is used across the water Abstraction
 service.
