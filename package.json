@@ -2,28 +2,23 @@
   "name": "@envage/water-abstraction-helpers",
   "version": "4.8.1",
   "description": "Contains functions for processing water abstraction data which are shared across multiple projects",
+  "homepage": "https://github.com/DEFRA/water-abstraction-team",
   "main": "./src/index.js",
-  "scripts": {
-    "test": "lab",
-    "test:bail": "lab --bail",
-    "lint": "standard",
-    "lint:fix": "standard --fix",
-    "version": "auto-changelog -p --commit-limit false && git add CHANGELOG.md"
-  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DEFRA/water-abstraction-helpers.git"
+    "url": "https://github.com/DEFRA/water-abstraction-helpers"
   },
-  "author": "James Carmichael <james.carmichael@defra.gov.uk>",
-  "license": "OGL-UK-3.0",
   "bugs": {
-    "url": "https://github.com/DEFRA/water-abstraction-helpers/issues"
+    "url": "https://github.com/DEFRA/water-abstraction-team/issues"
   },
-  "homepage": "https://github.com/DEFRA/water-abstraction-helpers#readme",
-  "devDependencies": {
-    "auto-changelog": "^1.16.4",
-    "sinon": "^7.5.0",
-    "standard": "^17.0.0"
+  "author": "WRLS service team",
+  "license": "OGL-UK-3.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "test": "lab",
+    "lint": "standard"
   },
   "dependencies": {
     "@hapi/code": "^6.0.0",
@@ -48,7 +43,9 @@
     "slugify": "^1.6.0",
     "winston": "^2.4.4"
   },
-  "publishConfig": {
-    "access": "public"
+  "devDependencies": {
+    "auto-changelog": "^1.16.4",
+    "sinon": "^7.5.0",
+    "standard": "^17.0.0"
   }
 }
