@@ -6,7 +6,6 @@
   "scripts": {
     "test": "lab",
     "test:bail": "lab --bail",
-    "test:ci": "lab -t 55 -m 0 -r html -o coverage/coverage.html -r lcov -o coverage/lcov.info --reporter junit -o coverage/junit.xml -r console -o stdout",
     "lint": "standard",
     "lint:fix": "standard --fix",
     "version": "auto-changelog -p --commit-limit false && git add CHANGELOG.md"
