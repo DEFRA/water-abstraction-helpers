@@ -1,6 +1,6 @@
 # Water Abstraction helpers
 
-![Build Status](https://github.com/DEFRA/water-abstraction-helpers/workflows/CI/badge.svg?branch=master)
+![Build Status](https://github.com/DEFRA/water-abstraction-helpers/workflows/CI/badge.svg?branch=main)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=DEFRA_water-abstraction-helpers&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=DEFRA_water-abstraction-reporting)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=DEFRA_water-abstraction-helpers&metric=coverage)](https://sonarcloud.io/dashboard?id=DEFRA_water-abstraction-helpers)
 [![Known Vulnerabilities](https://snyk.io/test/github/DEFRA/water-abstraction-helpers/badge.svg)](https://snyk.io/test/github/DEFRA/water-abstraction-helpers)
