@@ -5,7 +5,7 @@ const { experiment, test } = exports.lab = require('@hapi/lab').script()
 
 const urlJoin = require('../../src/url-join')
 
-experiment.only('urlJoin', () => {
+experiment('urlJoin', () => {
   experiment('Test suite covering scenarios in existing code', () => {
     test('correctly joins a simple url', () => {
       const result = urlJoin('https://test.com', 'first', 'second')
