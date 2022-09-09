@@ -5,10 +5,10 @@ const dummyBase = 'http://___remove_me___'
 
 // Short helper functions
 const hasQueryParam = previous => previous.includes('?')
-const isAnchor = (element) => element.charAt(0) === '#'
-const isRelative = (path) => path.charAt(0) === '/'
-const isString = (element) => typeof element === 'string'
-const isQueryParam = (element) => element.charAt(0) === '?' || element.charAt(0) === '&'
+const isAnchor = element => element.charAt(0) === '#'
+const isRelative = path => path.charAt(0) === '/'
+const isString = element => typeof element === 'string'
+const isQueryParam = element => element.charAt(0) === '?' || element.charAt(0) === '&'
 
 /**
  * Drop-in replacement for the url-join package, using relatively standard Node URL handling instead of multiple regexes
