@@ -90,7 +90,7 @@ experiment('validators', () => {
         expect(value.addressLine2).to.be.null()
       })
 
-      experiment('when addresssLine3 is null', async () => {
+      experiment('when addresssLine3 is null', () => {
         test('cannot be null', async () => {
           const address = createAddress({
             addressLine2: null,
@@ -134,7 +134,7 @@ experiment('validators', () => {
         expect(value.addressLine3).to.be.null()
       })
 
-      experiment('when addressLine2 is null', async () => {
+      experiment('when addressLine2 is null', () => {
         test('cannot be null', async () => {
           const address = createAddress({
             addressLine2: null,
@@ -201,7 +201,7 @@ experiment('validators', () => {
         expect(value.town).to.be.null()
       })
 
-      experiment('when addresssLine4 is null', async () => {
+      experiment('when addresssLine4 is null', () => {
         test('cannot be null', async () => {
           const address = createAddress({
             addressLine4: null,

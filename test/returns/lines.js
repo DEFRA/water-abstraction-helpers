@@ -143,7 +143,7 @@ experiment('getMonths', () => {
     ])
   })
 
-  experiment('isFinalReturn is falsey', async () => {
+  experiment('isFinalReturn is falsey', () => {
     test('last month should be included when endDate is not the last day of the month', async () => {
       const months = getMonths('2018-01-01', '2018-12-18')
       expect(months).to.equal(expectedMonths)
@@ -155,7 +155,7 @@ experiment('getMonths', () => {
     })
   })
 
-  experiment('isFinalReturn is true', async () => {
+  experiment('isFinalReturn is true', () => {
     test('last month should be included when endDate is the last day of the month', async () => {
       const months = getMonths('2018-01-01', '2018-12-31', true)
       expect(months).to.equal(expectedMonths)

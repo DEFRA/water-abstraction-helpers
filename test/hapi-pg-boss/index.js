@@ -11,7 +11,7 @@ const JOB_NAME = 'test-job'
 const JOB_ID = 'test-id'
 const JOB_OPTIONS = { foo: 'bar' }
 
-experiment('hapi PG Boss', async () => {
+experiment('hapi PG Boss', () => {
   test('the hapi plugin has the correct name', async () => {
     expect(hapiPgBoss.name).to.equal('pgBoss')
   })

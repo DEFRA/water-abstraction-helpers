@@ -7,7 +7,7 @@ moment.locale('en-gb')
 
 const { dateRangeSplitter } = require('../../src/charging')
 
-experiment('charging date range splitter', async () => {
+experiment('charging date range splitter', () => {
   const chargeVersion = {
     startDate: '2018-04-01',
     endDate: '2019-03-31'

@@ -77,7 +77,7 @@ experiment('nald', () => {
     })
   })
 
-  experiment('.stringNullToNull', async () => {
+  experiment('.stringNullToNull', () => {
     test('handles null', async () => {
       expect(nald.stringNullToNull(null)).to.equal(null)
     })
