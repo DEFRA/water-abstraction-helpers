@@ -21,9 +21,6 @@
     "lint": "standard"
   },
   "dependencies": {
-    "@hapi/code": "^6.0.0",
-    "@hapi/hapi": "^18.4.1",
-    "@hapi/lab": "^19.1.0",
     "airbrake-js": "^1.6.8",
     "cross-fetch": "^3.0.4",
     "deep-map": "^2.0.0",
@@ -44,6 +41,9 @@
     "winston": "^2.4.4"
   },
   "devDependencies": {
+    "@hapi/code": "^9.0.1",
+    "@hapi/hapi": "^20.2.2",
+    "@hapi/lab": "^25.0.1",
     "auto-changelog": "^1.16.4",
     "sinon": "^7.5.0",
     "standard": "^17.0.0"
