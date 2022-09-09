@@ -1,5 +1,5 @@
 'use strict'
-const deepMap = require('deep-map')
+const deepMap = require('../deep-map')
 const reducer = require('./reducer')
 const {
   getInitialState,
