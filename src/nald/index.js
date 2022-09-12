@@ -1,6 +1,6 @@
 'use strict'
 
-const deepMap = require('deep-map')
+const deepMap = require('../deep-map')
 const { isString, trim } = require('lodash')
 
 exports.dates = require('./dates')
