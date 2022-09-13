@@ -23,8 +23,6 @@
   "dependencies": {
     "airbrake-js": "^1.6.8",
     "cross-fetch": "^3.0.4",
-    "deep-map": "^2.0.0",
-    "es6-weak-map": "^2.0.3",
     "glob": "^7.1.7",
     "immutability-helper": "^3.1.1",
     "joi": "^17.4.1",
