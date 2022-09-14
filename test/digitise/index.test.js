@@ -2,7 +2,8 @@
 
 const {
   experiment,
-  test
+  test,
+  before
 } = exports.lab = require('@hapi/lab').script()
 const { expect } = require('@hapi/code')
 
@@ -62,6 +63,47 @@ experiment('digitise/index.js', () => {
         expect(result).to.equal({
           notNulls: ['NOT_NULL', 'NOT_NULL_EITHER'],
           nulls: [null, null, null]
+        })
+      })
+    })
+  })
+
+  experiment('getWR22', () => {
+    experiment('when getWR22 is called', () => {
+      let wr22Data
+
+      before(async () => {
+        wr22Data = await digitise.getWR22()
+      })
+
+      test('returns an array of all json files', () => {
+        expect(wr22Data.length).to.equal(220)
+      })
+
+      test('returns the json data in the array', () => {
+        const [result] = wr22Data.filter(json => json.id === '/wr22/1.1')
+
+        expect(result).to.equal({
+          id: '/wr22/1.1',
+          type: 'object',
+          title: '1.1',
+          category: 'Minimum value condition',
+          subcategory: '',
+          description: 'The minimum value for the quantity of water authorised to be abstracted under this licence, as referred to in section 46(2A) Water Resources Act 1991, is [annual quantity] cubic metres per year.',
+          properties: {
+            nald_condition: {
+              $ref: 'water://licences/conditions.json',
+              label: 'NALD condition',
+              errors: {
+                required: {
+                  message: 'Select a NALD condition'
+                }
+              }
+            }
+          },
+          required: [
+            'nald_condition'
+          ]
         })
       })
     })
