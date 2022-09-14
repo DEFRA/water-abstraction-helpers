@@ -29,7 +29,6 @@ const loadJson = fileName => {
  * Syncronous function to get the filename for every .json file in our `schemaPath`
  * @return {Array} Array of json filenames
  */
-
 const getJsonFilenames = () => {
   return fs.readdirSync(schemaPath)
     .filter(file => path.extname(file) === '.json')
