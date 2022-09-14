@@ -1,78 +1,111 @@
 'use strict'
 
 const {
-  before,
   experiment,
-  test
+  test,
+  before
 } = exports.lab = require('@hapi/lab').script()
 const { expect } = require('@hapi/code')
-const { trim } = require('lodash')
 
 // Thing to test
-const deepMap = require('../../src/deep-map')
+const digitise = require('../../src/digitise')
 
-experiment('deep-map/index.js', () => {
-  experiment('when an object is provided', () => {
-    let object
-
-    before(() => {
-      object = {
-        a: ' a ',
-        b: {
-          b1: ' b1 ',
-          b2: ' b2 '
-        }
-      }
+experiment('digitise/index.js', () => {
+  experiment('transformNulls', () => {
+    experiment('when a string \'null\' is provided', () => {
+      test('transforms it to `null`', () => {
+        const result = digitise.transformNulls('null')
+        expect(result).to.be.null()
+      })
     })
 
-    test('recursively applies a function to every item', async () => {
-      const result = deepMap(object, item => trim(item))
-      expect(result).to.equal({
-        a: 'a',
-        b: {
-          b1: 'b1',
-          b2: 'b2'
-        }
+    experiment('when an empty string is provided', () => {
+      test('transforms it to `null`', () => {
+        const result = digitise.transformNulls('')
+        expect(result).to.be.null()
+      })
+    })
+
+    experiment('when `null` is provided', () => {
+      test('leaves it as `null`', () => {
+        const result = digitise.transformNulls(null)
+        expect(result).to.be.null()
+      })
+    })
+
+    experiment('when a regular string is provided', () => {
+      test('leaves it as-is', () => {
+        const result = digitise.transformNulls('NOT_NULL')
+        expect(result).to.equal('NOT_NULL')
+      })
+    })
+
+    experiment('when a number is provided', () => {
+      test('leaves it as-is', () => {
+        const result = digitise.transformNulls(123)
+        expect(result).to.equal(123)
+      })
+    })
+
+    experiment('when a mixed array is provided', () => {
+      test('applies the correct transformation to each item', () => {
+        const result = digitise.transformNulls(['null', null, '', 'NOT_NULL'])
+        expect(result).to.equal([null, null, null, 'NOT_NULL'])
+      })
+    })
+
+    experiment('when an object is provided', () => {
+      test('applies the correct transformation to each item', () => {
+        const result = digitise.transformNulls({
+          notNulls: ['NOT_NULL', 'NOT_NULL_EITHER'],
+          nulls: [null, 'null', '']
+        })
+        expect(result).to.equal({
+          notNulls: ['NOT_NULL', 'NOT_NULL_EITHER'],
+          nulls: [null, null, null]
+        })
       })
     })
   })
 
-  experiment('when an array is provided', () => {
-    let array
+  experiment('getWR22', () => {
+    experiment('when getWR22 is called', () => {
+      let wr22Data
 
-    before(() => {
-      array = [' a ', ' b ', ' c ']
-    })
+      before(async () => {
+        wr22Data = await digitise.getWR22()
+      })
 
-    test('applies a function to every item', async () => {
-      const result = deepMap(array, item => trim(item))
-      expect(result).to.equal(['a', 'b', 'c'])
-    })
-  })
+      test('returns an array of all json files', () => {
+        expect(wr22Data.length).to.equal(220)
+      })
 
-  experiment('when a string is provided', () => {
-    let string
+      test('returns the json data in the array', () => {
+        const [result] = wr22Data.filter(json => json.id === '/wr22/1.1')
 
-    before(() => {
-      string = ' abc '
-    })
-
-    test('applies a function to it', async () => {
-      const result = deepMap(string, item => trim(item))
-      expect(result).to.equal('abc')
-    })
-  })
-
-  experiment('when a number is provided', () => {
-    let number
-
-    before(() => {
-      number = 123
-    })
-
-    test('applies a function to it', async () => {
-      const result = deepMap(number, num => num * 2)
-      expect(result).to.equal(number * 2)
+        expect(result).to.equal({
+          id: '/wr22/1.1',
+          type: 'object',
+          title: '1.1',
+          category: 'Minimum value condition',
+          subcategory: '',
+          description: 'The minimum value for the quantity of water authorised to be abstracted under this licence, as referred to in section 46(2A) Water Resources Act 1991, is [annual quantity] cubic metres per year.',
+          properties: {
+            nald_condition: {
+              $ref: 'water://licences/conditions.json',
+              label: 'NALD condition',
+              errors: {
+                required: {
+                  message: 'Select a NALD condition'
+                }
+              }
+            }
+          },
+          required: [
+            'nald_condition'
+          ]
+        })
+      })
     })
   })
 })

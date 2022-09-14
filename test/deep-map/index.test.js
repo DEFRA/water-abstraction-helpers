@@ -1,69 +1,78 @@
 'use strict'
 
 const {
+  before,
   experiment,
   test
 } = exports.lab = require('@hapi/lab').script()
 const { expect } = require('@hapi/code')
+const { trim } = require('lodash')
 
 // Thing to test
-const digitise = require('../../src/digitise')
+const deepMap = require('../../src/deep-map')
 
-experiment('digitise/index.js', () => {
-  experiment('transformNulls', () => {
-    experiment('when a string \'null\' is provided', () => {
-      test('transforms it to `null`', () => {
-        const result = digitise.transformNulls('null')
-        expect(result).to.be.null()
-      })
+experiment('deep-map/index.js', () => {
+  experiment('when an object is provided', () => {
+    let object
+
+    before(() => {
+      object = {
+        a: ' a ',
+        b: {
+          b1: ' b1 ',
+          b2: ' b2 '
+        }
+      }
     })
 
-    experiment('when an empty string is provided', () => {
-      test('transforms it to `null`', () => {
-        const result = digitise.transformNulls('')
-        expect(result).to.be.null()
+    test('recursively applies a function to every item', async () => {
+      const result = deepMap(object, item => trim(item))
+      expect(result).to.equal({
+        a: 'a',
+        b: {
+          b1: 'b1',
+          b2: 'b2'
+        }
       })
     })
+  })
 
-    experiment('when `null` is provided', () => {
-      test('leaves it as `null`', () => {
-        const result = digitise.transformNulls(null)
-        expect(result).to.be.null()
-      })
+  experiment('when an array is provided', () => {
+    let array
+
+    before(() => {
+      array = [' a ', ' b ', ' c ']
     })
 
-    experiment('when a regular string is provided', () => {
-      test('leaves it as-is', () => {
-        const result = digitise.transformNulls('NOT_NULL')
-        expect(result).to.equal('NOT_NULL')
-      })
+    test('applies a function to every item', async () => {
+      const result = deepMap(array, item => trim(item))
+      expect(result).to.equal(['a', 'b', 'c'])
+    })
+  })
+
+  experiment('when a string is provided', () => {
+    let string
+
+    before(() => {
+      string = ' abc '
     })
 
-    experiment('when a number is provided', () => {
-      test('leaves it as-is', () => {
-        const result = digitise.transformNulls(123)
-        expect(result).to.equal(123)
-      })
+    test('applies a function to it', async () => {
+      const result = deepMap(string, item => trim(item))
+      expect(result).to.equal('abc')
+    })
+  })
+
+  experiment('when a number is provided', () => {
+    let number
+
+    before(() => {
+      number = 123
     })
 
-    experiment('when a mixed array is provided', () => {
-      test('applies the correct transformation to each item', () => {
-        const result = digitise.transformNulls(['null', null, '', 'NOT_NULL'])
-        expect(result).to.equal([null, null, null, 'NOT_NULL'])
-      })
-    })
-
-    experiment('when an object is provided', () => {
-      test('applies the correct transformation to each item', () => {
-        const result = digitise.transformNulls({
-          notNulls: ['NOT_NULL', 'NOT_NULL_EITHER'],
-          nulls: [null, 'null', '']
-        })
-        expect(result).to.equal({
-          notNulls: ['NOT_NULL', 'NOT_NULL_EITHER'],
-          nulls: [null, null, null]
-        })
-      })
+    test('applies a function to it', async () => {
+      const result = deepMap(number, num => num * 2)
+      expect(result).to.equal(number * 2)
     })
   })
 })
