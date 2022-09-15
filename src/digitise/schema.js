@@ -1,4 +1,3 @@
-const glob = require('glob')
 const { cloneDeep, sortBy } = require('lodash')
 const path = require('path')
 const fs = require('fs')
@@ -27,12 +26,21 @@ const loadJson = fileName => {
 }
 
 /**
+ * Syncronous function to get the filename for every .json file in our `schemaPath`
+ * @return {Array} Array of json filenames
+ */
+const getJsonFilenames = () => {
+  return fs.readdirSync(schemaPath)
+    .filter(file => path.extname(file) === '.json')
+}
+
+/**
  * Loads all the WR22 condition schema in an array, sorted by the schema
  * number
  * @return {Array} Array of JSON schema objects
  */
 const loadSchema = () => {
-  const files = glob.sync('*.json', { cwd: schemaPath })
+  const files = getJsonFilenames()
   const sorted = sortBy(files, getSortableFilename)
   const sortedSchemas = sorted.map(loadJson)
   return sortedSchemas.filter(schema => !schema.hidden)
