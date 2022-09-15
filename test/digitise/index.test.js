@@ -108,4 +108,73 @@ experiment('digitise/index.js', () => {
       })
     })
   })
+
+  experiment('.getSchemaCategories', () => {
+    // Array of simplified schema, containing just a category name (taken from the current set of schema JSON files)
+    const schemaArray = [
+      { category: 'Minimum value condition' },
+      { category: 'Hands off flows/levels' },
+      { category: 'Augmentation and Compensation conditions' },
+      { category: 'Flow/level measurement devices' },
+      { category: 'Construction and notices' },
+      { category: 'Ongoing measurement and maintenance' },
+      { category: 'Recording' },
+      { category: 'Storage conditions' },
+      { category: 'Time Limiting - abstractions start' },
+      { category: 'Chemical conditions' },
+      { category: 'Land on which licence authorises use of water' },
+      { category: 'Point at which water must be returned' },
+      { category: 'Temporary licence provision' },
+      { category: 'Groundwater conditions' },
+      { category: 'Ground source heating and cooling pumps' },
+      { category: 'Screening' },
+      { category: 'Fish and Eel passage' },
+      { category: 'Hydropower' },
+      { category: 'Impounding conditions' },
+      { category: 'Obstructing or impeding the flow of an inland water' },
+      { category: 'Removal of impounding works' },
+      { category: 'Water Rights Trading' },
+      { category: 'Environmental monitoring' },
+      { category: 'Control on abstraction' },
+      { category: 'Derogation Agreement' }
+    ]
+
+    // What the slugs should be for the categories, based on passing them through the slugify npm package
+    const slugArray = [
+      'minimum-value-condition',
+      'hands-off-flowslevels',
+      'augmentation-and-compensation-conditions',
+      'flowlevel-measurement-devices',
+      'construction-and-notices',
+      'ongoing-measurement-and-maintenance',
+      'recording',
+      'storage-conditions',
+      'time-limiting-abstractions-start',
+      'chemical-conditions',
+      'land-on-which-licence-authorises-use-of-water',
+      'point-at-which-water-must-be-returned',
+      'temporary-licence-provision',
+      'groundwater-conditions',
+      'ground-source-heating-and-cooling-pumps',
+      'screening',
+      'fish-and-eel-passage',
+      'hydropower',
+      'impounding-conditions',
+      'obstructing-or-impeding-the-flow-of-an-inland-water',
+      'removal-of-impounding-works',
+      'water-rights-trading',
+      'environmental-monitoring',
+      'control-on-abstraction',
+      'derogation-agreement'
+    ]
+
+    test('correctly generates slugs based on the schema categories', () => {
+      const categories = digitise.getSchemaCategories(schemaArray)
+
+      // Pull all category slugs out into an array for easier testing
+      const slugs = categories.map(category => category.slug)
+
+      expect(slugs).to.contain(slugArray)
+    })
+  })
 })

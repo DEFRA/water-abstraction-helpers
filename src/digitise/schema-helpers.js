@@ -1,5 +1,5 @@
 const { find, flatMap } = require('lodash')
-const slugify = require('slugify')
+// const slugify = require('slugify')
 
 // Structure of categories/subcats
 // [
@@ -13,11 +13,44 @@ const slugify = require('slugify')
 //   }
 // ];
 
+/**
+ * Converts a string to a slug: strips out disallowed chars, replaces spaces with `-`, and converts to lower case.
+ *
+ * Based on https://www.npmjs.com/package/slugify
+ */
+const slugify = string => {
+  if (typeof string !== 'string') {
+    throw new Error('String argument expected')
+  }
+
+  return string
+    .normalize()
+    // Split our string into an array of individual characters so we can iterate over it using reduce
+    .split('')
+    .reduce((result, currentChar) => {
+      const appendChar = currentChar === '-'
+        // Later we will replace multiple spaces with a single `-`. We therefore treat `-` chars in our original string
+        // as spaces, so that something like `a - string` will gracefully collapse to just `a-string`
+        ? ' '
+        // Otherwise pass the current char through a regex which will change it to an empty string if it matches any of
+        // the disallowed chars we want to strip out
+        : currentChar.replace(/[^\w\s$*_+~.()'"!:@]+/g, '')
+
+      // Append our resulting character and go again
+      return result + appendChar
+    }, '')
+    // Trim whitespace and convert to lower case
+    .trim()
+    .toLowerCase()
+    // Replace all spaces with `-` (with consecutive spaces being replaced with a single `-`)
+    .replace(/\s+/g, '-')
+}
+
 const findByTitle = (arr, title) => find(arr, { title })
 
 const createCategory = schema => {
   const { category } = schema
-  const slug = slugify(category, { lower: true })
+  const slug = slugify(category)
   return {
     slug,
     title: category,
