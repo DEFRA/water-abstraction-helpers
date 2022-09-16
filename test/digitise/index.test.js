@@ -139,8 +139,10 @@ experiment('digitise/index.js', () => {
       { category: 'Derogation Agreement' }
     ]
 
-    // What the slugs should be for the categories, based on passing them through the slugify npm package
-    const slugArray = [
+    // What the slugs should be for the categories, based on passing the category strings through the slugify package we
+    // previously used. We check that we match our existing slugs to ensure our reimplementation is fully compatible
+    // with our previous use of slugify.
+    const expectedSlugArray = [
       'minimum-value-condition',
       'hands-off-flowslevels',
       'augmentation-and-compensation-conditions',
@@ -174,7 +176,7 @@ experiment('digitise/index.js', () => {
       // Pull all category slugs out into an array for easier testing
       const slugs = categories.map(category => category.slug)
 
-      expect(slugs).to.contain(slugArray)
+      expect(slugs).to.contain(expectedSlugArray)
     })
   })
 })
