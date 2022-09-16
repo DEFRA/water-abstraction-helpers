@@ -1,5 +1,4 @@
 const { find, flatMap } = require('lodash')
-// const slugify = require('slugify')
 
 // Structure of categories/subcats
 // [
