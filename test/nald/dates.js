@@ -8,7 +8,7 @@ moment.locale('en-gb')
 const naldDates = require('../../src/nald/dates')
 
 experiment('nald/dates', () => {
-  experiment('is the main locale', async () => {
+  experiment('is the main locale', () => {
     test('in the context of the outer test suite the last day of the week is a sunday', async () => {
       const sunday = moment('2018-10-28', 'YYYY-MM-DD').endOf('day')
       const monday = moment('2018-10-22', 'YYYY-MM-DD')

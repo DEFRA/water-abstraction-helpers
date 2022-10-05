@@ -21,25 +21,24 @@
     "lint": "standard"
   },
   "dependencies": {
-    "@hapi/code": "^6.0.0",
-    "@hapi/hapi": "^18.4.1",
-    "@hapi/lab": "^19.1.0",
     "airbrake-js": "^1.6.8",
-    "cross-fetch": "^3.0.4",
-    "dotenv": "^8.2.0",
+    "cross-fetch": "^3.1.5",
     "immutability-helper": "^3.1.1",
-    "joi": "^17.4.1",
+    "joi": "^17.6.2",
     "lodash": "^4.17.21",
-    "moment": "^2.26.0",
+    "moment": "^2.29.4",
     "moment-range": "^4.0.2",
-    "pg": "^8.7.3",
-    "request": "^2.88.0",
-    "request-promise-native": "^1.0.8",
-    "shallow-diff": "0.0.5",
-    "winston": "^2.4.4"
+    "pg": "^8.8.0",
+    "request": "^2.88.2",
+    "request-promise-native": "^1.0.9",
+    "winston": "^2.4.6"
   },
   "devDependencies": {
+    "@hapi/code": "^9.0.1",
+    "@hapi/hapi": "^20.2.2",
+    "@hapi/lab": "^25.0.1",
     "auto-changelog": "^1.16.4",
+    "dotenv": "^16.0.2",
     "sinon": "^7.5.0",
     "standard": "^17.0.0"
   }

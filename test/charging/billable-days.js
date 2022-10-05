@@ -91,7 +91,7 @@ experiment('charging.getBillableDays', () => {
     expect(result).to.equal(366)
   })
 
-  experiment('when the abs period is a single range within a calendar year', async () => {
+  experiment('when the abs period is a single range within a calendar year', () => {
     test('for a full year, the result is the days within the abs period', async () => {
       const result = charging.getBillableDays(absPeriods.singleRange, '2018-04-01', '2019-03-31')
       expect(result).to.equal(214)
@@ -118,7 +118,7 @@ experiment('charging.getBillableDays', () => {
     })
   })
 
-  experiment('when multiple abs periods are within the calendar year', async () => {
+  experiment('when multiple abs periods are within the calendar year', () => {
     test('when the second abs period does not overlap with the charge period', async () => {
       const result = charging.getBillableDays([absPeriods.singleRange, absPeriods.doubleRange], '2018-04-01', '2018-09-30')
       expect(result).to.equal(183)
@@ -141,7 +141,7 @@ experiment('charging.getBillableDays', () => {
     })
   })
 
-  experiment('when the abs period is two ranges within a calendar year', async () => {
+  experiment('when the abs period is two ranges within a calendar year', () => {
     test('for a full year, the result is the days within the abs period', async () => {
       const result = charging.getBillableDays(absPeriods.doubleRange, '2018-04-01', '2019-03-31')
       expect(result).to.equal(151)
@@ -163,7 +163,7 @@ experiment('charging.getBillableDays', () => {
     })
   })
 
-  experiment('when the abs period ends on the 1st April', async () => {
+  experiment('when the abs period ends on the 1st April', () => {
     test('the first day of April is included for a full year', async () => {
       const result = charging.getBillableDays(absPeriods.doubleRange2, '2021-04-01', '2022-03-31')
       expect(result).to.equal(153)
