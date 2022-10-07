@@ -71,13 +71,13 @@ experiment('decorateError', () => {
   test('adds the file name to the context', async () => {
     const err = new Error('oh no')
     const decorated = decorateError(err)
-    expect(decorated.context.component).to.include('logger/index.js')
+    expect(decorated.context.component).to.include('logger/index.test.js')
   })
 
   test('adds the file name and params to the error', async () => {
     const err = new Error('oh no')
     const decorated = decorateError(err, { test: true })
-    expect(decorated.context.component).to.include('logger/index.js')
+    expect(decorated.context.component).to.include('logger/index.test.js')
     expect(decorated.params.test).to.be.true()
   })
 })
