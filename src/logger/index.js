@@ -50,7 +50,7 @@ const decorateError = (error, params) => {
  * @param {string} line A line from the stack trace
  * @returns {string} Only the content in the parentheses
  */
-const getContentInParentheses = line => {
+const getContentInParentheses = (line) => {
   if (line.indexOf('(') > -1) {
     return get(inParensRegex.exec(line), '[1]')
   }
@@ -72,11 +72,11 @@ const getContentAfter = (errorLine = '', after) => {
     : errorLine.substring(index + after.length)
 }
 
-const isLineFromThisFile = line => line.indexOf(__filename) > -1
+const isLineFromThisFile = (line) => line.indexOf(__filename) > -1
 
 const getStackLines = () => (new Error()).stack.split('\n')
 
-const findCallingFile = stackLines => {
+const findCallingFile = (stackLines) => {
   // Remove first line (Error: 'Message')
   const lines = stackLines.slice(1)
 
@@ -103,7 +103,7 @@ const getFilename = () => {
  * Creates a proxy onto logger.error that adds additional behaviour to
  * augment the error object with Errbit specific properties.
  */
-const proxyLoggerError = logger => {
+const proxyLoggerError = (logger) => {
   const errorProxy = logger.error
   logger.error = (msg, error, params = {}) => {
     const parsedError = parseError(error)
