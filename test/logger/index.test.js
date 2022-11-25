@@ -27,33 +27,103 @@ experiment('Test logger', () => {
     logger.on('logged', spy)
   })
 
-  test('It should log an error to the console', async () => {
-    logger.log('error', 'A test')
-    const [level, message, data] = spy.firstCall.args
-    expect(level).to.equal('error')
-    expect(message).to.equal('A test')
-    expect(data).to.equal({})
+  experiment('when the type of message is passed to logger.log()', () => {
+    test('It should log an error to the console', async () => {
+      logger.log('error', 'A test')
+      const [level, message, data] = spy.firstCall.args
+      expect(level).to.equal('error')
+      expect(message).to.equal('A test')
+      expect(data).to.equal({})
+    })
+
+    test('It should log an info level message to the console', async () => {
+      logger.log('info', 'A test')
+      const [level, message, data] = spy.firstCall.args
+      expect(level).to.equal('info')
+      expect(message).to.equal('A test')
+      expect(data).to.equal({})
+    })
+
+    test('It should log a warning level message to the console', async () => {
+      logger.log('warn', 'A test')
+      const [level, message, data] = spy.firstCall.args
+      expect(level).to.equal('warn')
+      expect(message).to.equal('A test')
+      expect(data).to.equal({})
+    })
+
+    test('It should not log debug message - below the minimum logging level', async () => {
+      logger.log('debug', 'A test')
+      expect(spy.firstCall).to.equal(null)
+    })
   })
 
-  test('It should log an info level message to the console', async () => {
-    logger.log('info', 'A test')
-    const [level, message, data] = spy.firstCall.args
-    expect(level).to.equal('info')
-    expect(message).to.equal('A test')
-    expect(data).to.equal({})
-  })
+  experiment('when the type of message is set by calling the method on the logger', () => {
+    test('It should log an info level message to the console', async () => {
+      logger.info('A test')
+      const [level, message, data] = spy.firstCall.args
+      expect(level).to.equal('info')
+      expect(message).to.equal('A test')
+      expect(data).to.equal({})
+    })
 
-  test('It should log a warning level message to the console', async () => {
-    logger.log('warn', 'A test')
-    const [level, message, data] = spy.firstCall.args
-    expect(level).to.equal('warn')
-    expect(message).to.equal('A test')
-    expect(data).to.equal({})
-  })
+    test('It should log a warning level message to the console', async () => {
+      logger.warn('A test')
+      const [level, message, data] = spy.firstCall.args
+      expect(level).to.equal('warn')
+      expect(message).to.equal('A test')
+      expect(data).to.equal({})
+    })
 
-  test('It should not log debug message - below the minimum logging level', async () => {
-    logger.log('debug', 'A test')
-    expect(spy.firstCall).to.equal(null)
+    test('It should not log debug message - below the minimum logging level', async () => {
+      logger.debug('A test')
+      expect(spy.firstCall).to.equal(null)
+    })
+
+    experiment('and we are logging an error', () => {
+      experiment('but we do not pass an error', () => {
+        test('It should log an error to the console', async () => {
+          logger.error('A test')
+          const [level, message, data] = spy.firstCall.args
+
+          expect(level).to.equal('error')
+          expect(message).to.equal('A test')
+          expect(data).to.equal(undefined)
+        })
+      })
+
+      experiment('and we pass a stacktrace (string) as the error', () => {
+        test('It should log an error to the console', async () => {
+          logger.error('A test', 'It failed at this point in the code')
+          const [level, message, data] = spy.firstCall.args
+
+          expect(level).to.equal('error')
+          expect(message).to.equal('A test')
+          expect(data).to.equal({
+            stack: 'It failed at this point in the code',
+            context: { component: '/logger/index.test.js:97:18' },
+            params: {}
+          })
+        })
+      })
+
+      experiment('and we pass an instance of Error as the error', () => {
+        test('It should log an error to the console', async () => {
+          // Pass our error undecorated
+          const testError = new Error('It failed')
+          logger.error('A test', testError)
+
+          // then decorate it in the same way the code will
+          const deoratedError = decorateError(testError, {})
+
+          const [level, message, data] = spy.firstCall.args
+
+          expect(level).to.equal('error')
+          expect(message).to.equal('A test')
+          expect(data).to.equal(deoratedError)
+        })
+      })
+    })
   })
 })
 
