@@ -112,7 +112,7 @@ const proxyLoggerError = (logger) => {
   }
 }
 
-const parseError = (error) => {
+function parseError (error) {
   let parsedError = {}
 
   if (typeof error === 'string') {
