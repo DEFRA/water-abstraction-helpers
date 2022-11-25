@@ -18,7 +18,8 @@
   },
   "scripts": {
     "test": "lab",
-    "lint": "standard"
+    "lint": "standard",
+    "version": "npx --yes auto-changelog -p --commit-limit false && git add CHANGELOG.md"
   },
   "dependencies": {
     "airbrake-js": "^1.6.8",
