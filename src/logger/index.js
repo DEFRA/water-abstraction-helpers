@@ -105,10 +105,23 @@ const getFilename = () => {
  */
 const proxyLoggerError = logger => {
   const errorProxy = logger.error
-  logger.error = (msg, error, params) => {
-    const err = decorateError(error, params)
+  logger.error = (msg, error, params = {}) => {
+    const parsedError = parseError(error)
+    const err = decorateError(parsedError, params)
     errorProxy(msg, err)
   }
+}
+
+const parseError = (error) => {
+  let parsedError = {}
+
+  if (typeof error === 'string') {
+    parsedError.stack = error
+  } else {
+    parsedError = error
+  }
+
+  return parsedError
 }
 
 const initAirbrakeLogger = (logger, options) => {
