@@ -27,33 +27,66 @@ experiment('Test logger', () => {
     logger.on('logged', spy)
   })
 
-  test('It should log an error to the console', async () => {
-    logger.log('error', 'A test')
-    const [level, message, data] = spy.firstCall.args
-    expect(level).to.equal('error')
-    expect(message).to.equal('A test')
-    expect(data).to.equal({})
+  experiment('when the type of message is passed to logger.log()', () => {
+    test('It should log an error to the console', async () => {
+      logger.log('error', 'A test')
+      const [level, message, data] = spy.firstCall.args
+      expect(level).to.equal('error')
+      expect(message).to.equal('A test')
+      expect(data).to.equal({})
+    })
+
+    test('It should log an info level message to the console', async () => {
+      logger.log('info', 'A test')
+      const [level, message, data] = spy.firstCall.args
+      expect(level).to.equal('info')
+      expect(message).to.equal('A test')
+      expect(data).to.equal({})
+    })
+
+    test('It should log a warning level message to the console', async () => {
+      logger.log('warn', 'A test')
+      const [level, message, data] = spy.firstCall.args
+      expect(level).to.equal('warn')
+      expect(message).to.equal('A test')
+      expect(data).to.equal({})
+    })
+
+    test('It should not log debug message - below the minimum logging level', async () => {
+      logger.log('debug', 'A test')
+      expect(spy.firstCall).to.equal(null)
+    })
   })
 
-  test('It should log an info level message to the console', async () => {
-    logger.log('info', 'A test')
-    const [level, message, data] = spy.firstCall.args
-    expect(level).to.equal('info')
-    expect(message).to.equal('A test')
-    expect(data).to.equal({})
-  })
+  experiment('when the type of message is set by calling the method on the logger', () => {
+    test('It should log an error to the console', async () => {
+      logger.error('A test')
+      const [level, message, data] = spy.firstCall.args
+      expect(level).to.equal('error')
+      expect(message).to.equal('A test')
+      expect(data).to.equal({})
+    })
 
-  test('It should log a warning level message to the console', async () => {
-    logger.log('warn', 'A test')
-    const [level, message, data] = spy.firstCall.args
-    expect(level).to.equal('warn')
-    expect(message).to.equal('A test')
-    expect(data).to.equal({})
-  })
+    test('It should log an info level message to the console', async () => {
+      logger.info('A test')
+      const [level, message, data] = spy.firstCall.args
+      expect(level).to.equal('info')
+      expect(message).to.equal('A test')
+      expect(data).to.equal({})
+    })
 
-  test('It should not log debug message - below the minimum logging level', async () => {
-    logger.log('debug', 'A test')
-    expect(spy.firstCall).to.equal(null)
+    test('It should log a warning level message to the console', async () => {
+      logger.warn('A test')
+      const [level, message, data] = spy.firstCall.args
+      expect(level).to.equal('warn')
+      expect(message).to.equal('A test')
+      expect(data).to.equal({})
+    })
+
+    test('It should not log debug message - below the minimum logging level', async () => {
+      logger.debug('A test')
+      expect(spy.firstCall).to.equal(null)
+    })
   })
 })
 
