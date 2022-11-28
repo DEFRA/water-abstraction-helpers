@@ -25,6 +25,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "${{ steps.nvm.outputs.NVMRC }}"
+          registry-url: https://registry.npmjs.org/
 
       # Performs a clean installation of all dependencies in the `package.json` file
       # For more information, see https://docs.npmjs.com/cli/ci.html
