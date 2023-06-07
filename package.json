@@ -41,6 +41,6 @@
     "auto-changelog": "^1.16.4",
     "dotenv": "^16.0.2",
     "sinon": "^7.5.0",
-    "standard": "^17.0.0"
+    "standard": "^17.1.0"
   }
 }
