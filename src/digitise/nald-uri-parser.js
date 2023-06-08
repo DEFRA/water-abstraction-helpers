@@ -1,4 +1,3 @@
-
 /**
  * For the abstraction reform WR22 condition work, we have created a
  * URI format for each piece of data in NALD exposed via the water service
