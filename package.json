@@ -23,24 +23,24 @@
   },
   "dependencies": {
     "airbrake-js": "^1.6.8",
-    "cross-fetch": "^3.1.5",
+    "cross-fetch": "^4.0.0",
     "immutability-helper": "^3.1.1",
-    "joi": "^17.6.2",
+    "joi": "^17.13.1",
     "lodash": "^4.17.21",
-    "moment": "^2.29.4",
+    "moment": "^2.30.1",
     "moment-range": "^4.0.2",
-    "pg": "^8.8.0",
+    "pg": "^8.11.5",
     "request": "^2.88.2",
     "request-promise-native": "^1.0.9",
     "winston": "^2.4.6"
   },
   "devDependencies": {
-    "@hapi/code": "^9.0.1",
-    "@hapi/hapi": "^21.3.2",
-    "@hapi/lab": "^25.0.1",
-    "auto-changelog": "^1.16.4",
-    "dotenv": "^16.0.2",
-    "sinon": "^7.5.0",
+    "@hapi/code": "^9.0.3",
+    "@hapi/hapi": "^21.3.9",
+    "@hapi/lab": "^25.2.0",
+    "auto-changelog": "^2.4.0",
+    "dotenv": "^16.4.5",
+    "sinon": "^18.0.0",
     "standard": "^17.1.0"
   }
 }
