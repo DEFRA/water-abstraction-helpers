@@ -26,15 +26,13 @@ experiment('db/index.js', () => {
   })
 
   experiment('createPool', () => {
-    let pool, logger, client
+    let pool, logger
 
     beforeEach(async () => {
       logger = {
         error: sandbox.stub(),
         info: sandbox.stub()
       }
-
-      client = {}
 
       pool = db.createPool(config, logger)
     })
