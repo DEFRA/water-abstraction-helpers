@@ -5,10 +5,9 @@ const pg = require('pg')
 /**
  * Registers event listeners on the PG pool instance
  * @param {Pool} pool
- * @param {Object} config
  * @param {Logger} logger
  */
-const registerEventListeners = (pool, _config, logger) => {
+const registerEventListeners = (pool, logger) => {
   pool.on('error', err => {
     logger.error('Database pool error', err)
   })
@@ -21,7 +20,7 @@ const registerEventListeners = (pool, _config, logger) => {
  */
 const createPool = (config, logger) => {
   const pool = new pg.Pool(config)
-  registerEventListeners(pool, config, logger)
+  registerEventListeners(pool, logger)
   return pool
 }
 
