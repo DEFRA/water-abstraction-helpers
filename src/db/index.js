@@ -28,12 +28,7 @@ const isLogMessage = (config, pool) => {
  * @param {Object} config
  * @param {Logger} logger
  */
-const registerEventListeners = (pool, config, logger) => {
-  pool.on('acquire', () => {
-    if (isLogMessage(config, pool)) {
-      logger.info(formatLogMessage(pool))
-    }
-  })
+const registerEventListeners = (pool, _config, logger) => {
   pool.on('error', err => {
     logger.error('Database pool error', err)
   })
