@@ -1,26 +1,6 @@
 'use strict'
+
 const pg = require('pg')
-
-/**
- * Formats a log message if pool low on connections
- * @param {Object} pool - pg pool instance
- * @return {String} - the message to log
- */
-const formatLogMessage = pool => {
-  const { totalCount, idleCount, waitingCount } = pool
-  return `Pool low on connections::Total:${totalCount},Idle:${idleCount},Waiting:${waitingCount}`
-}
-
-/**
- * Determines whether to log message if pool low on connections
- * @param {Object} config - pg options
- * @param {Object} pool - pg pool instance
- * @return {Boolean} - whether to log message
- */
-const isLogMessage = (config, pool) => {
-  const { totalCount, idleCount, waitingCount } = pool
-  return totalCount === config.max && idleCount === 0 && waitingCount > 0
-}
 
 /**
  * Registers event listeners on the PG pool instance
