@@ -42,5 +42,8 @@
     "dotenv": "^16.4.5",
     "sinon": "^18.0.0",
     "standard": "^17.1.0"
+  },
+  "allowScripts": {
+    "es5-ext@0.10.63": true
   }
 }
