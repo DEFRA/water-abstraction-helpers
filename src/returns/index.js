@@ -23,7 +23,7 @@ const parseReturnId = (returnId) => {
   return { version, regionCode, licenceNumber, formatId, startDate, endDate }
 }
 
-const returnIDRegex = /^v1:[1-8]:[^:]+:[0-9]+:[0-9]{4}-[0-9]{2}-[0-9]{2}:[0-9]{4}-[0-9]{2}-[0-9]{2}$/
+const returnIDRegex = /^v1:[1-9]:[^:]+:[0-9]+:[0-9]{4}-[0-9]{2}-[0-9]{2}:[0-9]{4}-[0-9]{2}-[0-9]{2}$/
 
 exports.returnIDRegex = returnIDRegex
 exports.getReturnId = getReturnId
